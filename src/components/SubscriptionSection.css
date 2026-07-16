@@ -1480,9 +1480,22 @@
   .cel-header { margin-bottom: 24px; }
   .cel-header h2 { font-size: 32px; }
   .cel-header p { font-size: 14px; }
-  .cel-rates { width: 100%; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
-  .cel-rates::-webkit-scrollbar { display: none; }
-  .cel-rates > span { min-width: 150px; padding: 11px 16px; }
+  .cel-rates {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: hidden;
+  }
+  .cel-rates > span {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 6px;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 5px;
+  }
+  .cel-rates .material-symbols-outlined { font-size: 18px; }
+  .cel-rates small { font-size: 8px; letter-spacing: 0.08em; }
+  .cel-rates b { min-width: 0; font-size: 10px; white-space: nowrap; }
   .cel-recharge-panel,
   .cel-membership-panel { padding: 24px 18px; }
   .cel-panel-head { min-height: 0; }
