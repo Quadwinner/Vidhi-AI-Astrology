@@ -37,6 +37,7 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
   const callStartTimeRef = useRef<number>(Date.now());
   const hasEndedRef = useRef<boolean>(false);
   const initStartedRef = useRef<boolean>(false);
+  const wakeLockRef = useRef<any>(null);
 
   const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -156,7 +157,12 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
 
     const startupSequence = async () => {
       try {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Only probe for mic permission — then immediately release the tracks.
+        // If we keep this stream open, the Ultravox SDK opens the mic a second
+        // time; mobile browsers (esp. iOS) can't hold the mic twice and drop the
+        // audio session, ending the call right after the intro.
+        const probe = await navigator.mediaDevices.getUserMedia({ audio: true });
+        probe.getTracks().forEach((t) => t.stop());
         if (isCancelled) return;
         setPermissionState('granted');
         initializeAndStartCall();
@@ -178,6 +184,42 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.id]);
+
+  // Mobile fix: keep the screen awake during an active call. On phones the
+  // browser suspends/throttles the page a few seconds after the screen dims,
+  // which tears down the WebRTC audio session and the call drops right after
+  // the intro (endReason "hangup"). A Screen Wake Lock keeps the page alive;
+  // it must be re-acquired whenever the page becomes visible again.
+  useEffect(() => {
+    if (callState !== 'active') return;
+
+    let released = false;
+
+    const acquire = async () => {
+      try {
+        if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+          wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+          wakeLockRef.current?.addEventListener?.('release', () => { wakeLockRef.current = null; });
+        }
+      } catch (e) {
+        console.warn('[UltravoxCallScreen] wakeLock request failed:', e);
+      }
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible' && !released) acquire();
+    };
+
+    acquire();
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      released = true;
+      document.removeEventListener('visibilitychange', onVisibility);
+      try { wakeLockRef.current?.release?.(); } catch { /* noop */ }
+      wakeLockRef.current = null;
+    };
+  }, [callState]);
 
   const confirmEndCall = async () => {
     setIsDisconnecting(true);
