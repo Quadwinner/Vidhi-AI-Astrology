@@ -44,19 +44,55 @@ async function handler(req: Request) {
     if (promptError || !promptData) throw new Error(`System prompt '${PROMPT_NAME}' could not be loaded.`);
 
     const apiKey = Deno.env.get(promptData.secret_name);
-    const anthropic = new Anthropic({ apiKey });
-    
+    if (!apiKey) throw new Error(`API key secret '${promptData.secret_name}' is not set.`);
+
     // Inject the user's question into the prompt
     const finalPrompt = promptData.prompt_text.replace('{{question_text}}', question_text);
 
-    const msg = await anthropic.messages.create({
-      model: promptData.model_name || 'claude-3-haiku-20240307',
-      max_tokens: 300, // Increased slightly to accommodate JSON
-      temperature: 0,
-      messages: [{ role: 'user', content: finalPrompt }],
-    });
+    const modelLower = (promptData.model_name || '').toLowerCase();
+    const isAnthropic = modelLower.startsWith('claude');
 
-    const llmResponseText = msg.content[0]?.text || '{}';
+    let llmResponseText = '{}';
+
+    if (isAnthropic) {
+      const anthropic = new Anthropic({ apiKey });
+      const msg = await anthropic.messages.create({
+        model: promptData.model_name,
+        max_tokens: 300,
+        temperature: 0,
+        messages: [{ role: 'user', content: finalPrompt }],
+      });
+      llmResponseText = msg.content[0]?.text || '{}';
+    } else {
+      // Fireworks / OpenRouter / OpenAI-compatible chat completions.
+      // The categorizer's model was a Fireworks model but the code used the
+      // Anthropic SDK, which always 500'd and blocked the chat. Call the correct
+      // endpoint, cap tokens, and keep reasoning low so it stays fast.
+      const base = modelLower.startsWith('accounts/fireworks/')
+        ? 'https://api.fireworks.ai/inference/v1/chat/completions'
+        : 'https://openrouter.ai/api/v1/chat/completions';
+      const res = await fetch(base, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model: promptData.model_name,
+          messages: [{ role: 'user', content: finalPrompt }],
+          temperature: 0,
+          max_tokens: 300,
+          reasoning_effort: 'low',
+        }),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error(`[categorize-chat-intent] LLM error ${res.status}: ${errText}`);
+        // Non-fatal: return a safe default so the chat is never blocked.
+        return new Response(JSON.stringify({ category: 'general', sub_category: null, entities: {} }), {
+          status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      const data = await res.json();
+      llmResponseText = data.choices?.[0]?.message?.content || '{}';
+    }
     let categoryJson;
     
     try {
@@ -92,9 +128,10 @@ async function handler(req: Request) {
     });
 
   } catch (err) {
+    // Never fail the chat because categorization failed — return a safe default.
     console.error('Critical error in categorize-chat-intent:', err);
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    return new Response(JSON.stringify({ category: 'general', sub_category: null, entities: {} }), {
+      status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 }
