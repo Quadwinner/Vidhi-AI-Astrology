@@ -8,6 +8,9 @@ module.exports = function override(config) {
     "stream": require.resolve("stream-browserify"),
     "buffer": require.resolve("buffer"),
     "process": require.resolve("process/browser.js"),
+    // asn1.js optionally requires Node's 'vm'; it's not needed in the browser.
+    // Stub it to an empty module so the build doesn't emit a "Can't resolve 'vm'" error.
+    "vm": false,
   });
   config.resolve.fallback = fallback;
   
