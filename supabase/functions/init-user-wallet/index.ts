@@ -5,6 +5,63 @@ import { corsHeaders } from '../_shared/cors.ts'
 
 const GEOAPIFY_API_URL = 'https://api.geoapify.com/v1/ipinfo';
 
+// Resilient country detection.
+// Order: Geoapify (if key present) -> ipwho.is (keyless, HTTPS) -> ipapi.co -> 'US' fallback.
+// Never throws: currency detection must not block wallet initialization.
+async function detectCountryCode(clientIp: string): Promise<string> {
+  const apiKey = Deno.env.get('GEOAPIFY_API_KEY');
+
+  // 1. Geoapify (only if configured)
+  if (apiKey) {
+    try {
+      const res = await fetch(`${GEOAPIFY_API_URL}?ip=${clientIp}&apiKey=${apiKey}`);
+      if (res.ok) {
+        const data = await res.json();
+        const code = data?.country?.iso_code;
+        if (code) {
+          console.log(`[init-user-wallet] Country via Geoapify: ${code}`);
+          return code.toUpperCase();
+        }
+      }
+    } catch (e) {
+      console.warn('[init-user-wallet] Geoapify lookup failed:', e?.message || e);
+    }
+  }
+
+  // 2. ipwho.is (keyless, HTTPS). Requires a client IP to avoid geolocating the edge server.
+  if (clientIp) {
+    try {
+      const res = await fetch(`https://ipwho.is/${clientIp}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.success !== false && data?.country_code) {
+          console.log(`[init-user-wallet] Country via ipwho.is: ${data.country_code}`);
+          return String(data.country_code).toUpperCase();
+        }
+      }
+    } catch (e) {
+      console.warn('[init-user-wallet] ipwho.is lookup failed:', e?.message || e);
+    }
+
+    // 3. ipapi.co (keyless, HTTPS) as a second fallback
+    try {
+      const res = await fetch(`https://ipapi.co/${clientIp}/country/`);
+      if (res.ok) {
+        const code = (await res.text()).trim();
+        if (code && code.length === 2) {
+          console.log(`[init-user-wallet] Country via ipapi.co: ${code}`);
+          return code.toUpperCase();
+        }
+      }
+    } catch (e) {
+      console.warn('[init-user-wallet] ipapi.co lookup failed:', e?.message || e);
+    }
+  }
+
+  console.warn('[init-user-wallet] All geo lookups failed; defaulting to US');
+  return 'US';
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -54,14 +111,13 @@ Deno.serve(async (req) => {
 
     console.log(`[init-user-wallet] Setting up user ${user.id} for variant '${variant_name}'...`)
 
-    // A. Detect Country via Geoapify
-    const apiKey = Deno.env.get('GEOAPIFY_API_KEY')
-    if (!apiKey) throw new Error('Server config error: Missing GEOAPIFY_API_KEY')
-    let clientIp = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || ''
-    if (!clientIp) console.warn('Warning: Could not detect Client IP')
-    const geoRes = await fetch(`${GEOAPIFY_API_URL}?ip=${clientIp}&apiKey=${apiKey}`)
-    const geoData = await geoRes.json()
-    const detectedCountry = geoData.country?.iso_code || 'US'
+    // A. Detect Country (resilient: works even without GEOAPIFY_API_KEY)
+    const clientIp =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      req.headers.get('x-real-ip')?.trim() ||
+      ''
+    if (!clientIp) console.warn('[init-user-wallet] Could not detect Client IP from headers')
+    const detectedCountry = await detectCountryCode(clientIp)
     console.log(`[init-user-wallet] Detected Country: ${detectedCountry}`)
 
     // B. Determine Currency
