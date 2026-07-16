@@ -635,15 +635,27 @@ async function handler(req: Request) {
               } else if (isOpenAI || isFireworks) {
                  const content = parsed.choices?.[0]?.delta?.content || '';
                  if (content) {
+                   // Stream tokens as they arrive (ChatGPT-style). Only briefly
+                   // buffer at the very start in case the model emits an optional
+                   // "[ANSWER]" marker we need to strip. Once we've cleared the
+                   // first few tokens (or found the marker), we stream directly so
+                   // the user never waits for the whole response.
                    if (isFireworks && !answerStarted) {
-                     // Buffer content until [ANSWER] tag is found (strips reasoning prefix)
                      rawBuffer += content;
                      const answerIdx = rawBuffer.indexOf('[ANSWER]');
                      if (answerIdx !== -1) {
+                       // Found the marker: emit everything after it and stream from now on.
                        answerStarted = true;
-                       const fromAnswer = rawBuffer.substring(answerIdx);
-                       fullResponseContent += fromAnswer;
-                       writer.write(encoder.encode(fromAnswer));
+                       const fromAnswer = rawBuffer.substring(answerIdx + '[ANSWER]'.length);
+                       if (fromAnswer) { fullResponseContent += fromAnswer; writer.write(encoder.encode(fromAnswer)); }
+                       rawBuffer = '';
+                     } else if (rawBuffer.length >= 12) {
+                       // No marker in the opening tokens — this model doesn't use it.
+                       // Flush what we have and stream everything from here on.
+                       answerStarted = true;
+                       fullResponseContent += rawBuffer;
+                       writer.write(encoder.encode(rawBuffer));
+                       rawBuffer = '';
                      }
                    } else {
                      fullResponseContent += content;
