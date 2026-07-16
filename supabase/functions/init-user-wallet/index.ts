@@ -126,41 +126,13 @@ Deno.serve(async (req) => {
     else if (detectedCountry === 'GB') targetCurrency = 'GBP';
     else if (detectedCountry === 'AE') targetCurrency = 'AED';
 
-    // C. --- LOGIC CHANGE: Fetch the price of ONE chat message for the user's variant ---
-    let startingBalance = 0;
-
-    // First attempt: Find price for the specific variant
-    const { data: variantPriceData } = await supabaseAdmin
-      .from('service_prices')
-      .select('price_amount')
-      .eq('service_key', 'chat_message')
-      .eq('currency_code', targetCurrency)
-      .eq('variant_name', variant_name)
-      .single();
-
-    if (variantPriceData) {
-      startingBalance = variantPriceData.price_amount;
-      console.log(`[init-user-wallet] Found price for variant '${variant_name}': ${startingBalance}`);
-    } else {
-      // Fallback: If no price for the specific variant, use the 'control' price
-      console.warn(`[init-user-wallet] No 'chat_message' price found for variant '${variant_name}'. Falling back to 'control'.`);
-      const { data: controlPriceData } = await supabaseAdmin
-        .from('service_prices')
-        .select('price_amount')
-        .eq('service_key', 'chat_message')
-        .eq('currency_code', targetCurrency)
-        .eq('variant_name', 'control')
-        .single();
-
-      if (controlPriceData) {
-        startingBalance = controlPriceData.price_amount;
-        console.log(`[init-user-wallet] Using fallback 'control' price: ${startingBalance}`);
-      } else {
-        // If even control is missing, default to 0 to avoid errors.
-        console.error(`[CRITICAL] Missing 'chat_message' price for currency '${targetCurrency}' in both '${variant_name}' and 'control' variants.`);
-        startingBalance = 0;
-      }
-    }
+    // C. --- PROMOTION: welcome credit ---
+    // During the promotion phase every new user starts with 300 coins.
+    // Balances are stored in minor units where 1 coin = 100 units (so the UI,
+    // which divides by 100, shows "300"). 300 coins => 30000 minor units.
+    const PROMO_WELCOME_COINS = 300;
+    const startingBalance = PROMO_WELCOME_COINS * 100;
+    console.log(`[init-user-wallet] Promo welcome credit: ${PROMO_WELCOME_COINS} coins (${startingBalance} units) for ${targetCurrency}.`);
 
     // D. Update User in DB
     const { error: updateError } = await supabaseAdmin
