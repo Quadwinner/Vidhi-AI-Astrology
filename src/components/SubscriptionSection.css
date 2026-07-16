@@ -1144,6 +1144,12 @@
   /* Contain the decorative blur/ॐ glyph so they can't create horizontal
      scroll on narrow screens (they extend well beyond the viewport width). */
   overflow-x: hidden;
+  /* The homepage wraps sections in a flex column with align-items:center, which
+     shrink-wraps the section to its widest (non-wrapping) content instead of the
+     viewport. That made the board grow past the phone width and clip the cards.
+     Forcing full width keeps the board viewport-sized so its grids stay fluid. */
+  width: 100%;
+  max-width: 100%;
 }
 
 .cel-shell {
