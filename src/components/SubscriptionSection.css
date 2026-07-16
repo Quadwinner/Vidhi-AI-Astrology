@@ -1490,9 +1490,16 @@
   .cel-balance { min-width: 0; }
   .cel-recharge-grid {
     width: 100%;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
-  .cel-recharge-option { width: 100%; min-width: 0; min-height: 78px; }
+  .cel-recharge-option {
+    width: 100%;
+    min-width: 0;
+    min-height: 84px;
+    padding: 12px 9px;
+    overflow: hidden;
+  }
   .cel-plan-list {
     display: flex;
     gap: 12px;
@@ -1517,18 +1524,27 @@
   .cel-panel-head { flex-direction: column; width: 100%; }
   .cel-balance { width: 100%; }
 
-  /* One full-width card per row is intentional on phones. It prevents long
-     localized currency values and bonus labels from forcing a hidden second
-     column beyond the viewport. */
+  /* Keep a compact 2 × n grid on phones. minmax(0, 1fr) plus min-width:0
+     on every grid child lets both columns shrink without clipping. */
   .cel-recharge-grid {
     width: 100%;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
-  .cel-recharge-option { width: 100%; min-width: 0; min-height: 78px; }
+  .cel-recharge-option {
+    width: 100%;
+    min-width: 0;
+    min-height: 82px;
+    padding: 11px 8px;
+    overflow: hidden;
+  }
   .cel-recharge-main,
   .cel-recharge-return { min-width: 0; max-width: 100%; white-space: normal; }
-  .cel-recharge-main strong { font-size: 18px; }
+  .cel-recharge-main { gap: 4px; }
+  .cel-recharge-main small { font-size: 9px; }
+  .cel-recharge-main strong { font-size: 17px; }
+  .cel-recharge-return { font-size: 9px; }
+  .cel-bonus { right: 6px; top: 6px; font-size: 8px; }
 
   .cel-plan-list {
     width: 100%;
