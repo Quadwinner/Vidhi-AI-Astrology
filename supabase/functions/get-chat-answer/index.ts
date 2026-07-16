@@ -512,7 +512,11 @@ async function handler(req: Request) {
           // Reasoning-capable Fireworks models (deepseek, gpt-oss, glm, kimi) default
           // to heavy internal reasoning, which delays the first visible token by
           // 10-15s on large prompts. 'low' keeps quality while streaming starts fast.
-          reasoning_effort: 'low'
+          reasoning_effort: 'low',
+          // Cap output length. The prompt asks for at most ~12-15 sentences, but the
+          // model was generating 600+ token essays (~15-20s of extra streaming time).
+          // ~900 tokens is plenty for a detailed Hindi astrology answer.
+          max_tokens: 900
         };
 
       } else if (isOpenAI) {
