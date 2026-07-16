@@ -215,6 +215,14 @@ Deno.serve(async (req) => {
         minimumTurnDuration: '0s',
         minimumInterruptionDuration: '0.9s',
       },
+      // Without this, the session ends within seconds of the intro if the user is
+      // quiet (or their speech isn't recognized). Instead, re-prompt in Hindi a few
+      // times and only hang up after ~75s of continuous silence.
+      inactivityMessages: [
+        { duration: '30s', message: 'क्या आप वहाँ हैं? आप किस विषय में जानना चाहते हैं?' },
+        { duration: '30s', message: 'अगर आपका कोई सवाल हो तो बेझिझक पूछिए।' },
+        { duration: '15s', message: 'ठीक है, मैं अभी कॉल समाप्त कर रहा हूँ। जब चाहें फिर से कॉल करें। धन्यवाद!', endBehavior: 'END_BEHAVIOR_HANG_UP_SOFT' },
+      ],
       maxDuration: '1800s',
       recordingEnabled: false,
     };
