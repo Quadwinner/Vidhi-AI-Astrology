@@ -1,0 +1,188 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+/* Center the modal more precisely */
+.modal {
+  padding: 2rem;
+  width: 90%;
+  max-width: 460px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  border-radius: 24px;
+  border: 1px solid #FFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.overlay {
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #ddd;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+/* Emoji row */
+.emojiRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.emojiCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex: 1;
+  min-width: 60px;
+}
+
+.emojiCard:hover {
+  transform: scale(1.1);
+}
+
+.activeEmoji {
+  transform: scale(1.2);
+}
+
+.emoji {
+  font-size: 2rem;
+}
+
+.emojiLabel {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  color: #ddd;
+  text-align: center;
+}
+
+/* Feedback text */
+.feedbackLabel {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  color: #eee;
+}
+
+/* Textarea */
+.commentsTextarea {
+  width: 100%;
+  min-height: 100px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 0.8rem;
+  color: #fff;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-bottom: 0.3rem;
+  margin-left: -11px;
+}
+
+.charCount {
+  text-align: right;
+  font-size: 0.75rem;
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ed0687 0%, #fe6c0f 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ------------------------------
+   📱 Responsive Styles
+--------------------------------*/
+@media (max-width: 480px) {
+  .modal {
+    padding: 1.2rem;
+    width: 85%;
+    max-width: 360px;
+  }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .emojiRow {
+    gap: 0.4rem;
+  }
+
+  .emoji {
+    font-size: 1.6rem;
+  }
+
+  .emojiLabel {
+    font-size: 0.7rem;
+  }
+
+  .commentsTextarea {
+    min-height: 80px;
+    font-size: 0.85rem;
+  }
+
+  .submitButton {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .closeButton {
+    margin-right: -8px;
+    margin-top: -9px;
+  }
+}

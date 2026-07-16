@@ -1,0 +1,41 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+  margin-top:50px;
+}
+.loading {
+      margin-top: 64px;
+     
+}
+.loading-msg {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: 'Spartan';
+  color:#ffffff;
+  margin-right:-37px;
+}
+
+.mandala-animation {
+  width: 566px;
+  height: 566px;
+  background: url('../assets/Mandala.svg') no-repeat center;
+  background-size: contain;
+  animation: rotateMandala 8s linear infinite;
+}
+
+@keyframes rotateMandala {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+

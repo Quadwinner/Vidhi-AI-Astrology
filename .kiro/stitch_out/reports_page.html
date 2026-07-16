@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports &amp; Insights | AuraAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#363533",
+                    "background": "#0d0c0b",
+                    "tertiary": "#c1c6d9",
+                    "surface-tint": "#ffb1c2",
+                    "surface-bright": "#3a3937",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "surface-container-high": "#2b2a28",
+                    "surface-container-highest": "#363533",
+                    "surface": "#0d0c0b",
+                    "secondary-fixed": "#ffdea9",
+                    "outline-variant": "#554245",
+                    "tertiary-container": "#292f3e",
+                    "on-tertiary": "#2a303f",
+                    "on-tertiary-container": "#9196a9",
+                    "on-surface": "#e5e2df",
+                    "on-error": "#690005",
+                    "tertiary-fixed": "#dde2f6",
+                    "secondary": "#f1bf64",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "surface-container-low": "#1c1b1a",
+                    "error-container": "#93000a",
+                    "inverse-surface": "#e5e2df",
+                    "surface-container": "#201f1e",
+                    "on-background": "#e5e2df",
+                    "on-secondary-container": "#ffd284",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "on-secondary": "#422c00",
+                    "on-primary-container": "#e67291",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#31302f",
+                    "on-secondary-fixed": "#271900",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#dbc0c4",
+                    "outline": "#a38b8f",
+                    "on-primary-fixed-variant": "#812342",
+                    "primary-fixed": "#ffd9e0",
+                    "primary": "#ffb1c2",
+                    "on-primary": "#62082c",
+                    "surface-dim": "#141312",
+                    "surface-container-lowest": "#0e0e0d",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "inverse-primary": "#9f3b59",
+                    "primary-container": "#61072b",
+                    "on-tertiary-fixed": "#151b29",
+                    "on-primary-fixed": "#3f0018",
+                    "secondary-container": "#7d5800"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Playfair Display"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .starfield {
+            background-image: radial-gradient(white 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.05;
+        }
+        .cosmic-glow-1 {
+            background: radial-gradient(circle at 20% 30%, #61072b 0%, transparent 50%);
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+        .cosmic-glow-2 {
+            background: radial-gradient(circle at 80% 70%, #61072b 0%, transparent 45%);
+            filter: blur(100px);
+            opacity: 0.3;
+        }
+        .glass-card {
+            background: rgba(20, 19, 18, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(241, 191, 100, 0.15);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(241, 191, 100, 0.5);
+            box-shadow: 0 10px 40px -10px rgba(241, 191, 100, 0.2);
+        }
+        .pill-active {
+            box-shadow: 0 0 15px rgba(241, 191, 100, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary/30">
+<!-- Atmospheric Background -->
+<div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+<div class="absolute inset-0 cosmic-glow-1"></div>
+<div class="absolute inset-0 cosmic-glow-2"></div>
+<div class="absolute inset-0 starfield"></div>
+</div>
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md dark:bg-surface/80 border-b border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-secondary dark:text-secondary tracking-tighter">AuraAI</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Features</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Pricing</a>
+<a class="font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1" href="#">Reviews</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">FAQ</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-all">Sign In</button>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold hover:bg-secondary-fixed-dim transition-all">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-[1100px] mx-auto min-h-screen">
+<!-- Section Header: Profile Selector -->
+<header class="mb-12">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-8">Reports &amp; Insights</h1>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Active Profile -->
+<button class="flex items-center gap-2 bg-secondary text-on-secondary px-4 py-2 rounded-full pill-active border border-secondary transition-all">
+<div class="w-7 h-7 rounded-full overflow-hidden border-2 border-on-secondary/50">
+<img class="w-full h-full object-cover" data-alt="A portrait of a serene woman with a peaceful expression, captured in soft golden light. The background is a deep, mystical maroon with subtle celestial bokeh effects. Professional photography style, high-end editorial look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0kapvFgGWSeMxY37O9KfJ1vNtwt0rh07HE30JIAD4httOJ8XOBU6mmMt5bupeWpvbKW8PdKst0K-RD4Es1GmmfxfCnWLSIA4Ep9dMyscj7Y7S0XIkG5qut2pLmNX_YMJ_yaQeuEFXJUkvn0m3BDBi-mHKzUcO_GJfq_ByhbAm2xsSinIXZnAjIc4-wd5ONXOUksVlyIQ5bHGYP_1nZ34naNJtqT6R-4LAfcmIqZLX66PYDQhFwJIqOGTk1GsjOfg7HzCTrxvekNQv"/>
+</div>
+<span class="font-label-md text-label-md font-bold">Aarya V.</span>
+</button>
+<!-- Inactive Profile -->
+<button class="flex items-center gap-2 bg-surface-container-high/40 hover:bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full border border-outline-variant/30 transition-all">
+<div class="w-7 h-7 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A side-profile portrait of a thoughtful man, lit by cinematic warm lighting. Dark navy and charcoal background with tiny glowing star-like particles. Minimalist and premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN83cicfqMbqWQnwhG4aOXbO0yqJONSks1LBkZkvXjBDhKOFHogk4L2H-vZ0ZVbf-9JBgd0j2q2v6X4a6ErXwnqTTvDZ68zW9eimEUmmnNnJU2zVu7C-kFpIxMQAGCQQbjcrQhlBM6ZWVsrdb88QUIPUfW9foYf-7YZRrKuYpFFzhvsKzB5tgrmHmxjDD0N5BdItBiFlX335CUt46QDmTsESWl12F_hnkNyE84qHlL_c6p0zuqcXz7N9_irNEGhtFmelvJttzg_OWp"/>
+</div>
+<span class="font-label-md text-label-md">Rohan M.</span>
+</button>
+<!-- Add Profile -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-full border border-dashed border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:text-secondary transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="font-label-md text-label-md">Add Profile</span>
+</button>
+</div>
+</header>
+<!-- Segmented Switcher -->
+<div class="inline-flex p-1 bg-surface-container-low/60 rounded-full border border-outline-variant/20 mb-12">
+<button class="px-8 py-2.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all">Charts</button>
+<button class="px-8 py-2.5 rounded-full font-label-md text-label-md bg-secondary text-on-secondary font-bold shadow-lg">Reports</button>
+</div>
+<!-- Insights Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+<!-- Insight Card 1: Unlocked -->
+<div class="glass-card p-8 rounded-[20px] flex flex-col group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">TRANSIT</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3 group-hover:text-secondary transition-colors">Saturn's Retrograde Impact</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/80 mb-8 line-clamp-2">A comprehensive deep-dive into how the current Saturnian shift affects your professional stability and karma for the next 4 months.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-on-surface-variant/60 text-label-sm">Updated 2h ago</span>
+<button class="bg-secondary/10 border border-secondary/30 hover:bg-secondary hover:text-on-secondary text-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold transition-all flex items-center gap-2">
+                        View Report
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Insight Card 2: Locked -->
+<div class="glass-card p-8 rounded-[20px] flex flex-col group relative overflow-hidden">
+<!-- Subtle Glow Overlay for Locked Items -->
+<div class="absolute top-0 right-0 p-4 opacity-40">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">RELATIONSHIP</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3 group-hover:text-secondary transition-colors">Annual Compatibility Forecast</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/80 mb-8 line-clamp-2">Explore the upcoming lunar cycles and how they align with your partner's natal moon for harmony and conflict resolution.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-on-surface-variant/60 text-label-sm">Premium Report</span>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold hover:bg-secondary-fixed-dim transition-all flex items-center gap-2">
+                        Unlock (₹149)
+                        <span class="material-symbols-outlined text-[18px]">lock_open</span>
+</button>
+</div>
+</div>
+<!-- Insight Card 3: Unlocked -->
+<div class="glass-card p-8 rounded-[20px] flex flex-col group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">FINANCE</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3 group-hover:text-secondary transition-colors">Wealth &amp; Mercury Retrograde</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/80 mb-8 line-clamp-2">Navigating financial contracts and major investments during the upcoming communicative dissonance of Mercury.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-on-surface-variant/60 text-label-sm">Updated Yesterday</span>
+<button class="bg-secondary/10 border border-secondary/30 hover:bg-secondary hover:text-on-secondary text-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold transition-all flex items-center gap-2">
+                        View Report
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Insight Card 4: Locked -->
+<div class="glass-card p-8 rounded-[20px] flex flex-col group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">SPIRITUAL</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3 group-hover:text-secondary transition-colors">Dharma &amp; Soul Purpose 2024</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/80 mb-8 line-clamp-2">An advanced karmic analysis based on your Jaimini Karakas, revealing the core lessons for your current mahadasha phase.</p>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-on-surface-variant/60 text-label-sm">Premium Report</span>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold hover:bg-secondary-fixed-dim transition-all flex items-center gap-2">
+                        Unlock (₹149)
+                        <span class="material-symbols-outlined text-[18px]">lock_open</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Subtle call to action/note -->
+<footer class="mt-20 text-center max-w-2xl mx-auto">
+<p class="text-on-surface-variant/60 font-body-md italic">"The stars only incline, they do not compel. These insights are crafted to help you navigate your unique karmic blueprint with clarity and wisdom."</p>
+</footer>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-12 border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-6">
+<div class="font-headline-sm text-headline-sm text-secondary font-bold tracking-tighter">AuraAI</div>
+<p class="text-on-surface-variant font-body-md opacity-80 max-w-sm">Merging ancient Vedic wisdom with modern artificial intelligence to guide your celestial journey.</p>
+<div class="text-on-surface-variant font-body-md">© 2024 AuraAI. All celestial rights reserved.</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col space-y-4">
+<span class="text-secondary font-label-md uppercase tracking-widest text-[10px]">Resources</span>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors opacity-100 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors opacity-100 hover:opacity-80" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col space-y-4">
+<span class="text-secondary font-label-md uppercase tracking-widest text-[10px]">Support</span>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors opacity-100 hover:opacity-80" href="#">Cookie Policy</a>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors opacity-100 hover:opacity-80" href="#">Contact Us</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for profile selection
+        document.querySelectorAll('button[class*="pill-active"], button[class*="bg-surface-container-high/40"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Mock selection logic
+                console.log('Profile switched');
+            });
+        });
+
+        // Floating particles effect
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.body.appendChild(canvas);
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '1';
+        
+        let particles = [];
+        const particleCount = 40;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.init();
+            }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.init();
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(241, 191, 100, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
+    </script>
+</body></html>

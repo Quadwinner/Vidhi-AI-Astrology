@@ -1,0 +1,269 @@
+/* src/components/KundliSection.module.css */
+
+/* --- General Section Layout --- */
+.kundliSection {
+  width: 100%;
+  max-width: 1216px;
+  /* Max-width from original design */
+  margin: 0 auto;
+  padding: 31px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  /* Gap between title (if any) and the form */
+}
+
+/* --- 1. NEW: The Main Form Container --- */
+/* This is the main box with the light, transparent background */
+.formContainer {
+  width: 100%;
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+  border-radius: 28px;
+  padding-bottom: 8px;
+  /* Add padding at the bottom for the button */
+}
+
+/* --- 2. NEW: The Header Bar --- */
+/* This is the top bar with the light orange background */
+.formHeader {
+  width: 100%;
+  height: 74px;
+  background: #FFE9D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  overflow: hidden;
+  /* distribute tabs evenly */
+  padding: -1px 20px;
+  /* add some side padding */
+}
+
+/* --- 3. NEW: The Active "New Kundli" Tab --- */
+/* This is the pink section on the left */
+.activeTab {
+  flex: 1;
+  height: 100%;
+  background: var(--primary, #FE607E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 0 225px; */
+  /* Give it some horizontal padding */
+
+  /* Font Styles from your mock-up */
+  color: white;
+  font-size: 27px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.deactiveTab {
+  flex: 1;
+  color: #010101;
+  text-align: center;
+  font-size: 27.449px;
+  font-style: normal;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* --- 4. NEW: A wrapper for the form content for consistent padding --- */
+.formBody {
+  padding: 8px 8px;
+}
+
+/* --- 5. UPDATED: The CTA Button --- */
+.ctaButton {
+  /* Position the button at the bottom of the form container */
+  display: block;
+  margin: 0 auto;
+  /* Center the button */
+
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px 40px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 0px 30px rgba(210, 58, 173, 0.60);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.ctaButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 40px rgba(210, 58, 173, 0.75);
+}
+
+.ctaButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.headline {
+  color: #FFF;
+  /* section title: sora */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.headline span {
+  color: var(--primary, #FE607E);
+}
+
+.description {
+  color: #FBCFE8;
+  text-align: justify;
+  font-family: "Work Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+/* Divider with symbol in center */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -28px auto 0px;
+  position: relative;
+  width: 100%;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.savedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .kundliSection {
+    padding-top: 16px;
+    padding-inline: 3px;
+    padding-bottom: 32px;
+    margin-top: -20px;
+  }
+
+  /* .formBody {
+    padding: 24px;
+  } */
+
+  .activeTab {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .deactiveTab {
+    font-size: 18px;
+  }
+
+  .headline {
+    font-size: 26px;
+    font-weight: 300;
+  }
+
+  .formContainer {
+    width: 95%;
+  }
+
+  .description {
+    font-size: 14px;
+    padding: 0 12px;
+    width: 85%;
+  }
+
+}
+
+
+/* iPhone SE (375px) & Galaxy S8 (360px) */
+@media (max-width: 375px) {
+  .headline {
+    font-size: 22px;
+  }
+
+  .description {
+    font-size: 14px;
+    padding: 0 12px;
+    width: 85%;
+  }
+
+  .ctaButton {
+    width: 100%;
+    /* ✅ full width button */
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+/* iPhone XR (414px), iPhone 12 Pro (390px), Pixel 7 (412px), iPhone 14 Pro Max (430px) */
+@media (max-width: 430px) {
+  .headline {
+    font-size: 24px;
+  }
+
+  .description {
+    font-size: 14px;
+    padding: 0 12px;
+    width: 85%;
+  }
+
+  .ctaButton {
+    font-size: 15px;
+    padding: 12px 20px;
+  }
+}
+
+/* --- Paragraph inside form container --- */
+.descriptionInside {
+  margin-top: 28px;
+  padding: 0 28px 28px;
+  color: #fbcfe8;
+  font-family: "Work Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: justify;
+  text-transform: capitalize;
+  opacity: 0.9;
+}
+
+.descriptionInside p + p {
+  margin-top: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .descriptionInside {
+    font-size: 14px;
+    padding: 0 16px 20px;
+  }
+}

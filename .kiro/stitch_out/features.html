@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vidhi - Celestial Features</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary-fixed": "#dde2f6",
+                  "inverse-primary": "#9f3b59",
+                  "error": "#ffb4ab",
+                  "tertiary": "#c1c6d9",
+                  "surface-bright": "#3a3937",
+                  "surface-tint": "#ffb1c2",
+                  "secondary-fixed-dim": "#f1bf64",
+                  "inverse-surface": "#e5e2df",
+                  "surface-variant": "#363533",
+                  "primary": "#ffb1c2",
+                  "primary-fixed": "#ffd9e0",
+                  "tertiary-container": "#292f3e",
+                  "on-secondary-fixed-variant": "#5e4100",
+                  "surface": "#141312",
+                  "on-primary-fixed": "#3f0018",
+                  "on-tertiary-fixed-variant": "#414756",
+                  "inverse-on-surface": "#31302f",
+                  "error-container": "#93000a",
+                  "surface-container-highest": "#363533",
+                  "outline": "#a38b8f",
+                  "on-tertiary-container": "#9196a9",
+                  "secondary": "#f1bf64",
+                  "on-primary": "#62082c",
+                  "secondary-fixed": "#ffdea9",
+                  "on-secondary-container": "#ffd284",
+                  "surface-dim": "#141312",
+                  "surface-container-low": "#1c1b1a",
+                  "on-primary-fixed-variant": "#812342",
+                  "on-error": "#690005",
+                  "on-secondary-fixed": "#271900",
+                  "on-error-container": "#ffdad6",
+                  "secondary-container": "#7d5800",
+                  "primary-container": "#61072b",
+                  "outline-variant": "#554245",
+                  "on-primary-container": "#e67291",
+                  "tertiary-fixed-dim": "#c1c6d9",
+                  "on-surface-variant": "#dbc0c4",
+                  "on-tertiary-fixed": "#151b29",
+                  "primary-fixed-dim": "#ffb1c2",
+                  "surface-container": "#201f1e",
+                  "on-secondary": "#422c00",
+                  "on-background": "#e5e2df",
+                  "on-surface": "#e5e2df",
+                  "background": "#0d0c0b",
+                  "surface-container-high": "#2b2a28",
+                  "surface-container-lowest": "#0e0e0d",
+                  "on-tertiary": "#2a303f"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "margin-mobile": "20px",
+                  "container-max": "1200px",
+                  "margin-desktop": "64px",
+                  "unit": "8px",
+                  "gutter": "24px"
+          },
+          "fontFamily": {
+                  "headline-md": ["Playfair Display"],
+                  "display-lg": ["Playfair Display"],
+                  "label-md": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "body-md": ["Inter"],
+                  "label-sm": ["Inter"],
+                  "headline-sm": ["Playfair Display"]
+          },
+          "fontSize": {
+                  "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                  "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #0d0c0b;
+      color: #E5E2DF;
+    }
+
+    .celestial-glow {
+      background: radial-gradient(circle at 50% 50%, rgba(97, 7, 43, 0.15) 0%, transparent 70%);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(229, 180, 91, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="0.5" fill="%23E5B45B" opacity="0.3"/><circle cx="150" cy="40" r="0.5" fill="%23E5B45B" opacity="0.3"/><line x1="20" y1="20" x2="150" y2="40" stroke="%23E5B45B" stroke-width="0.2" opacity="0.1"/></svg>');
+      background-size: 300px 300px;
+      pointer-events: none;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(229, 180, 91, 0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 10px 30px -10px rgba(229, 180, 91, 0.2);
+    }
+
+    .glass-card:hover .explore-link {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .icon-badge {
+      background: radial-gradient(circle at center, rgba(229, 180, 91, 0.2) 0%, transparent 70%);
+      box-shadow: 0 0 15px rgba(229, 180, 91, 0.1);
+    }
+
+    .ask-pill {
+      background: rgba(20, 19, 18, 0.6);
+      border: 1px solid rgba(229, 180, 91, 0.2);
+    }
+
+    .chat-bubble-ai {
+      background: rgba(229, 180, 91, 0.1);
+      border-radius: 12px 12px 12px 0;
+      border-left: 2px solid #E5B45B;
+    }
+
+    .chat-bubble-user {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px 12px 0 12px;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      color: #E5B45B;
+    }
+  </style>
+</head>
+<body class="font-body-md selection:bg-secondary/30">
+<!-- Shared TopNavBar (Filtered Context: Top-level) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto left-0 right-0">
+<div class="font-headline-sm text-headline-sm font-bold text-secondary">AuraAI</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1" href="#">Features</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Pricing</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Reviews</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors" href="#">FAQ</a>
+</div>
+<div class="flex gap-4 items-center">
+<button class="font-label-md text-label-md text-secondary px-4 py-2 hover:opacity-80 transition-opacity">Sign In</button>
+<button class="bg-secondary text-on-secondary-fixed font-label-md text-label-md px-6 py-2 rounded-full hover:scale-105 transition-transform">Get Started</button>
+</div>
+</nav>
+<main class="relative min-h-screen pt-32 pb-24 overflow-hidden celestial-glow">
+<!-- Header Section -->
+<header class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center mb-16 relative z-10">
+<div class="inline-flex items-center px-4 py-1.5 rounded-full border border-secondary/30 bg-secondary/5 text-secondary font-label-sm text-label-sm uppercase tracking-widest mb-6">
+        Celestial Features
+      </div>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-6 leading-tight">
+        What can <span class="text-secondary italic">Vidhi</span> reveal for you?
+      </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10 opacity-80">
+        Unlock ancient Vedic wisdom through advanced AI. From planetary alignments to daily cosmic rhythms, discover the map of your soul.
+      </p>
+<!-- Ask Pill Search -->
+<div class="max-w-xl mx-auto ask-pill rounded-full p-2 flex items-center shadow-lg group hover:border-secondary/50 transition-all duration-300">
+<div class="flex-shrink-0 px-4">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+</div>
+<input class="bg-transparent border-none focus:ring-0 w-full text-on-surface placeholder:text-on-surface-variant/50 font-body-md py-2" placeholder="Ask about your Saturn transit or career path..." type="text"/>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md transition-all hover:shadow-[0_0_20px_rgba(229,180,91,0.4)]">
+          Ask Vidhi
+        </button>
+</div>
+</header>
+<!-- Features Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+<!-- Featured: AI Astrology Chat (2 cols) -->
+<div class="md:col-span-4 glass-card rounded-[24px] p-8 flex flex-col md:flex-row gap-8 items-center group">
+<div class="flex-1 space-y-4">
+<div class="w-14 h-14 rounded-full icon-badge flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-4xl">psychology</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary">AI Astrology Chat</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Experience a sanctuary of wisdom. Vidhi uses generative AI trained on classical Sanskrit texts to provide nuanced, conversational answers to your deepest life questions.
+            </p>
+<a class="explore-link inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+              Explore AI Sanctuary <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Mock Chat UI -->
+<div class="flex-1 w-full bg-surface-container-lowest/50 rounded-2xl p-4 border border-outline-variant/10 shadow-inner">
+<div class="space-y-4">
+<div class="chat-bubble-user p-3 ml-auto max-w-[80%] text-sm font-body-md text-on-surface-variant">
+                What does my Rahu Mahadasha suggest?
+              </div>
+<div class="chat-bubble-ai p-3 mr-auto max-w-[85%] text-sm font-body-md text-on-surface">
+<div class="flex gap-2 items-center mb-1">
+<span class="material-symbols-outlined !text-xs">spark</span>
+<span class="text-[10px] uppercase tracking-widest font-bold opacity-60">Vidhi Analysis</span>
+</div>
+                Your current Rahu transit in the 10th house signals a transformative shift in status. It is a period for calculated risks...
+              </div>
+<div class="h-1.5 w-1/2 bg-secondary/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/3 animate-[shimmer_2s_infinite_linear]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Voice Calls -->
+<div class="md:col-span-2 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">call</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Live Voice Calls</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Connect instantly with verified Vedic experts for real-time spiritual guidance.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            Call a Seer <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Personalized Kundli -->
+<div class="md:col-span-2 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Personalized Kundli</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Deep-dive into your birth chart with precise planetary positions and house analysis.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            Generate Chart <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Daily Cosmic Insights -->
+<div class="md:col-span-2 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">sunny</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Daily Insights</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Personalized horoscopes based on your unique transit data, not just your sun sign.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            Read Today's <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Love & Relationships -->
+<div class="md:col-span-2 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Love &amp; Relationships</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Analyze Kundli matching (Gun Milan) and synastry for harmonious connections.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            Check Match <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Career & Finance -->
+<div class="md:col-span-3 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Career &amp; Finance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Align your professional life with your planetary strengths. Timing for investments and new ventures.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            View Forecast <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Health & Vitality -->
+<div class="md:col-span-3 glass-card rounded-[24px] p-8 flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 rounded-full icon-badge flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">spa</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary mb-3">Health &amp; Vitality</h3>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+              Discover Ayurvedic connections to your astrological placements for holistic physical and mental well-being.
+            </p>
+</div>
+<a class="explore-link mt-6 inline-flex items-center gap-2 text-secondary font-label-md md:opacity-0 transition-all duration-500 translate-x-[-10px]" href="#">
+            Soul Wellness <span class="material-symbols-outlined !text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Shared Footer -->
+<footer class="w-full py-12 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div>
+<div class="font-headline-sm text-headline-sm text-secondary mb-4">AuraAI</div>
+<p class="text-on-surface-variant font-body-md max-w-xs opacity-70">
+          Merging ancient Vedic celestial science with advanced artificial intelligence.
+        </p>
+</div>
+<div class="flex flex-col md:items-end gap-6">
+<div class="flex gap-6">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Cookie Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Contact Us</a>
+</div>
+<p class="text-on-surface-variant font-body-md opacity-50">© 2024 AuraAI. All celestial rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+    // Subtle parallax or glow effect tracking mouse
+    document.addEventListener('mousemove', (e) => {
+      const cards = document.querySelectorAll('.glass-card');
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = mouseX - rect.left;
+        const y = mouseY - rect.top;
+
+        if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+          card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(229, 180, 91, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%)`;
+        } else {
+          card.style.background = `rgba(255, 255, 255, 0.03)`;
+        }
+      });
+    });
+
+    // Custom animation for shimmer
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(300%); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+  </script>
+</body></html>

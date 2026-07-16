@@ -1,0 +1,162 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+  padding: 1rem;
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 450px;
+  background: #1c1c28; /* Dark background consistent with your theme */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #a0a7b1;
+  transition: all 0.2s;
+}
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.title {
+  font-family: 'Sora', sans-serif;
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: #d1d5db;
+  text-align: center;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.description strong {
+  color: #FE607E;
+}
+
+.balanceInfo {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.balanceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #a0a7b1;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.total {
+  font-weight: 600;
+  color: white;
+  font-size: 1rem;
+}
+
+.coinValue {
+  color: white;
+  font-weight: 600;
+}
+.coinValueNegative {
+  color: #ff8a8a; /* Red for deductions */
+  font-weight: 600;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+.shortfall {
+  text-align: center;
+  color: #ffc4c4;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.buttonGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.button {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+  text-decoration: none; /* For the Link */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cancelButton {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #d1d5db;
+}
+.cancelButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.confirmButton {
+  background-color: #38a169; /* Green for confirm */
+  color: white;
+}
+.confirmButton:hover {
+  background-color: #2f855a;
+}
+
+.rechargeButton {
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  color: white;
+}
+.rechargeButton:hover {
+  transform: scale(1.03);
+}

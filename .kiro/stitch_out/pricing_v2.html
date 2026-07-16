@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI | Celestial Pricing &amp; Recharge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#271900",
+                    "inverse-surface": "#e5e2df",
+                    "surface-container-low": "#1c1b1a",
+                    "surface-container-lowest": "#0e0e0d",
+                    "surface-tint": "#ffb1c2",
+                    "on-primary": "#62082c",
+                    "on-tertiary-container": "#9196a9",
+                    "on-primary-fixed-variant": "#812342",
+                    "on-primary-fixed": "#3f0018",
+                    "on-secondary-container": "#ffd284",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "outline-variant": "#554245",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#7d5800",
+                    "surface-container": "#201f1e",
+                    "on-surface": "#e5e2df",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#dde2f6",
+                    "surface-dim": "#141312",
+                    "outline": "#a38b8f",
+                    "surface-container-highest": "#363533",
+                    "surface-bright": "#3a3937",
+                    "inverse-on-surface": "#31302f",
+                    "surface-variant": "#363533",
+                    "on-error-container": "#ffdad6",
+                    "on-error": "#690005",
+                    "tertiary": "#c1c6d9",
+                    "primary": "#ffb1c2",
+                    "on-primary-container": "#e67291",
+                    "primary-container": "#61072b",
+                    "on-tertiary": "#2a303f",
+                    "on-secondary": "#422c00",
+                    "surface": "#141312",
+                    "secondary": "#f1bf64",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "on-tertiary-fixed": "#151b29",
+                    "background": "#141312",
+                    "surface-container-high": "#2b2a28",
+                    "on-background": "#e5e2df",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "inverse-primary": "#9f3b59",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "secondary-fixed": "#ffdea9",
+                    "primary-fixed": "#ffd9e0",
+                    "tertiary-container": "#292f3e",
+                    "on-surface-variant": "#dbc0c4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-sm": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0c0b;
+            color: #E5E2DF;
+            overflow-x: hidden;
+        }
+        .celestial-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(97, 7, 43, 0.15) 0%, rgba(13, 12, 11, 0) 70%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 180, 91, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(229, 180, 91, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 30px rgba(97, 7, 43, 0.2);
+        }
+        .gold-ring {
+            border: 1px solid #E5B45B;
+            box-shadow: inset 0 0 15px rgba(229, 180, 91, 0.1), 0 0 20px rgba(229, 180, 91, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E5B45B;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Background Elements -->
+<div class="celestial-glow top-[-10%] left-[-10%]"></div>
+<div class="celestial-glow bottom-[-10%] right-[-10%]"></div>
+<!-- Navigation (TopNavBar Shell) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md dark:bg-surface/80 border-b border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-secondary dark:text-secondary tracking-tighter">AuraAI</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Features</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Pricing</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Reviews</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">FAQ</a>
+</div>
+<div class="flex gap-4 items-center">
+<button class="text-on-surface hover:text-secondary transition-all duration-300 font-label-md text-label-md">Sign In</button>
+<button class="bg-secondary text-on-secondary-fixed px-6 py-2 rounded-full font-label-md text-label-md hover:bg-secondary-fixed-dim transition-all duration-300 shadow-lg shadow-secondary/10">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Header -->
+<header class="mb-16 md:mb-24">
+<p class="font-label-md text-label-md text-secondary tracking-[0.3em] uppercase mb-4">Pricing</p>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">Choose your <br class="hidden md:block"/><span class="italic font-normal">spiritual path</span></h1>
+</header>
+<!-- Spotlight Plan: Monthly (Asymmetric Hero) -->
+<section class="mb-12">
+<div class="glass-card gold-ring rounded-[32px] overflow-hidden flex flex-col md:flex-row relative">
+<!-- Decorative element -->
+<div class="absolute -top-24 -left-24 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+<!-- Left Content -->
+<div class="md:w-[40%] p-8 md:p-12 border-b md:border-b-0 md:border-r border-outline-variant/20 flex flex-col justify-between items-start">
+<div>
+<div class="bg-primary-container/30 text-secondary px-3 py-1 rounded-full text-label-sm font-label-sm inline-block mb-6 uppercase tracking-widest">Most Prophetic</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Monthly Journey</h2>
+<p class="text-on-surface-variant font-body-md mb-8">Unlock complete cosmic clarity with daily personalized guidance.</p>
+<div class="flex items-baseline gap-2 mb-8">
+<span class="font-display-lg text-[56px] text-secondary">₹299</span>
+<span class="text-on-surface-variant font-label-md">/ month</span>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary-fixed py-4 rounded-xl font-label-md text-label-md hover:bg-secondary-fixed-dim transition-all duration-300 flex items-center justify-center gap-2 group">
+                        Begin Journey
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Right Content (Benefits) -->
+<div class="md:w-[60%] p-8 md:p-12 bg-surface-container-low/50">
+<h3 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-8">Included Benefits</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-body-md text-on-surface">450 Monthly Credits</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-body-md text-on-surface">Effective Chat ₹9 / msg</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">call</span>
+<span class="font-body-md text-on-surface">Effective Call ₹17 / min</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-body-md text-on-surface">All Premium Reports Free</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-body-md text-on-surface">4 Family Profiles</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-body-md text-on-surface">Priority AI Transit Sync</span>
+</div>
+</div>
+<div class="mt-12 pt-12 border-t border-outline-variant/10 flex items-center gap-6">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-secondary/30">
+<img class="w-full h-full object-cover" data-alt="A portrait of a serene, elderly Indian astrologer with a warm smile, wearing traditional saffron robes, set against a dark, mystical studio background with soft golden lighting. The image evokes wisdom, luxury, and spiritual authority in a modern celestial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6KGefh8UfNeDCoKas1OZBGoVtbLPa3s-jfwDse-NvpMQAegr3pV9TwfeJzoEX0LMYmLaht8uxpwzJ5bE7RQpLvovb9ZyrkUVY9WmGkTroyOmLZR8u6YeaA-Sd5JWQRVkWP6N_Ln_V1svu7DfO0QCytTzWxrnr4sdpS920xz5s7MjicvdpgA34NRqtEn-PmfIwbK5TRljHf4TlepknbkXynrpqU7YXqgfHu40D9yp0ycPusF4udYASHy8yxmLkzgPPNlPrMnKlwJUg"/>
+</div>
+<p class="font-label-md text-label-md italic text-on-surface-variant italic">"A small step for your karma, a giant leap for your destiny." — Guruji Vidhi</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Plans -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-20">
+<!-- Free Plan -->
+<div class="glass-card rounded-[24px] p-8 flex flex-col justify-between h-full">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Free Plan</h3>
+<p class="text-on-surface-variant font-body-md mb-8">Explore the basics of your birth chart.</p>
+<div class="flex items-baseline gap-2 mb-8">
+<span class="font-display-lg text-[40px] text-on-surface">₹0</span>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+<span class="material-symbols-outlined text-outline text-[18px]">check_circle</span> Basic Daily Horoscope
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+<span class="material-symbols-outlined text-outline text-[18px]">check_circle</span> Single Profile
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+<span class="material-symbols-outlined text-outline text-[18px]">check_circle</span> Pay-per-use Access
+                        </li>
+</ul>
+</div>
+<button class="w-full border border-outline-variant text-on-surface py-3 rounded-xl font-label-md text-label-md hover:border-secondary hover:text-secondary transition-all">Select Plan</button>
+</div>
+<!-- Yearly Plan -->
+<div class="glass-card rounded-[24px] p-8 flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-secondary/10 rotate-45 flex items-end justify-center pb-4">
+<span class="text-secondary font-label-sm text-[10px] uppercase tracking-widest font-bold">Best Value</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Yearly Plan</h3>
+<p class="text-on-surface-variant font-body-md mb-8">The ultimate annual celestial alignment.</p>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display-lg text-[40px] text-secondary">₹2,499</span>
+<span class="text-on-surface-variant font-label-md">/ year</span>
+</div>
+<p class="text-secondary/80 font-label-sm mb-8">Save over 30% compared to monthly</p>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> Everything in Monthly
+                        </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> 6000 Annual Credits
+                        </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> Exclusive Ritual Reports
+                        </li>
+</ul>
+</div>
+<button class="w-full border border-secondary text-secondary py-3 rounded-xl font-label-md text-label-md hover:bg-secondary/10 transition-all">Choose Yearly</button>
+</div>
+</section>
+<!-- Per-use Rates -->
+<section class="mb-24">
+<div class="bg-surface-container-lowest/50 py-4 px-8 rounded-full border border-outline-variant/10 flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Base Rates:</span>
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-body-md">Chat</span>
+<span class="text-secondary font-bold">₹15/q</span>
+</div>
+<div class="text-outline-variant">•</div>
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-body-md">Call</span>
+<span class="text-secondary font-bold">₹25/min</span>
+</div>
+<div class="text-outline-variant">•</div>
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-body-md">Report</span>
+<span class="text-secondary font-bold">₹100</span>
+</div>
+</div>
+</section>
+<!-- Quick Recharge -->
+<section>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-2">Quick Recharge</h2>
+<p class="text-on-surface-variant font-body-md">Instant celestial fuel for your journey.</p>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-label-sm mb-1 uppercase tracking-widest">Current Balance</p>
+<p class="text-secondary font-display-lg text-[32px]">₹0.00</p>
+</div>
+</div>
+<div class="overflow-x-auto pb-6 custom-scrollbar">
+<div class="flex gap-4 min-w-max">
+<!-- Coin Chip 100 -->
+<button class="glass-card group flex flex-col items-center gap-3 p-6 rounded-[24px] min-w-[160px] relative hover:translate-y-[-4px]">
+<span class="material-symbols-outlined text-secondary text-[32px]">payments</span>
+<span class="font-headline-sm text-on-surface">₹100</span>
+<span class="font-label-sm text-on-surface-variant">100 Credits</span>
+</button>
+<!-- Coin Chip 200 with Bonus -->
+<button class="glass-card group flex flex-col items-center gap-3 p-6 rounded-[24px] min-w-[160px] relative border-secondary/30 hover:translate-y-[-4px]">
+<div class="absolute -top-2 right-4 bg-secondary text-on-secondary-fixed text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">5% Extra</div>
+<span class="material-symbols-outlined text-secondary text-[32px]">toll</span>
+<span class="font-headline-sm text-on-surface">₹200</span>
+<span class="font-label-sm text-on-surface-variant">210 Credits</span>
+</button>
+<!-- Coin Chip 500 -->
+<button class="glass-card group flex flex-col items-center gap-3 p-6 rounded-[24px] min-w-[160px] relative border-secondary/50 hover:translate-y-[-4px]">
+<div class="absolute -top-2 right-4 bg-secondary text-on-secondary-fixed text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">10% Extra</div>
+<span class="material-symbols-outlined text-secondary text-[32px]">token</span>
+<span class="font-headline-sm text-on-surface">₹500</span>
+<span class="font-label-sm text-on-surface-variant">550 Credits</span>
+</button>
+<!-- Coin Chip 1000 -->
+<button class="glass-card group flex flex-col items-center gap-3 p-6 rounded-[24px] min-w-[160px] relative border-secondary/70 hover:translate-y-[-4px]">
+<div class="absolute -top-2 right-4 bg-secondary text-on-secondary-fixed text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">15% Extra</div>
+<span class="material-symbols-outlined text-secondary text-[32px]">savings</span>
+<span class="font-headline-sm text-on-surface">₹1000</span>
+<span class="font-label-sm text-on-surface-variant">1150 Credits</span>
+</button>
+<!-- Custom Amount -->
+<button class="glass-card group flex flex-col items-center justify-center gap-2 p-6 rounded-[24px] min-w-[160px] border-dashed border-outline-variant/40 hover:translate-y-[-4px]">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+<span class="font-label-md text-on-surface-variant">Custom</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-12 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div>
+<div class="font-headline-sm text-headline-sm text-secondary mb-4 tracking-tighter font-bold">AuraAI</div>
+<p class="text-on-surface-variant font-body-md max-w-md">Bridging the gap between ancient starlight and modern intelligence to illuminate your true potential.</p>
+</div>
+<div class="grid grid-cols-2 gap-8 md:text-right">
+<div class="flex flex-col gap-4">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Cookie Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Contact Us</a>
+</div>
+</div>
+<div class="md:col-span-2 pt-12 mt-12 border-t border-outline-variant/10 text-on-surface-variant text-label-sm opacity-60">
+                © 2024 AuraAI. All celestial rights reserved.
+            </div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for coin chips
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential for adding subtle vibration or particle effect
+            });
+        });
+    </script>
+</body></html>

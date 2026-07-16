@@ -1,0 +1,244 @@
+/* src/components/EmailCTASection.module.css */
+
+.ctaSection {
+  width: 100%;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+
+  /* Main container styles from Figma */
+  background: rgba(217, 217, 217, 0.20);
+  border-radius: 24px;
+  outline: 2px solid white;
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  /* The text color in Figma was dark, but white is more legible on this background */
+  color: white; 
+  font-size: 36px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.subtitle {
+  color: white;
+  font-size: 18px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  max-width: 680px;
+}
+
+
+.footerText {
+  color: white;
+  font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* --- FORM CONTAINER AND WRAPPERS --- */
+.emailForm {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  margin-top: 1rem;
+}
+
+/* New wrapper to anchor the submit button correctly */
+.inputWrapper {
+  position: relative;
+}
+
+/* --- STYLES TO MATCH YOUR IMAGE --- */
+.emailInput {
+  width: 100%;
+  height: 58px;
+  /* MODIFIED: Changed background to the light blue/white from the image */
+  background: #f0f4f8;
+  border-radius: 9999px; /* Pill shape */
+  /* MODIFIED: Removed white outline, looks cleaner */
+  border: none;
+  padding: 1rem 70px 1rem 1.5rem; /* Make room for the button */
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  /* MODIFIED: Dark text for the light background */
+  color: #000;
+}
+
+.emailInput::placeholder {
+  color: #a0aec0;
+}
+
+.emailInput:focus {
+    outline: none;
+}
+
+.submitButton {
+  position: absolute;
+  right: 9px;
+  /* The button is now positioned relative to inputWrapper */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  box-shadow: 0px 0px 22px rgba(210, 58, 173, 0.60);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.submitButton:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.submitButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* --- SOLUTION FOR FEEDBACK MESSAGE --- */
+
+/* 1. This container reserves space so the layout doesn't jump */
+.feedbackContainer {
+  min-height: 44px; /* Adjust if your padding/font-size changes */
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* 2. Generic styling for the message itself */
+.feedbackMessage {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 12px; /* More rounded corners like the image */
+  font-size: 15px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 3. Error message styled to match the image */
+.errorMessage {
+  background-color: #fceded; /* Light pink background */
+  color: #c53030; /* Strong red text */
+  border: none; /* No border in the image */
+}
+
+/* 4. Success message styling (for consistency) */
+.successMessage {
+  background-color: #e6ffe6;
+  color: #228b22;
+  border: none;
+}
+
+
+
+/* @media (max-width: 768px) {
+    .title {
+        font-size: 28px;
+    }
+} */
+
+/* Add these styles to the end of your EmailCTASection.module.css file */
+
+.loader {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #ED0687;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .ctaSection {
+    max-width: 90%;  /* Reduce width on smaller screens */
+    padding: 2rem 1rem;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 1.4;
+    margin-top: 0.5rem;
+  }
+
+  .emailForm {
+    max-width: 100%; /* Take full width on mobile */
+  }
+
+  .emailInput {
+    height: 50px;
+    padding: 0.75rem 60px 0.75rem 1rem;
+    font-size: 14px;
+  }
+
+  .submitButton {
+    width: 36px;
+    height: 36px;
+    right: 6px;
+  }
+
+  .feedbackMessage {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .footerText {
+    font-size: 12px;
+  }
+}
+
+/* For very small devices (iPhone SE, 375px width) */
+@media (max-width: 420px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .emailInput {
+    font-size: 13px;
+    height: 46px;
+    padding: 0.6rem 55px 0.6rem 1rem;
+  }
+
+  .submitButton {
+    width: 32px;
+    height: 32px;
+  }
+}

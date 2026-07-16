@@ -1,0 +1,9 @@
+{
+  "lock": false,
+  "tasks": {
+    "start": "deno run -A --unstable index.ts"
+  }
+}
+
+
+

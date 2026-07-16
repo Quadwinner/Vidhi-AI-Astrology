@@ -1,0 +1,84 @@
+/* --- FINAL, POLISHED REPORT CONTENT STYLES (LIGHT THEME) --- */
+
+.container {
+  padding: 1.5rem 0;
+}
+
+.analystReport {
+  font-family: 'Work Sans', sans-serif;
+  color: #2d3748; /* Dark grey for high readability */
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* --- Light Theme Markdown Element Styling --- */
+.analystReport :global(h1),
+.analystReport :global(h2),
+.analystReport :global(h3) {
+  font-family: 'Sora', sans-serif;
+  color: #1a202c; /* Very dark grey/nearly black for contrast */
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.analystReport :global(h1:first-child),
+.analystReport :global(h2:first-child) {
+  margin-top: 0;
+}
+
+.analystReport :global(h1) {
+  font-size: 2rem;
+  border-bottom: 2px solid #e2e8f0; /* Light grey border */
+  padding-bottom: 0.5rem;
+}
+
+.analystReport :global(h2) {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #e2e8f0; /* Light grey border */
+  padding-bottom: 0.3rem;
+}
+
+.analystReport :global(h3) {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  color: #4a5568; /* Medium grey for subheadings */
+}
+
+.analystReport :global(p) {
+  margin-bottom: 1.2rem;
+}
+
+.analystReport :global(ul),
+.analystReport :global(ol) {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+
+.analystReport :global(li) {
+  margin-bottom: 0.6rem;
+}
+
+.analystReport :global(strong) {
+  color: #000000; /* Black for strong emphasis */
+  font-weight: 700;
+}
+
+.analystReport :global(blockquote) {
+  border-left: 4px solid #FE607E; /* Brand color accent */
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.5rem;
+  color: #4a5568; /* Medium grey text */
+  background-color: #fff5f7; /* Very light, tinted pink background */
+  font-style: italic;
+}
+
+.analystReport :global(a) {
+  color: #FE6C0F; /* Brand orange for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+.analystReport :global(a):hover {
+  text-decoration: underline;
+}

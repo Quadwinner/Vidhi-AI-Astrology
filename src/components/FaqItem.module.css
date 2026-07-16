@@ -1,0 +1,137 @@
+/* src/components/FaqItem.module.css */
+
+.faqItem {
+  background: linear-gradient(90deg, rgba(108, 30, 89, 0.50) 0%, rgba(210, 58, 173, 0.50) 100%);
+  border-radius: 24px;
+  outline: 1px solid rgba(251, 207, 232, 0.20);
+  overflow: hidden; /* This is crucial for the animation to work */
+}
+
+.questionHeader {
+  width: 100%;
+  padding: 1.75rem 2rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.questionText {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  font-size: 20px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.toggleIcon {
+  color: white;
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+}
+
+.answer {
+  /* --- The Animation Logic --- */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+  padding: 0 2rem 0 5rem; /* Match left padding of question + icon gap */
+}
+
+.answer.open {
+  max-height: 500px; /* A large enough value to accommodate any answer */
+  padding: 0 2rem 2rem 5rem;
+}
+
+.answer p {
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(251, 207, 232, 0.20);
+  color: #FBCFE8;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .questionHeader {
+    padding: 1.5rem 1.5rem;
+  }
+
+  .questionText {
+    font-size: 18px;
+  }
+
+  .answer {
+    padding: 0 1.5rem 0 4rem;
+  }
+
+  .answer.open {
+    padding: 0 1.5rem 1.5rem 4rem;
+  }
+
+  .answer p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .questionHeader {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .questionText {
+    font-size: 16px;
+    gap: 0.75rem;
+  }
+
+  .answer {
+    padding: 0 1.25rem 0 3.5rem;
+  }
+
+  .answer.open {
+    padding: 0 1.25rem 1.25rem 3.5rem;
+  }
+
+  .answer p {
+    font-size: 15px;
+    padding-top: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .questionHeader {
+    padding: 1rem 1rem;
+  }
+
+  .questionText {
+    font-size: 14px;
+    gap: 0.5rem;
+  }
+
+  .answer {
+    padding: 0 1rem 0 3rem;
+  }
+
+  .answer.open {
+    padding: 0 1rem 1rem 3rem;
+  }
+
+  .answer p {
+    font-size: 14px;
+    padding-top: 0.5rem;
+  }
+}

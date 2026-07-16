@@ -1,0 +1,961 @@
+/* src/pages/ChatPage.module.css */
+
+/* --- Overall Layout --- */
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: 72px;
+  /* Space for fixed navbar on desktop */
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding-top: 0;
+    /* No padding on mobile */
+  }
+}
+
+/* ==========================================================================
+   SIDEBAR STYLES (Desktop)
+   ========================================================================== */
+
+.sidebar {
+  width: 350px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Header Area */
+.sidebarHeaderContainer {
+  padding: 1.5rem 1.25rem 1rem 1.25rem;
+  flex-shrink: 0;
+}
+
+.sidebarHeader {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.sidebarActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* Buttons */
+.newChatButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.newChatButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.addProfileButton {
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  box-shadow: 0px 0px 20px rgba(210, 58, 173, 0.40);
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.addProfileButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 30px rgba(210, 58, 173, 0.60);
+}
+
+.addProfileButton.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #555;
+}
+
+/* Sidebar Content Wrapper */
+.sidebarContent {
+  flex: 1;
+  /* Remove overflow here to prevent double scrollbars with the inner list */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  /* Padding moved to inner sections for better scroll clipping */
+}
+
+/* --- Sidebar Sections --- */
+
+.sidebarSection {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Recent Chats Section - Takes available space */
+.sidebarSection.recentChatsSection {
+  flex: 1;
+  min-height: 0;
+  /* Critical for nested flex scrolling */
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+}
+
+.sidebarSubHeader {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #a0a0a0;
+  margin-bottom: 12px;
+  margin-left: 20px;
+  /* Aligned with card padding */
+  margin-top: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.recentChatsList {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Added padding inside the scroll container so shadows aren't clipped */
+  padding: 4px 16px 20px 16px;
+
+  /* Scrollbar Styling */
+  scrollbar-width: thin;
+  scrollbar-color: #A14469 transparent;
+}
+
+.recentChatsList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.recentChatsList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.recentChatsList::-webkit-scrollbar-thumb {
+  background: #A14469;
+  border-radius: 10px;
+}
+
+.recentChatsList::-webkit-scrollbar-thumb:hover {
+  background: #B1557A;
+}
+
+/* --- CONVERSATION CARD STYLES --- */
+
+.recentChatItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: visible;
+  /* changed from hidden to let shadows breathe if needed */
+}
+
+.recentChatItem.current {
+  background: linear-gradient(145deg, rgba(237, 6, 135, 0.15) 0%, rgba(60, 10, 30, 0.4) 100%);
+  border-color: rgba(237, 6, 135, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.recentChatItem:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Header: Icon + Topic */
+.chatItemHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chatTopicIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+.chatTopicLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Card Body: Message Summary */
+.recentChatMessage {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.5;
+
+  /* Multi-line truncation */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  /* Ensure long words wrap */
+}
+
+/* Card Footer: Profile Name */
+.chatItemFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Reverted to tighter spacing */
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chatProfileTag {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.chatProfileTag::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #A78BFA;
+  /* Purple dot */
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Empty State */
+.emptyStateMessage {
+  color: #888;
+  font-size: 0.9rem;
+  padding: 1rem 0.5rem;
+  text-align: center;
+}
+
+/* --- ALL PROFILES SECTION (Collapsible at bottom) --- */
+
+.sidebarSection.allProfilesSection {
+  background: rgba(20, 10, 20, 0.4);
+  /* Darker background to separate */
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+  padding: 16px;
+  /* Ensure it sits at bottom */
+}
+
+.sectionHeaderWithToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.sectionHeaderWithToggle .sidebarSubHeader {
+  margin-bottom: 0;
+  margin-left: 4px;
+  /* Reset left margin for this header */
+}
+
+.toggleButton {
+  background: transparent;
+  border: none;
+  color: #a0a0a0;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.toggleButton:hover {
+  color: #fff;
+}
+
+.toggleButton svg {
+  transition: transform 0.2s ease;
+}
+
+.toggleButton svg.rotated {
+  transform: rotate(180deg);
+}
+
+.profileList {
+  margin-top: 12px;
+  max-height: 35vh;
+  /* Restrict height so it doesn't take over recent chats completely */
+  overflow-y: auto;
+  /* Add padding to prevent cut-off of profile card shadows */
+  padding: 10px 12px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #A14469 transparent;
+}
+
+.profileList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.profileList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profileList::-webkit-scrollbar-thumb {
+  background: #A14469;
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   MAIN CONTENT AREA
+   ========================================================================== */
+
+.contentArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.welcomeView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  color: white;
+  padding: 2rem;
+}
+
+.welcomeView h2 {
+  font-size: 2.5rem;
+  font-family: 'Sora';
+  margin-bottom: 1rem;
+}
+
+.welcomeView p {
+  font-size: 1.2rem;
+  color: #FBCFE8;
+  margin-bottom: 2rem;
+}
+
+/* --- Chat Canvas --- */
+.chatCanvas {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chatHeader {
+  flex-shrink: 0;
+  padding: 1.5rem 2.5rem 1rem;
+  text-align: center;
+  color: white;
+}
+
+.chatHeader h2 {
+  font-size: 2rem;
+  font-family: 'Sora';
+  margin: 0;
+}
+
+.chatHeader p {
+  font-size: 1.1rem;
+  color: #FBCFE8;
+  margin-top: 0.5rem;
+}
+
+/* --- Top Bar (Hidden on desktop usually, but style kept) --- */
+.topBar {
+  display: none;
+}
+
+/* --- Messages Area --- */
+.chatMessages {
+  flex: 1;
+  min-height: 0;
+  padding: 0.5rem 2.5rem 1rem;
+  padding-bottom: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+}
+
+/* --- Input Area --- */
+.inputContainer {
+  flex-shrink: 0;
+  padding: 1rem 2.5rem 1.5rem;
+  background: rgba(97, 7, 43, 0.95);
+  backdrop-filter: blur(20px);
+  position: fixed;
+  bottom: 0;
+  left: 350px;
+  /* Aligned with sidebar width */
+  right: 0;
+  z-index: 100;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: visible;
+}
+
+.categoriesDock {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.bottomSection {
+  flex-shrink: 0;
+  background: rgba(97, 7, 43, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  bottom: 0;
+  z-index: 99;
+}
+
+.personalizedQuestionsContainer {
+  padding: 1rem 2.5rem 0.5rem;
+  overflow: visible;
+}
+
+/* ==========================================================================
+   DROPDOWN & UTILITIES
+   ========================================================================== */
+
+.dropdown {
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.dropdownSummary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
+  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s ease-in-out;
+}
+
+.dropdownSummary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dropdownSummary::after {
+  content: "▾";
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.dropdown[open] .dropdownSummary::after {
+  transform: rotate(180deg);
+}
+
+.dropdown .profileList {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.contextBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(168, 85, 247, 0.15);
+  /* Purple tint */
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #e9d5ff;
+}
+
+.contextBar strong {
+  color: #fff;
+  margin-left: 4px;
+}
+
+.changePartnerBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.changePartnerBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: #fff;
+}
+
+/* ==========================================================================
+   MOBILE & RESPONSIVE STYLES
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+
+  /* Hide sidebar on tablet/mobile by default */
+  .sidebar {
+    display: none;
+  }
+
+  .pageContainer {
+    flex-direction: column;
+    padding-top: 0;
+  }
+
+  .inputContainer {
+    left: 0;
+    padding: 1rem 1rem 1.25rem;
+  }
+
+  .chatMessages {
+    padding: 1rem;
+    padding-top: 116px;
+    padding-bottom: 140px;
+  }
+
+  /* Show TopBar on Mobile */
+  .topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 0;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 56px;
+  }
+
+  .topBarLeft,
+  .topBarCenter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topBarCenter .call-button-nav {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcomeView h2 {
+    font-size: 2rem;
+  }
+
+  .welcomeView p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .createProfileButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .chatHeader {
+    padding: 2rem 1rem 1rem;
+    margin-top: 100px;
+  }
+
+  .bottomSection {
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .personalizedQuestionsContainer {
+    padding: 0.75rem 1rem;
+    max-height: 240px;
+  }
+
+  .inputContainer {
+    position: sticky;
+    bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ==========================================================================
+   PROFILE SELECTOR (Mobile/TopBar Specifics)
+   ========================================================================== */
+
+.profileSelectorWrapper {
+  position: relative;
+}
+
+.profileSelector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.profileAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ED0687, #FE6C0F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 250px;
+  max-width: 90vw;
+  background: rgba(20, 10, 30, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 100000;
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.profileDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+}
+
+.profileDropdownItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profileDropdownItem.active {
+  background: rgba(237, 6, 135, 0.15);
+}
+
+.profileDropdownAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ED0687, #FE6C0F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.profileDropdownInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profileDropdownName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.profileDropdownDetails {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.profileDropdownItem.createProfile {
+  margin-top: 4px;
+}
+
+.profileDropdownItem.createProfile.withSeparator {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+}
+
+/* ==========================================================================
+   COIN / ACCOUNT SECTION STYLES
+   ========================================================================== */
+
+.account-coin-section {
+  background: linear-gradient(135deg, #3d053e 0%, #a14469 60%, #fd6c0f 145%);
+  box-shadow: 0 8px 36px 0 rgba(210, 58, 173, 0.08), 0 2px 8px 0 rgba(90, 38, 110, 0.09);
+  border-radius: 28px;
+  max-width: 640px;
+  margin: 38px auto 38px auto;
+  padding: 40px 28px 34px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.coin-card-list {
+  display: flex;
+  gap: 18px;
+  margin: 18px 0 0 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.coin-card {
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(210, 58, 173, 0.18);
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 30px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border 0.2s, transform 0.12s;
+  outline: none;
+}
+
+.coin-card:hover:not(:disabled) {
+  box-shadow: 0 8px 26px #ED068732;
+  transform: translateY(-1px);
+}
+
+.coin-card.selected {
+  border: 2px solid #FFF200;
+  box-shadow: 0 0 0 3px #FE6C0F55;
+}
+
+.coin-card:disabled {
+  filter: grayscale(45%);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.coin-card-amount {
+  font-size: 1.2em;
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.coin-card-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  display: inline-block;
+}
+
+.coin-card-label {
+  font-size: 0.95em;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.buy-coins-btn {
+  margin-top: 28px;
+  width: 100%;
+  padding: 18px 0;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  color: #fff;
+  font-size: 1.15em;
+  font-weight: 800;
+  font-family: 'Sora', sans-serif;
+  border: none;
+  box-shadow: 0 3px 16px rgba(210, 58, 173, 0.15);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: transform 0.13s, background 0.14s;
+}
+
+.buy-coins-btn:active,
+.buy-coins-btn:hover {
+  background: linear-gradient(90deg, #FE6C0F 0%, #ED0687 100%);
+  transform: scale(1.02);
+}
+
+.recharge-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.75em;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.coin-balance-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.coin-balance-text {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #fff;
+}
+
+.statBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.statBadge svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+}
+
+.coinIcon {
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+@media (max-width: 800px) {
+  .account-coin-section {
+    max-width: 95vw;
+    padding: 22px 16px 20px;
+  }
+
+  .coin-card {
+    font-size: 18px;
+    padding: 14px 18px;
+  }
+
+  .buy-coins-btn {
+    padding: 14px 0;
+    font-size: 1.05em;
+  }
+}

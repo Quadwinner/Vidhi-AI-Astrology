@@ -1,0 +1,142 @@
+/* src/pages/CreateProfilePage.module.css
+   Split-screen "Create your cosmic profile" — celestial redesign. */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  padding: 96px 24px 64px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(900px 560px at 12% -8%, rgba(97, 7, 43, 0.5), transparent 60%),
+    radial-gradient(760px 500px at 100% 0%, rgba(229, 180, 91, 0.08), transparent 55%),
+    #0d0c0b;
+  color: #e5e2df;
+  font-family: 'Inter', 'Work Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.14;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 120px 90px, #e5b45b, transparent),
+    radial-gradient(1.5px 1.5px at 220px 150px, #fff, transparent),
+    radial-gradient(2px 2px at 320px 60px, #fff, transparent);
+  background-repeat: repeat; background-size: 360px 240px;
+}
+
+.grid {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 380px 1fr; gap: 48px; align-items: start;
+}
+
+/* ---------- Brand panel ---------- */
+.brand {
+  position: sticky; top: 96px;
+  display: flex; flex-direction: column; gap: 20px;
+  padding: 8px 4px;
+}
+.back {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 9999px; cursor: pointer;
+  background: rgba(20, 19, 18, 0.55); border: 1px solid rgba(229, 180, 91, 0.22);
+  color: #e5e2df; font-size: 13px; transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.back:hover { border-color: rgba(229, 180, 91, 0.6); transform: translateX(-2px); }
+
+.wheelWrap {
+  position: relative; width: 300px; height: 300px; margin: 6px auto 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.wheel {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  box-shadow: inset 0 0 60px rgba(229, 180, 91, 0.08), 0 0 60px rgba(97, 7, 43, 0.4);
+  animation: spin 90s linear infinite;
+}
+.wheel span {
+  position: absolute; top: 50%; left: 50%; margin: -10px 0 0 -8px;
+  color: #e5b45b; font-size: 18px; opacity: 0.75; transform-origin: center;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.wheelCore {
+  position: relative; z-index: 1; width: 108px; height: 108px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  background: linear-gradient(145deg, #61072b 0%, #e5b45b 140%);
+  box-shadow: 0 0 50px rgba(229, 180, 91, 0.4), inset 0 0 24px rgba(0,0,0,0.35);
+  border: 1px solid rgba(229, 180, 91, 0.5);
+}
+
+.brandTitle { font-family: 'Playfair Display', Georgia, serif; font-size: 34px; line-height: 1.1; font-weight: 700; color: #e5e2df; margin: 0; }
+.brandSub { color: #b7a9ab; font-size: 15px; line-height: 1.6; margin: 0; }
+.benefits { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.benefits li { display: flex; align-items: center; gap: 10px; color: #d5cccd; font-size: 14px; }
+.benefits li svg { color: #e5b45b; flex-shrink: 0; }
+.privacy { margin: 8px 0 0; color: #776b6d; font-size: 12px; }
+
+/* ---------- Form panel ---------- */
+.formPanel { min-width: 0; }
+.formCard {
+  background: rgba(20, 19, 18, 0.62);
+  border: 1px solid rgba(229, 180, 91, 0.18);
+  border-radius: 24px;
+  padding: 32px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  display: flex; flex-direction: column; gap: 22px;
+}
+
+.field { display: flex; flex-direction: column; gap: 12px; }
+.fieldLabel { display: flex; align-items: center; gap: 10px; }
+.fieldIcon {
+  width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(229, 180, 91, 0.12); border: 1px solid rgba(229, 180, 91, 0.25); color: #e5b45b;
+}
+.fieldLabel label { color: #b7a9ab; font-size: 15px; }
+
+.styledInput {
+  width: 100%; box-sizing: border-box;
+  background: rgba(28, 27, 26, 0.5);
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  border-radius: 12px; padding: 14px 16px;
+  color: #e5e2df; font-family: 'Inter', sans-serif; font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.styledInput::placeholder { color: #8f8284; }
+.styledInput:focus { outline: none; border-color: #e5b45b; box-shadow: 0 0 0 3px rgba(229, 180, 91, 0.18); }
+
+.warningMessage {
+  margin: 0;
+  color: #b7a9ab; font-size: 13px; line-height: 1.5;
+  background: rgba(229, 180, 91, 0.05);
+  border: 1px solid rgba(229, 180, 91, 0.14);
+  border-radius: 12px; padding: 12px 16px;
+}
+
+.submitButton {
+  width: 100%; padding: 16px; border: none; border-radius: 14px; cursor: pointer;
+  background: #e5b45b; color: #271900; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 15px;
+  box-shadow: 0 8px 24px rgba(229, 180, 91, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.submitButton:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px rgba(229, 180, 91, 0.55); }
+.submitButton:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Loader / redirect fallback */
+.pageContainer { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0d0c0b; color: #e5e2df; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .grid { grid-template-columns: 1fr; gap: 28px; max-width: 640px; }
+  .brand { position: static; align-items: center; text-align: center; }
+  .brandTitle { font-size: 30px; }
+  .benefits { align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  .page { padding: 84px 16px 48px; }
+  .formCard { padding: 22px; border-radius: 20px; }
+  .wheelWrap { width: 220px; height: 220px; }
+  .wheel span { transform-origin: center; }
+}

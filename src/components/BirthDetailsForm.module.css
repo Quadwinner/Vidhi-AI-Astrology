@@ -1,0 +1,418 @@
+/* src/components/BirthDetailsForm.module.css */
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formSection {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  outline: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  overflow: visible;
+}
+
+.sectionContent {
+  overflow: hidden;
+  width: 100%;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sectionHeader label {
+  color: white;
+  font-size: 18px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+}
+
+.iconCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.styledInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  outline: 1px solid rgba(255, 255, 255, 0.20);
+  border: none;
+  padding: 1rem;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  color: white;
+  box-sizing: border-box;
+}
+
+/* Ensure select controls match theme and dropdown options are dark */
+select.styledInput {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+select.styledInput option {
+  background-color: #2a0f1f;
+  color: #fff;
+}
+
+.styledInput::placeholder {
+  color: #D1D5DB;
+}
+
+/* Style the calendar/clock icons on date/time inputs */
+.styledInput::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.autocompleteWrapper {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+}
+
+.dateRow {
+  display: grid;
+  grid-template-columns: 0.7fr 1.5fr 1.3fr;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.dateRow>* {
+  min-width: 0;
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  outline: 1px solid rgba(255, 255, 255, 0.20);
+  list-style: none;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  z-index: 100;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: 0.75rem 1rem;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.suggestionItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.languageRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* --- CHECKBOX STYLES (Desktop Default) --- */
+.checkboxWrapper {
+  display: flex;
+  justify-content: flex-end;
+  /* Aligns to right on desktop */
+  margin-top: -0.5rem;
+}
+
+.customCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.customCheckbox:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.customCheckbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.customCheckbox input:checked~.checkmark {
+  background-color: #ED0687;
+  border-color: #ED0687;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.customCheckbox input:checked~.checkmark:after {
+  display: block;
+}
+
+.checkboxLabel {
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .formContainer {
+    gap: 12px;
+  }
+
+  .formSection {
+    padding: 1rem 1rem;
+    gap: 1rem;
+    border-radius: 12px;
+  }
+
+  .sectionHeader {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sectionHeader label {
+    font-size: 14px;
+  }
+
+  .iconCircle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .styledInput {
+    padding: 0.625rem 0.875rem;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .dateRow {
+    grid-template-columns: 0.6fr 1.3fr 1.2fr;
+    gap: 8px;
+  }
+
+  /* --- MOBILE CHECKBOX FIXES --- */
+  .checkboxWrapper {
+    justify-content: center;
+    /* Center align on mobile */
+    margin-top: 0.25rem;
+    /* Reset margin to allow spacing */
+    width: 100%;
+  }
+
+  .customCheckbox {
+    padding: 6px 12px;
+    /* Smaller padding */
+    gap: 8px;
+    /* Closer gap */
+    border-radius: 6px;
+    display: inline-flex;
+    /* Prevent it from stretching */
+  }
+
+  .checkmark {
+    width: 16px;
+    /* Smaller box */
+    height: 16px;
+    border-width: 1.5px;
+    /* Thinner border */
+  }
+
+  .checkmark:after {
+    left: 4px;
+    /* Adjust checkmark position */
+    top: 1px;
+    width: 3px;
+    height: 7px;
+  }
+
+  .checkboxLabel {
+    font-size: 12px;
+    /* Smaller font size */
+  }
+}
+
+@media (max-width: 430px) {
+  .formSection {
+    padding: 0.875rem 0.875rem;
+    gap: 0.875rem;
+  }
+
+  .sectionHeader label {
+    font-size: 13px;
+  }
+
+  .iconCircle {
+    width: 30px;
+    height: 30px;
+  }
+
+  .styledInput {
+    padding: 0.5rem 0.75rem;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  .formSection {
+    padding: 0.75rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .sectionHeader label {
+    font-size: 12px;
+  }
+
+  .iconCircle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .styledInput {
+    padding: 0.5rem 0.625rem;
+    font-size: 16px;
+  }
+
+  .dateRow {
+    gap: 6px;
+  }
+}
+
+/* Desktop-specific layout - two column grid */
+@media (min-width: 769px) {
+  .formContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .formSection {
+    margin-bottom: 0;
+    padding: 1.5rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .sectionHeader {
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+
+  .sectionHeader label {
+    font-size: 18px;
+  }
+
+  .iconCircle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .styledInput {
+    padding: 1rem;
+    font-size: 18px;
+  }
+
+  .dateRow {
+    gap: 12px;
+  }
+}
+
+/* =====================================================================
+   CELESTIAL FORM FIELDS (overrides win)
+   ===================================================================== */
+.formSection {
+  background: rgba(20, 19, 18, 0.6);
+  outline: none;
+  border: 1px solid rgba(229, 180, 91, 0.18);
+  border-radius: 20px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.sectionHeader label { color: #b7a9ab; font-family: 'Inter', sans-serif; }
+.iconCircle {
+  border-radius: 12px;
+  background: rgba(229, 180, 91, 0.12) !important; background-image: none !important;
+  border: 1px solid rgba(229, 180, 91, 0.25); color: #e5b45b !important;
+}
+.styledInput,
+select.styledInput {
+  background: rgba(28, 27, 26, 0.5);
+  outline: none;
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  color: #e5e2df;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.styledInput::placeholder { color: #8f8284; }
+.styledInput:focus,
+select.styledInput:focus { border-color: #e5b45b; box-shadow: 0 0 0 3px rgba(229, 180, 91, 0.18); }
+select.styledInput option { background-color: #141312; color: #e5e2df; }
+
+.suggestionsList {
+  background: rgba(20, 19, 18, 0.96);
+  outline: none;
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.suggestionItem { color: #e5e2df; }
+.suggestionItem:hover { background-color: rgba(229, 180, 91, 0.1); }
+
+.customCheckbox {
+  background: rgba(28, 27, 26, 0.5);
+  border: 1px solid rgba(229, 180, 91, 0.2);
+}
+.customCheckbox:hover { background: rgba(229, 180, 91, 0.08); }
+.checkmark { border-color: rgba(229, 180, 91, 0.6); }
+.customCheckbox input:checked ~ .checkmark { background-color: #e5b45b; border-color: #e5b45b; }
+.checkmark:after { border-color: #271900; }
+.checkboxLabel { color: #e5e2df; font-family: 'Inter', sans-serif; }

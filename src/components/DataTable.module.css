@@ -1,0 +1,162 @@
+:root {
+  --table-primary-color: #FE607E;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.thead {
+  background-color: var(--table-primary-color);
+}
+
+.th {
+  padding: 0.8rem 1.2rem;
+  text-align: left;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: capitalize;
+  white-space: nowrap;
+  /* --- CHANGE: Added vertical separator --- */
+  border-right: 1px solid var(--table-primary-color);
+}
+
+/* --- CHANGE: Remove border from the last header cell in a row --- */
+.th:last-child {
+  border-right: none;
+}
+
+.tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.td {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--table-primary-color);
+  font-size: 0.95rem;
+  /* --- CHANGE: Added vertical separator --- */
+  border-right: 1px solid var(--table-primary-color);
+}
+
+/* --- CHANGE: Remove border from the last data cell in a row --- */
+.td:last-child {
+  border-right: none;
+}
+
+.tbody tr:last-child .td {
+  border-bottom: none;
+}
+/* --- STICKY COLUMNS (Planet Table) --- */
+.stickyColumns {
+  /* table-layout: fixed; */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Use the same base look as your normal table */
+.stickyColumns th{
+  background-color: #FE607E;
+  color: white;
+  border-right: 1px solid var(--table-primary-color);
+  border-bottom: 1px solid var(--table-primary-color);
+  font-family: 'Work Sans', sans-serif;
+  transition: background-color 0.2s ease-in-out;
+  white-space: nowrap;
+}
+.stickyColumns td {
+  background-color: transparent;
+  color: white;
+  border-right: 1px solid var(--table-primary-color);
+  border-bottom: 1px solid var(--table-primary-color);
+  font-family: 'Work Sans', sans-serif;
+  transition: background-color 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+/* Keep your pink header color and text style */
+.stickyColumns th {
+  background-color: #FE607E;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+/* Preserve hover effect */
+.stickyColumns tbody tr:hover td {
+  /* background-color: rgba(255, 255, 255, 0.05); */
+}
+
+/* --- Sticky positioning for the first three columns --- */
+
+/* Column 1 (Planet) */
+.stickyColumns th:nth-child(1),
+.stickyColumns td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  /* background-color: rgba(20, 22, 30, 0.97); */
+  backdrop-filter: blur(100px);
+}
+
+/* Column 2 (House) */
+.stickyColumns th:nth-child(2),
+.stickyColumns td:nth-child(2) {
+  position: sticky;
+  left: 118px; /* adjust to match your column widths */
+  z-index: 3;
+  /* background-color: rgba(20, 22, 30, 0.97); */
+  backdrop-filter: blur(100px);
+}
+
+/* Column 3 (Sign) */
+.stickyColumns th:nth-child(3),
+.stickyColumns td:nth-child(3) {
+  position: sticky;
+  left: 210px; /* adjust based on total width of first two */
+  z-index: 3;
+  /* background-color: rgba(20, 22, 30, 0.97); */
+  backdrop-filter: blur(100px);
+}
+
+/* Slight soft shadow at the right edge of the last sticky column */
+.stickyColumns th:nth-child(3),
+.stickyColumns td:nth-child(3) {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Headers always above data */
+.stickyColumns th {
+  z-index: 5;
+}
+
+/* Remove border from last column to keep your clean look */
+.stickyColumns .th:last-child,
+.stickyColumns .td:last-child {
+  border-right: none;
+}
+
+/* Disable stickiness on mobile */
+@media (max-width: 768px) {
+  .stickyColumns th,
+  .stickyColumns td {
+    position: static !important;
+    left: auto !important;
+    z-index: auto !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+}

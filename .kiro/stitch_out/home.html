@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI - Your Celestial Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#554245",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "surface-container-low": "#1c1b1a",
+                    "surface-container-lowest": "#0e0e0d",
+                    "surface-dim": "#141312",
+                    "on-secondary-fixed": "#271900",
+                    "on-surface": "#e5e2df",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#31302f",
+                    "secondary": "#f1bf64",
+                    "on-secondary-container": "#ffd284",
+                    "tertiary-fixed": "#dde2f6",
+                    "on-primary-fixed": "#3f0018",
+                    "on-tertiary-fixed": "#151b29",
+                    "surface-tint": "#ffb1c2",
+                    "inverse-primary": "#9f3b59",
+                    "surface-variant": "#363533",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#2b2a28",
+                    "on-primary": "#62082c",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "on-primary-fixed-variant": "#812342",
+                    "on-surface-variant": "#dbc0c4",
+                    "surface-container-highest": "#363533",
+                    "tertiary-container": "#292f3e",
+                    "secondary-fixed": "#ffdea9",
+                    "primary-container": "#61072b",
+                    "on-secondary": "#422c00",
+                    "on-error": "#690005",
+                    "surface-container": "#201f1e",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "on-background": "#e5e2df",
+                    "on-tertiary": "#2a303f",
+                    "surface": "#141312",
+                    "surface-bright": "#3a3937",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "tertiary": "#c1c6d9",
+                    "primary": "#ffb1c2",
+                    "error-container": "#93000a",
+                    "on-primary-container": "#e67291",
+                    "background": "#141312",
+                    "outline": "#a38b8f",
+                    "inverse-surface": "#e5e2df",
+                    "on-tertiary-container": "#9196a9",
+                    "secondary-container": "#7d5800",
+                    "primary-fixed": "#ffd9e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-sm": ["Playfair Display"],
+                    "label-md": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                    "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                    "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                    "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(18, 24, 38, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 180, 91, 0.2);
+            border-radius: 24px;
+        }
+        .gold-aura:hover {
+            box-shadow: 0 0 25px rgba(229, 180, 91, 0.4);
+        }
+        .zodiac-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(229, 180, 91, 0.1) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md dark:bg-surface/80 border-b border-outline-variant/20 shadow-sm transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<img alt="AuraAI Logo" class="w-10 h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkWeDVnk-hDyV4XJ2uRAvHD8CdQ6RB7plYIkJrawDUj6UQNztSFJQr7ZSWtSdw6ltaspDxvZ_cT2zU06aZXaPVKb8lrEDRi6hdHOjmMPxQrK7Q50GtR4xtoZjjHt7YoL4RZ1d2kEcN9VNWQ1YjEbhRacoOS-GuD716txND8GXGqgGRueObRq7J4e7ab_JP9cvxB3dQqMNIdNXIf-TeVeTqngFMnq9Ej7KSLzkk9oOEPgjGibYegtEnLRFvs6NYoRxShtMCJbKuBhZb"/>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary">AuraAI</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#features">Features</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#pricing">Pricing</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#reviews">Reviews</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#faq">FAQ</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:block text-on-surface-variant hover:text-secondary font-label-md text-label-md transition-all">Sign In</button>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold gold-aura transition-all">Get Started</button>
+<button class="md:hidden text-secondary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden zodiac-bg">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20">
+<div class="absolute top-20 left-1/4 w-96 h-96 bg-primary-container/30 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary-container/20 rounded-full blur-[120px]"></div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-secondary/30 bg-secondary/5 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+                        Ancient Wisdom Meet Future Tech
+                    </div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">
+                        Discover your <span class="text-secondary italic">cosmic path</span> with AI
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                        Your personal AI astrologer, available 24/7 for guidance, Kundli reports, and live voice calls.
+                    </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up studio portrait of a woman looking serene, warm amber lighting, mystical atmosphere, photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2Fq_e3iTxctvyic4fVKx7sDJq0RfZCuBek2M_7yxkOBycyPKw7h87iKO57s2_hAGuN-cwshOM1l0_au3X50PBxEaygwY8oQBBZnKGmOIlhr91nC0iPUFnoNoO81e70FBX_52WI0dui1m4URRszn-LD2bv6PTAQJEMgXqEJyLvwgUcFS8oXfTot-AaNxzv1hXO4cMdoZCd7OEFgCf4Fqy7q119ejK6kx1q09ERnlADFYlt5qj27XiyTWF7Kxp2anw2NtzXAQK8r6A-"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young man with a peaceful expression, soft celestial blue backlight, high-end editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLE4msic---sN0tpTxBMabWw7wYL5A3m8q0BJk48SXAHNlZVYakGUJBJsaE8mNMZRhvyH-ilRJBYfplWJ_REwP-9JYe798pfPUUqww4JMBfpeiH5Vw7SWJ0bjw6vBaiSt7t2CNq0e_tTgMqRUc1ceREYaqTF0u-UxbAl82PlKjluc3p_IFFaPZEiphhkDM-WkNMmU-szQCnyf-q2raYHeFLtmiEKCbddunXtrTVdxqFnjf8iMjDmy9WwOysQhSx25jE97lJJFN5B2d"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of a person smiling gently, golden hour lighting reflecting cosmic energy, cinematic photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9i4JcSsjM0BC-ZxBaJGfR3AS9orBdrxYpO2lQdbNbHtCNVUTVn-UHMUV0BTFIILp-kTnYYyb5ekh1BIEnXzGRWAenoe9o_nZ2rvJaN-aAzPxc2bZXLCT7kRISZD0mYc3SA8TDsW3XEi8wFxhkuXGZ1bkrTknY3VcBNibEP_ZTZ0z6gO9JNLyeJJ74vGIypjIb6XrrWZpd_HhLERh9h3n6cdAfWULGvxvrvcrTWbpjXQr-5vHHEZErTL8sUvY2t2Gdmvl5zH--l1CR"/>
+</div>
+</div>
+<div class="text-on-surface-variant text-label-md">
+<span class="font-bold text-on-surface">50,000+</span> seekers guided this month
+                        </div>
+</div>
+</div>
+<!-- Hero Form -->
+<div class="glass-card p-8 md:p-10 shadow-2xl relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl"></div>
+<h3 class="font-headline-sm text-headline-sm mb-6">Calculate Your Kundli</h3>
+<form class="space-y-5" onsubmit="event.preventDefault(); alert('Consulting the stars...');">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Name</label>
+<input class="w-full bg-surface-container border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-xl py-3 px-4 transition-all" placeholder="Your full name" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Date of Birth</label>
+<input class="w-full bg-surface-container border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-xl py-3 px-4 transition-all" type="date"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Time of Birth</label>
+<input class="w-full bg-surface-container border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-xl py-3 px-4 transition-all" type="time"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Place of Birth</label>
+<input class="w-full bg-surface-container border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-xl py-3 px-4 transition-all" placeholder="City, Country" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Gender</label>
+<select class="w-full bg-surface-container border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-xl py-3 px-4 transition-all">
+<option>Select</option>
+<option>Female</option>
+<option>Male</option>
+<option>Non-binary</option>
+</select>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-bold font-label-md text-label-md gold-aura transition-all mt-4" type="submit">
+                            Get my free Kundli
+                        </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-24 bg-surface" id="features">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md mb-4">Celestial Features</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Explore our suite of AI-driven astrological tools designed for modern enlightenment.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Feature Card 1 -->
+<div class="group glass-card p-8 hover:bg-surface-container-high transition-all duration-500">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">chat_bubble</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-lg mb-3">AI Astrology Chat</h4>
+<p class="text-on-surface-variant font-body-md">Instant guidance for your burning questions, powered by advanced planetary data models.</p>
+</div>
+<!-- Feature Card 2 -->
+<div class="group glass-card p-8 hover:bg-surface-container-high transition-all duration-500">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">settings_voice</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-lg mb-3">Live Voice Calls</h4>
+<p class="text-on-surface-variant font-body-md">Connect with our lifelike AI voice assistant for a truly immersive and personal session.</p>
+</div>
+<!-- Feature Card 3 -->
+<div class="group glass-card p-8 hover:bg-surface-container-high transition-all duration-500">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">description</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-lg mb-3">Personalized Kundli</h4>
+<p class="text-on-surface-variant font-body-md">Deep birth chart analysis revealing the blueprint of your soul's journey across lifetimes.</p>
+</div>
+<!-- Feature Card 4 -->
+<div class="group glass-card p-8 hover:bg-surface-container-high transition-all duration-500">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">wb_sunny</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-lg mb-3">Daily Insights</h4>
+<p class="text-on-surface-variant font-body-md">Receive tailored horoscopes based on real-time transits affecting your unique chart.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Kundli Explanation Section -->
+<section class="py-24 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div class="relative">
+<div class="absolute -inset-10 bg-secondary/10 rounded-full blur-[100px]"></div>
+<div class="glass-card aspect-square max-w-md mx-auto p-4 flex items-center justify-center relative z-10 floating">
+<img class="w-full h-full object-contain rounded-2xl" data-alt="A stylized, golden Vedic birth chart illustration on a dark charcoal background. The chart features glowing geometric nodes, thin gold lines connecting houses, and Sanskrit symbols for planets. The overall aesthetic is clean, minimalist, and luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPYGbJ7w9h0tU0LXCNkyQFxeEPDO0pZXvIqSMcBnpBUtgTrohb5L_uU1ym_NaedaW6pEk8rQzYI00oZ7UBOiP_W6CmSyzQanEf4_NbHsNbhT_6Tawe2ytWoUzCBCb7rSTq4pIEVevvoEO-dMdc-x5D8goUpmc8M_WGiSVDTThtoYd-8MlAbxv5GyRKxRBwXElpv5SxTB_r8IwPBc3M3LQl1oELYM5GzRq-brDBIz4ulXcJlM98KOpcK4plnlAYWZNSXFY7VQqInf86"/>
+</div>
+</div>
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md">The Blueprint of Your Soul</h2>
+<p class="text-body-lg text-on-surface-variant">Your Kundli, or birth chart, is a cosmic map of the sky at the exact moment of your arrival. It influences your personality, career, and karmic path.</p>
+<ul class="space-y-4">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Detailed analysis of all 12 astrological houses</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Planetary strengths (Shadbala) calculation</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Dasha period predictions for next 10 years</span>
+</li>
+</ul>
+<a class="inline-flex items-center gap-2 text-secondary font-bold font-label-md text-label-md hover:underline group" href="#">
+                        Learn more about Vedic Astrology
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-24" id="pricing">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md mb-4">Invest in Your Clarity</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Choose a plan that fits your spiritual journey.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Free -->
+<div class="glass-card p-10 flex flex-col items-center text-center">
+<span class="text-on-surface-variant font-label-md text-label-md mb-2">Essential</span>
+<h4 class="font-headline-sm text-headline-sm mb-4">Free</h4>
+<div class="text-on-surface-variant mb-8 space-y-3">
+<p>1 Daily Insight</p>
+<p>Basic Kundli Chart</p>
+<p>3 AI Chat Messages/day</p>
+</div>
+<button class="mt-auto w-full border border-secondary/50 text-secondary py-3 rounded-full hover:bg-secondary/10 transition-all font-bold">Start Free</button>
+</div>
+<!-- Monthly -->
+<div class="glass-card p-10 flex flex-col items-center text-center scale-105 relative">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-on-secondary px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Popular</div>
+<span class="text-on-surface-variant font-label-md text-label-md mb-2">Cosmic seeker</span>
+<div class="mb-4">
+<span class="font-display-lg text-4xl font-bold">$19</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+<div class="text-on-surface-variant mb-8 space-y-3">
+<p>Unlimited Daily Insights</p>
+<p>Detailed Reports (5/mo)</p>
+<p>50 AI Chat Messages</p>
+<p>10 Voice Credits</p>
+</div>
+<button class="mt-auto w-full bg-secondary text-on-secondary py-3 rounded-full font-bold gold-aura transition-all">Choose Monthly</button>
+</div>
+<!-- Yearly -->
+<div class="glass-card p-10 flex flex-col items-center text-center border-secondary border-2">
+<span class="text-secondary font-label-md text-label-md mb-2">Eternal Wisdom</span>
+<div class="mb-4">
+<span class="font-display-lg text-4xl font-bold">$149</span>
+<span class="text-on-surface-variant">/yr</span>
+</div>
+<div class="inline-block bg-secondary/10 text-secondary text-xs px-3 py-1 rounded-full font-bold mb-8">BEST VALUE (Save 35%)</div>
+<div class="text-on-surface-variant mb-8 space-y-3">
+<p>All Monthly Features</p>
+<p>Unlimited Reports</p>
+<p>Unlimited AI Chat</p>
+<p>150 Voice Credits/mo</p>
+</div>
+<button class="mt-auto w-full bg-secondary text-on-secondary py-3 rounded-full font-bold gold-aura transition-all">Go Yearly</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-24 bg-primary-container relative overflow-hidden" id="reviews">
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-[80px]"></div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<h2 class="font-headline-md text-headline-md text-center mb-16">Heard from the Universe</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="glass-card p-8 bg-surface/20">
+<div class="flex gap-1 text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-on-surface italic mb-6">"The accuracy of the AI voice call left me speechless. It picked up on subtle transit influences I hadn't even noticed myself."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Portrait of a sophisticated woman in her 40s, ethereal lighting, soft focus background, professional photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMwMlQMvqhay5drjleY_fXRPNLWaU3tdvsvAQrsTMyn8dC7Mnc-IJu620R4qyehuDsoPoHrfTOIp1J-vROOAPgLFVWeCh8cB-yRt3me-thHWNIFCkJOsyO18rtanIozG2rd2t4SrWWg9Ff9O9iS1_pFQg9DRp2H8b1u5kIbksVk8IzTBgXyBA5FGTW2l4VW_MTc9_wtD-qSBG2hgALIVXZGcqv0o3D8m8ApZtiSYyl-lTPAkmRu6cauElyLrNE-MVTIMg1esdrd-MT"/>
+</div>
+<div>
+<p class="font-bold">Elena R.</p>
+<p class="text-xs text-on-surface-variant">Marketing Executive</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="glass-card p-8 bg-surface/20">
+<div class="flex gap-1 text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-on-surface italic mb-6">"Finally, an astrology app that combines depth with technology. The daily insights are scarily spot-on."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Portrait of a creative young man with glasses, cinematic golden hour lighting, artistic flair, shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsbxGG80W03S4o-eyzkbs6_0M1XEVqZAdo4LoH1E4bqgqKfRYPVfnqp4gv5kXK8Ub0CSJddChKstgzsXNeMQEXkRjB3wTM-LmiNHQz5cBlTy-moBhfZ47DITtkvI4BAKnDQKEc38FF_GFdV0z6-gvffdxVtRlvOzW7sbubNocS6sBaPNsffkbcc-P0wKJLcP_CsV_-cnyNqkIbV32nR10-c1AtvFDUfCzToAAwHcNkGlkC74u_QEM0cqry6AhOWly2MtM7xgsmDaYU"/>
+</div>
+<div>
+<p class="font-bold">Julian M.</p>
+<p class="text-xs text-on-surface-variant">Creative Director</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="glass-card p-8 bg-surface/20">
+<div class="flex gap-1 text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-on-surface italic mb-6">"My go-to app for clarity. The Kundli analysis is more thorough than many human consultations I've had."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Studio portrait of a serene woman, mystical atmosphere, soft glowing light from below, high-fashion aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW1UwOoibmOhn50gIzsIDzc688l1oyEGFfhjx79WJ5u6xskAkSX1JpfrYmJJaU6IjrUsq2iVBe5-noz-3IWIPuBH636CrZ_jzWoWDxTccQ70nvY2ePGA1AVsFHuiW3k_Us3qxhmk6td5u8pZ2P3fGyRk9yGgg2NgO9JyqrM9QD6J0YYB0sSLdO6xsxvJOZZs7tqvaQE0K6j75iILht35agwgHo4qpcixXPQvzAPDjqQZg1jiJU45i0LOKWk5UZsoEIGy5yhnAsla3B"/>
+</div>
+<div>
+<p class="font-bold">Anya K.</p>
+<p class="text-xs text-on-surface-variant">Yoga Instructor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-24 bg-surface" id="faq">
+<div class="max-w-3xl mx-auto px-margin-mobile">
+<h2 class="font-headline-md text-headline-md text-center mb-12">Cosmic Inquiries</h2>
+<div class="space-y-4">
+<!-- FAQ Item -->
+<div class="glass-card overflow-hidden">
+<details class="group">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+<span class="font-bold">What is Vedic Astrology?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant">
+                            Vedic astrology, or Jyotish, is an ancient Indian science that studies planetary motions and positions with respect to time and their effect on humans and other entities on earth.
+                        </div>
+</details>
+</div>
+<div class="glass-card overflow-hidden">
+<details class="group">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+<span class="font-bold">How accurate is the AI?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant">
+                            Our AI models are trained on thousands of classical Vedic texts and mapped to NASA's precise ephemeris data, ensuring mathematical precision alongside traditional wisdom.
+                        </div>
+</details>
+</div>
+<div class="glass-card overflow-hidden">
+<details class="group">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+<span class="font-bold">Can I get a live consultation?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant">
+                            Yes, through our AI Voice Calls, you can have a real-time spoken interaction with AuraAI that feels natural and personal.
+                        </div>
+</details>
+</div>
+</div>
+</div>
+</section>
+<!-- Mobile App Section -->
+<section class="py-24 bg-surface-container-high relative overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<h2 class="font-headline-md text-headline-md">Your Stars, Always With You</h2>
+<p class="text-body-lg text-on-surface-variant">Get the AuraAI app for the full experience, featuring real-time transit notifications and interactive planetary charts.</p>
+<div class="flex flex-wrap gap-4">
+<a class="flex items-center gap-3 bg-on-surface text-surface px-6 py-3 rounded-xl hover:scale-105 transition-transform" href="#">
+<span class="material-symbols-outlined text-3xl">apps</span>
+<div class="text-left">
+<p class="text-[10px] leading-none uppercase font-bold opacity-60">Download on the</p>
+<p class="text-lg font-bold leading-tight">App Store</p>
+</div>
+</a>
+<a class="flex items-center gap-3 bg-on-surface text-surface px-6 py-3 rounded-xl hover:scale-105 transition-transform" href="#">
+<span class="material-symbols-outlined text-3xl">play_arrow</span>
+<div class="text-left">
+<p class="text-[10px] leading-none uppercase font-bold opacity-60">Get it on</p>
+<p class="text-lg font-bold leading-tight">Google Play</p>
+</div>
+</a>
+</div>
+</div>
+<div class="relative flex justify-center">
+<div class="absolute -inset-10 bg-secondary/20 rounded-full blur-[120px]"></div>
+<div class="w-64 h-[500px] bg-[#050505] rounded-[3rem] border-[8px] border-surface-variant shadow-2xl relative overflow-hidden flex flex-col">
+<div class="h-6 w-32 bg-surface-variant absolute top-0 left-1/2 -translate-x-1/2 rounded-b-2xl"></div>
+<div class="flex-1 p-4 pt-10 flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-8 h-8 rounded-full bg-secondary"></div>
+<div class="h-4 w-20 bg-surface-variant rounded"></div>
+</div>
+<div class="self-start bg-surface-variant/40 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-[10px]">
+                                Your Saturn return is approaching. Focus on discipline.
+                            </div>
+<div class="self-end bg-secondary/20 p-3 rounded-2xl rounded-tr-none max-w-[80%] text-[10px] border border-secondary/20">
+                                What does that mean for my career?
+                            </div>
+<div class="self-start bg-surface-variant/40 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-[10px]">
+                                It marks a period of professional consolidation. Hard work now leads to lasting success.
+                            </div>
+<div class="mt-auto h-12 w-full bg-surface-variant/20 rounded-full flex items-center px-4">
+<div class="h-3 w-3/4 bg-surface-variant/40 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30 opacity-100 transition-opacity">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<img alt="AuraAI Logo" class="w-8 h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkWeDVnk-hDyV4XJ2uRAvHD8CdQ6RB7plYIkJrawDUj6UQNztSFJQr7ZSWtSdw6ltaspDxvZ_cT2zU06aZXaPVKb8lrEDRi6hdHOjmMPxQrK7Q50GtR4xtoZjjHt7YoL4RZ1d2kEcN9VNWQ1YjEbhRacoOS-GuD716txND8GXGqgGRueObRq7J4e7ab_JP9cvxB3dQqMNIdNXIf-TeVeTqngFMnq9Ej7KSLzkk9oOEPgjGibYegtEnLRFvs6NYoRxShtMCJbKuBhZb"/>
+<span class="font-headline-sm text-headline-sm text-secondary">AuraAI</span>
+</div>
+<p class="text-on-surface-variant max-w-sm">Mapping the cosmos to your journey. Personalized Vedic wisdom powered by cutting-edge AI.</p>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 AuraAI. All celestial rights reserved.</p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h5 class="font-bold text-secondary">Navigation</h5>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-secondary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">Cookie Policy</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="font-bold text-secondary">Connect</h5>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-secondary" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-on-surface-variant hover:text-secondary" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="text-on-surface-variant hover:text-secondary" href="#"><span class="material-symbols-outlined">video_library</span></a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('py-2', 'shadow-lg');
+                nav.classList.remove('py-4', 'shadow-sm');
+            } else {
+                nav.classList.add('py-4', 'shadow-sm');
+                nav.classList.remove('py-2', 'shadow-lg');
+            }
+        });
+    </script>
+</body></html>

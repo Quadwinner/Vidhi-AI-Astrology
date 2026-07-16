@@ -1,0 +1,309 @@
+/* === MobileProfileSelector.module.css === */
+/*     Final Version with All Fixes      */
+
+.container {
+  position: relative;
+  z-index: 50;
+}
+
+/* --- Trigger Button --- */
+.triggerButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.triggerButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.profileAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #FE607E;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  flex-shrink: 0;
+}
+
+.profileInfoDesktop {
+  display: none;
+}
+
+.chevron {
+  color: #a0a7b1;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+/* --- Dropdown Panel --- */
+.dropdownPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  width: 300px;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(60px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.profilesList {
+  max-height: 320px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.profilesList::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- "Add Profile" Button --- */
+.addProfileLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  box-shadow: 0px 0px 15px rgba(210, 58, 173, 0.30);
+  color: white;
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+.addProfileLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 25px rgba(210, 58, 173, 0.50);
+}
+.addProfileIconWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+/* --- Rich Dropdown Items --- */
+.dropdownItem {
+  margin-top: 2px;
+  width: 100%;
+  padding: 0.75rem;
+  border-block-width: 1px;
+  border-color: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+  text-align: left;
+}
+.dropdownItem:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.dropdownItem.active {
+  background-color: rgba(254, 96, 126, 0.15);
+}
+
+.itemName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #d1d5db;
+  margin-bottom: 0.75rem;
+  transition: color 0.2s ease;
+}
+.dropdownItem:hover .itemName,
+.dropdownItem.active .itemName {
+  color: white;
+}
+.itemDetails {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #a0a7b1;
+}
+
+/* --- MODIFIED: Allows text to wrap --- */
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Removed text-overflow properties to allow wrapping */
+}
+
+
+/* === Desktop Media Query (min-width: 769px) === */
+@media (min-width: 769px) {
+  .triggerButton {
+    padding-left: 1rem;
+    padding-right: 0.75rem;
+  }
+  
+  .profileInfoDesktop {
+    display: flex;
+    align-items: center;
+    /* --- MODIFIED: Increased gap to compensate for removed dot --- */
+    gap: 1.25rem;
+    flex-grow: 1;
+    overflow: hidden;
+  }
+
+  .profileName {
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .profileInfoDesktop .detailItem {
+    font-size: 0.8rem;
+    color: #a0a7b1;
+    /* --- MODIFIED: Prevent long place names from breaking the button layout --- */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* DELETED: The .separatorDot class is no longer needed */
+
+  .addProfileIconWrapper {
+    display: none;
+  }
+
+  .itemDetails {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 1rem;
+  }
+
+  /* --- NEW: Ensures the location item takes the full width in the grid --- */
+  .locationDetail {
+    grid-column: 1 / -1;
+  }
+}
+
+/* === MobileProfileSelector.module.css === */
+/* ... (keep all your existing desktop styles) ... */
+
+/* --- NEW: Media Query for Mobile Layout --- */
+@media (max-width: 768px) {
+  /* --- This is the key to making the selector compact --- */
+  .container {
+    /* Allows the container to shrink to the size of its content (the button) */
+    width: auto; 
+    
+    /* Prevents it from being squeezed by the tabs component */
+    flex-shrink: 0; 
+  }
+
+  /* Hides the detailed text view inside the button on mobile */
+  .profileInfoDesktop {
+    display: none;
+  }
+
+  /* Ensures the chevron is hidden as there's no text next to it */
+  .chevron {
+    display: none;
+  }
+
+  /* --- This centers the dropdown directly below the avatar on mobile --- */
+  .dropdownPanel {
+    /* Position relative to the center of the container */
+    left: 255%; 
+    margin-top: -5px;
+    
+    /* Shift it left by half its own width to be perfectly centered */
+    transform: translateX(-50%); 
+    
+    /* Give it a consistent width */
+    width: 280px; 
+  }
+}
+
+/* =====================================================================
+   CELESTIAL PROFILE SELECTOR (overrides win)
+   ===================================================================== */
+.triggerButton {
+  background-color: rgba(20, 19, 18, 0.6);
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.triggerButton:hover {
+  background-color: rgba(229, 180, 91, 0.08);
+  border-color: rgba(229, 180, 91, 0.45);
+}
+.profileAvatar {
+  background: linear-gradient(135deg, #61072b, #e5b45b);
+  color: #fff;
+}
+.chevron { color: #b7a9ab; }
+
+.dropdownPanel {
+  background: rgba(20, 19, 18, 0.92);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.addProfileLink {
+  background: #e5b45b;
+  background-image: none;
+  color: #271900;
+  border-radius: 9999px;
+  box-shadow: 0 6px 20px rgba(229, 180, 91, 0.25);
+  font-weight: 800;
+}
+.addProfileLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(229, 180, 91, 0.5);
+}
+
+.separator { background-color: rgba(229, 180, 91, 0.15); }
+
+.dropdownItem {
+  border: 1px solid rgba(229, 180, 91, 0.12);
+  border-radius: 12px;
+}
+.dropdownItem:hover { background-color: rgba(229, 180, 91, 0.07); border-color: rgba(229, 180, 91, 0.3); }
+.dropdownItem.active { background-color: rgba(229, 180, 91, 0.12); border-color: rgba(229, 180, 91, 0.4); }
+
+.itemName { color: #d5cccd; }
+.dropdownItem:hover .itemName,
+.dropdownItem.active .itemName { color: #e5b45b; }
+.itemDetails { color: #b7a9ab; }
+.detailItem svg { color: #e5b45b; }
+
+@media (min-width: 769px) {
+  .profileName { color: #e5e2df; }
+  .profileInfoDesktop .detailItem { color: #b7a9ab; }
+  .profileInfoDesktop .detailItem svg { color: #e5b45b; }
+}

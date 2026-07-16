@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Cosmic Profiles | AuraAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1c1b1a",
+                    "surface-variant": "#363533",
+                    "on-tertiary-container": "#9196a9",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "on-background": "#e5e2df",
+                    "inverse-surface": "#e5e2df",
+                    "on-primary-container": "#e67291",
+                    "on-secondary-fixed": "#271900",
+                    "surface-dim": "#141312",
+                    "surface-tint": "#ffb1c2",
+                    "outline": "#a38b8f",
+                    "on-primary-fixed": "#3f0018",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "on-tertiary-fixed": "#151b29",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "error": "#ffb4ab",
+                    "surface-container-lowest": "#0e0e0d",
+                    "primary-fixed": "#ffd9e0",
+                    "primary-container": "#61072b",
+                    "surface-container-high": "#2b2a28",
+                    "on-secondary-container": "#ffd284",
+                    "on-primary": "#62082c",
+                    "tertiary": "#c1c6d9",
+                    "surface-bright": "#3a3937",
+                    "outline-variant": "#554245",
+                    "on-primary-fixed-variant": "#812342",
+                    "secondary": "#f1bf64",
+                    "surface-container": "#201f1e",
+                    "secondary-fixed": "#ffdea9",
+                    "on-surface": "#e5e2df",
+                    "on-surface-variant": "#dbc0c4",
+                    "inverse-primary": "#9f3b59",
+                    "inverse-on-surface": "#31302f",
+                    "error-container": "#93000a",
+                    "on-error": "#690005",
+                    "on-tertiary": "#2a303f",
+                    "surface-container-highest": "#363533",
+                    "on-error-container": "#ffdad6",
+                    "secondary-container": "#7d5800",
+                    "on-secondary": "#422c00",
+                    "background": "#141312",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "primary": "#ffb1c2",
+                    "tertiary-fixed": "#dde2f6",
+                    "surface": "#141312",
+                    "tertiary-container": "#292f3e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "24": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Playfair Display"],
+                    "label-md": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-sm": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(28, 27, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(241, 191, 100, 0.15);
+        }
+        .premium-glow {
+            box-shadow: 0 0 30px rgba(229, 180, 91, 0.15);
+        }
+        .zodiac-rotate {
+            animation: rotate 60s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary selection:text-on-secondary overflow-x-hidden">
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<span class="font-headline-sm text-headline-sm font-bold text-secondary">AuraAI</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Features</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Pricing</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Reviews</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">FAQ</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-secondary font-label-md text-label-md hover:text-secondary-fixed-dim transition-all">Sign In</button>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md hover:scale-105 transition-all">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-20">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden mb-16 px-margin-mobile md:px-margin-desktop">
+<!-- Background Glow -->
+<div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-primary-container/30 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10 py-12">
+<div class="space-y-6">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Namaste, Vidhi</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">Your saved souls &amp; their star maps. A digital sanctuary for your cosmic connections.</p>
+<button class="flex items-center gap-2 px-8 py-4 border-2 border-secondary text-secondary rounded-full font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all duration-300">
+<span class="material-symbols-outlined">add</span>
+                        NEW PROFILE
+                    </button>
+</div>
+<div class="hidden md:flex justify-end relative">
+<div class="w-80 h-80 relative flex items-center justify-center">
+<!-- Rotating Motif -->
+<div class="absolute inset-0 zodiac-rotate">
+<svg class="w-full h-full text-secondary/30" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-dasharray="2 4" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="38" stroke="currentColor" stroke-width="0.5"></circle>
+<path d="M50 2 L50 10 M98 50 L90 50 M50 98 L50 90 M2 50 L10 50" stroke="currentColor" stroke-width="1"></path>
+<text fill="currentColor" font-size="4" text-anchor="middle" x="50" y="8">♈</text>
+<text fill="currentColor" font-size="4" text-anchor="middle" x="92" y="52">♋</text>
+<text fill="currentColor" font-size="4" text-anchor="middle" x="50" y="96">♎</text>
+<text fill="currentColor" font-size="4" text-anchor="middle" x="8" y="52">♑</text>
+</svg>
+</div>
+<div class="w-32 h-32 rounded-full border border-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Strip -->
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-12">
+<div class="glass-card rounded-full px-8 py-4 flex items-center justify-center gap-6 text-on-surface-variant font-label-md text-label-md">
+<span>3 Profiles</span>
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+<span>₹120 Wallet</span>
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+<span class="text-secondary">Free Plan</span>
+</div>
+</div>
+<!-- Profiles Scrolling Row -->
+<section class="mb-20">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-6 flex justify-between items-end">
+<h2 class="font-headline-md text-headline-md text-secondary">Saved Souls</h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-margin-mobile md:px-margin-desktop">
+<!-- Active Profile Card -->
+<div class="flex-shrink-0 w-[320px] md:w-[340px] glass-card rounded-24 overflow-hidden premium-glow border-secondary/40 transform scale-105 mx-4">
+<div class="h-28 bg-gradient-to-br from-primary-container to-secondary/30 relative">
+<div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-sm font-label-sm">#01</div>
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle cx="20" cy="30" fill="white" r="0.5"></circle>
+<circle cx="50" cy="20" fill="white" r="0.5"></circle>
+<circle cx="80" cy="40" fill="white" r="0.5"></circle>
+<line stroke="white" stroke-width="0.1" x1="20" x2="50" y1="30" y2="20"></line>
+<line stroke="white" stroke-width="0.1" x1="50" x2="80" y1="20" y2="40"></line>
+</svg>
+</div>
+</div>
+<div class="px-8 pb-10 -mt-12 relative z-10">
+<div class="w-24 h-24 rounded-full border-4 border-surface p-1 mb-4">
+<div class="w-full h-full rounded-full bg-cover bg-center border border-secondary" data-alt="A portrait of a serene South Asian woman with warm lighting and a celestial, ethereal aesthetic. She is dressed in soft silks, and the background features a soft-focus mystical glow with subtle golden flecks. The style is premium editorial photography with deep maroon and gold tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDVcQ3CzVjLrmD1moHGqenn1KNEA3gkP2nrhtFJcmRuK5SnmqetqujmXtjqxycCojILmjYrU9XVVcmsKaeBxS02kD10qG8D6Akfi1pbdnxRIUhKFlTUftY0Mu8CxAi-QaNQuwHDCV14V5DUeWCAPwhFBM6r7DiU5I3xBe6pvOsl0N8c-fC6U3aiVbEP0htRLGBCHl1tQLnfmRGR559dOT9dUOqBd1RgZ4scjRdhCPWspJlnJmZY70FOWy0QWGslbLnSAGCy0IztQMeo')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Vidhi Sharma</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">female</span>
+                                Female
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">calendar_today</span>
+                                14 August 1992
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">schedule</span>
+                                08:45 AM
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">location_on</span>
+                                New Delhi, IN
+                            </li>
+</ul>
+</div>
+<div class="px-8 py-4 bg-secondary/5 border-t border-secondary/10 flex justify-between">
+<span class="text-secondary font-label-sm uppercase tracking-widest">Active Profile</span>
+<span class="material-symbols-outlined text-secondary">verified</span>
+</div>
+</div>
+<!-- Profile Card 2 -->
+<div class="flex-shrink-0 w-[300px] glass-card rounded-24 overflow-hidden border-outline-variant/30 hover:border-secondary/40 transition-all">
+<div class="h-28 bg-gradient-to-br from-surface-container-high to-primary-container/20 relative">
+<div class="absolute top-4 right-4 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">#02</div>
+</div>
+<div class="px-8 pb-10 -mt-12 relative z-10">
+<div class="w-24 h-24 rounded-full border-4 border-surface p-1 mb-4">
+<div class="w-full h-full rounded-full bg-cover bg-center border border-outline-variant" data-alt="A portrait of a thoughtful young man in a minimalist setting. The lighting is low-key and dramatic, with warm golden highlights on his face. The style is sophisticated and high-end, using a charcoal and gold color palette to convey a sense of calm and wisdom." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAnUvhhKuNAmQz9jIpKgKbDTOIWLpM9q4IMu0yJcZjR1F33IHn6rjjZyJM3s3iv-aVdc9qiTVPp_Z7U-11zagt0ioPSRE9wDa8oQxBh6RUVBpLUXau2lmDlgQbWLoNHT5dgO_mfUG8l2DgJLRAT8xsuo_UDyYtMt1Sg1G_U3qZ5-fJju9LGojQFlTJ_07Wp6h5XWdNS9TiIcxcQlC7qL2FX61nnsOQ9JeYkYj7V-oWKPnQJe_D20Vc21liMjVL7nbdn-rlR99PSLHjM')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Aryan Mehta</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">male</span>
+                                Male
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">calendar_today</span>
+                                22 Nov 1988
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">schedule</span>
+                                04:20 PM
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">location_on</span>
+                                Mumbai, IN
+                            </li>
+</ul>
+</div>
+</div>
+<!-- Profile Card 3 -->
+<div class="flex-shrink-0 w-[300px] glass-card rounded-24 overflow-hidden border-outline-variant/30 hover:border-secondary/40 transition-all">
+<div class="h-28 bg-gradient-to-br from-surface-container-high to-primary-container/20 relative">
+<div class="absolute top-4 right-4 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">#03</div>
+</div>
+<div class="px-8 pb-10 -mt-12 relative z-10">
+<div class="w-24 h-24 rounded-full border-4 border-surface p-1 mb-4">
+<div class="w-full h-full rounded-full bg-cover bg-center border border-outline-variant" data-alt="An elegant older woman with a graceful expression, photographed in a high-end studio setting. The lighting is soft and golden, creating a sense of timeless luxury. The overall aesthetic is mystical yet authoritative, with deep colors and refined textures." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpC0ZcAQZ4O-J7AZvkNm2RijsBJChOTIXOpVfNkIXqQZSeU81R_AS6Viu-DDzT3LLJ3duUyiY-ibngse9LkrN3-AtntCYuBGOeCLyOr3DvDFy1IbYc-KQxLCJGabsgvXD-_XzwU14Y01vqpMmBcFtOz0fULP0msEVZuYWzuCn1GLO1z2Wi7K6Ap_9KZxXBpyTOu7fsKZQgiD8zRzcC-iAGNLRjGVY9ClXluMDsd94njxHobpIJr4AacoGt1jtSjMNA0_Dzh5MQwxJT')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Kavita S.</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">female</span>
+                                Female
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">calendar_today</span>
+                                03 Jan 1965
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">schedule</span>
+                                11:30 PM
+                            </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-secondary text-lg">location_on</span>
+                                Jaipur, IN
+                            </li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Membership Panel -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="glass-card rounded-24 p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+<div class="space-y-2 text-center md:text-left">
+<p class="text-label-sm font-label-sm text-secondary uppercase tracking-[0.2em]">Membership Status</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">Current Plan: Free Tier</h3>
+<p class="text-on-surface-variant font-body-md max-w-sm">Unlock unlimited profiles and advanced compatibility metrics.</p>
+</div>
+<div class="flex flex-col items-center md:items-end gap-6">
+<div class="flex gap-4">
+<button class="bg-secondary text-on-secondary px-8 py-3 rounded-full font-label-md text-label-md hover:shadow-[0_0_20px_rgba(229,180,91,0.4)] transition-all">
+                            Upgrade Now
+                        </button>
+<button class="px-8 py-3 border border-outline-variant text-on-surface rounded-full font-label-md text-label-md hover:border-secondary transition-all">
+                            Manage Billing
+                        </button>
+</div>
+<a class="text-on-surface-variant/50 hover:text-error transition-colors text-label-sm font-label-sm" href="#">Delete Account</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-4">
+<span class="font-headline-sm text-headline-sm text-secondary font-bold">AuraAI</span>
+<p class="text-on-surface-variant font-body-md max-w-xs">Connecting the cosmos to your daily journey through the lens of ancient wisdom.</p>
+<p class="text-on-surface-variant font-body-md text-label-sm">© 2024 AuraAI. All celestial rights reserved.</p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-4 md:justify-end items-start pt-4 md:pt-0">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Cookie Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple scroll interaction for profile row
+        const scrollContainer = document.querySelector('.no-scrollbar');
+        const nextBtn = document.querySelectorAll('button')[3]; // Simple selector for demo
+        const prevBtn = document.querySelectorAll('button')[2];
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                scrollContainer.scrollBy({ left: 350, behavior: 'smooth' });
+            });
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                scrollContainer.scrollBy({ left: -350, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body></html>

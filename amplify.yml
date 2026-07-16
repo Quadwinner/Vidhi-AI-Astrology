@@ -1,0 +1,20 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+        - echo "Checking if video exists in build..."
+        - ls -lh build/output_trimmed_start_final.mp4 || echo "VIDEO NOT FOUND IN BUILD!"
+  artifacts:
+    baseDirectory: build
+    files:
+      - '**/*'
+      - '*.mp4'
+      - 'output_trimmed_start_final.mp4'
+  cache:
+    paths:
+      - node_modules/**/*

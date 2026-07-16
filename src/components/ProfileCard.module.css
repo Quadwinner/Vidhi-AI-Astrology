@@ -1,0 +1,141 @@
+/* src/components/ProfileCard.module.css — celestial Vidhi theme */
+
+.profileCard {
+  position: relative;
+  padding: 1.5rem;
+  background: rgba(20, 19, 18, 0.62);
+  border-radius: 16px;
+  border: 1px solid rgba(229, 180, 91, 0.16);
+  text-decoration: none;
+  color: #e5e2df;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.profileCard:hover {
+  transform: translateY(-5px);
+  background: rgba(229, 180, 91, 0.05);
+  border-color: rgba(229, 180, 91, 0.45);
+  box-shadow: 0 14px 34px -14px rgba(229, 180, 91, 0.4);
+}
+
+.currentProfile {
+  background: linear-gradient(155deg, rgba(229, 180, 91, 0.08), rgba(20, 19, 18, 0.64) 55%);
+  box-shadow: 0 0 24px rgba(229, 180, 91, 0.18);
+  border: 1px solid #e5b45b;
+}
+
+.editButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(229, 180, 91, 0.08);
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  color: #e5b45b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.editButton:hover {
+  background: #e5b45b;
+  color: #271900;
+  border-color: #e5b45b;
+  transform: scale(1.1);
+}
+
+.cardHeader { display: flex; align-items: center; gap: 1rem; }
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(229, 180, 91, 0.1);
+  border: 2px solid rgba(229, 180, 91, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.avatarIcon { color: #e5b45b; }
+
+.avatarNumber {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background-color: #e5b45b;
+  color: #271900;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid #0d0c0b;
+}
+
+.nameContainer { display: flex; flex-direction: column; align-items: flex-start; }
+
+.name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #e5e2df;
+}
+
+.tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #e5b45b;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.cardDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #d5cccd;
+}
+
+.detailText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* All detail icons use the gold accent for a cohesive celestial look */
+.maleIcon,
+.femaleIcon,
+.otherIcon,
+.dobIcon,
+.tobIcon,
+.pobIcon {
+  color: #e5b45b;
+  flex-shrink: 0;
+}

@@ -1,0 +1,88 @@
+/* src/components/AccountSidebar.module.css — celestial Vidhi theme */
+
+.sidebar {
+  width: 100%;
+  height: 100vh;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.settingsMenu {
+  background: rgba(20, 19, 18, 0.6);
+  border-radius: 16px;
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  padding: 1rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.menuTitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  color: #e5e2df;
+  padding: 0 0.5rem 1rem;
+  display: block;
+}
+
+.settingsMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.settingsMenu li a,
+.settingsMenu li button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #d5cccd;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+}
+
+.settingsMenu li a svg,
+.settingsMenu li button svg { color: #b7a9ab; transition: color 0.2s ease; }
+
+.settingsMenu li a:hover,
+.settingsMenu li button:hover {
+  background-color: rgba(229, 180, 91, 0.08);
+  color: #e5e2df;
+}
+
+.settingsMenu li.active a {
+  background: rgba(229, 180, 91, 0.1);
+  color: #e5e2df;
+  box-shadow: inset 3px 0 0 #e5b45b;
+}
+
+.settingsMenu li.active a svg { color: #e5b45b; }
+
+.signOutItem {
+  border-top: 1px solid rgba(229, 180, 91, 0.15);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.settingsMenu .signOutItem button { color: #f0918f; }
+.settingsMenu .signOutItem button svg { color: #f0918f; }
+.signOutItem button:hover { background-color: rgba(240, 145, 143, 0.1); }
+
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+}

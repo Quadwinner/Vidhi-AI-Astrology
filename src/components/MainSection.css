@@ -1,0 +1,485 @@
+/* Global Styles & Reusable Variables */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.main-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 80px 20px;
+    font-family: "Inter", sans-serif;
+    color: #fff;
+}
+
+/* === SPECIFIC GRADIENT UTILITIES === */
+
+/* 1. Pink -> Purple (With Glow) */
+.gradient-pink-purple {
+    background: linear-gradient(135deg, #EC4899 0%, #9333EA 100%);
+    
+}
+
+/* 2. Purple -> Blue (With Glow) */
+.gradient-purple-blue {
+    background: linear-gradient(135deg, #A855F7 0%, #2563EB 100%);
+    
+}
+
+/* 3. Blue -> Teal (With Glow) */
+.gradient-blue-teal {
+    background: linear-gradient(135deg, #3B82F6 0%, #0D9488 100%);
+   
+}
+
+/* 4. Teal -> Green (NO GLOW) */
+.gradient-teal-green {
+    background: linear-gradient(135deg, #14B8A6 0%, #16A34A 100%);
+    
+}
+
+/* === CIRCLE SHAPES === */
+
+/* Large Circles for Stats (e.g., 94%) */
+.stat-circle-large {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-family: Sora, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Medium Circles for Icons (Steps, Features) */
+.icon-circle-medium {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    /* Prevent squash */
+    min-height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Ensure inline SVGs AND Images inside scale nicely */
+.icon-circle-medium svg,
+.icon-circle-medium img {
+    height: 34px;
+    width: auto;
+    display: block;
+}
+
+/* Small Circles for Checkmarks */
+.icon-circle-small {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Avatar Circle for AI Chat */
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Turn black icons white */
+.white-icon,
+.white-icon-small {
+    filter: brightness(0) invert(1);
+}
+
+.white-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0 !important;
+}
+
+.white-icon-small {
+    width: 14px;
+    height: 14px;
+}
+
+/* Glass Card Style */
+.card-glass {
+    background: var(--glass-bg);
+    border: var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Section */
+.title-section {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.title-section h2 {
+    color: #FFF;
+    font-family: Sora;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.title-section p {
+    font-size: 18px;
+    max-width: 789px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+}
+
+/* Section Headers */
+.precision-section h3,
+.steps-section h3,
+.advanced-ai-section h3,
+.conversation-section h3,
+.engagement-section h3 {
+    text-align: center;
+    font-family: Sora;
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #FFF;
+    margin-top: 0;
+}
+
+.precision-section p {
+    text-align: center;
+    color: #FBCFE8;
+    font-family: "Work Sans";
+    font-size: 18px;
+    margin-bottom: 3rem;
+}
+
+/* Precision (Stats) Section */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
+}
+
+.stat-card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-family: Sora;
+}
+
+.stat-card small {
+    color: #FBCFE8;
+    font-family: Sora;
+    font-size: 14px;
+}
+
+/* Steps Section */
+.steps-section h3 {
+    margin-bottom: 3rem;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.step {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+}
+
+.step h4 {
+    margin-bottom: 1rem;
+    color: #FFF;
+    font-family: Sora;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.step p {
+    color: #E5E7EB;
+    font-family: "Work Sans";
+    font-size: 15px;
+    line-height: 1.6;
+    width: 100%;
+}
+
+/* Advanced AI Section */
+.advanced-ai-section h3 {
+    margin-bottom: 3rem;
+}
+
+.ai-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+.ai-features {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.feature .icon-circle-medium {
+    margin-bottom: 0;
+    margin-right: 1rem;
+}
+
+.feature-content h4 {
+    font-size: 20px;
+    margin-bottom: 0.5rem;
+    color: #FFF;
+    font-family: Sora;
+    font-weight: 600;
+}
+
+.feature p {
+    color: #E5E7EB;
+    font-family: "Work Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.ai-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.ai-image img {
+    width: 100%;
+    height: 350px;
+    /* height: auto; */
+    /* max-width: 450px; */
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+}
+
+/* Conversation Section */
+.conversation-section h3 {
+    margin-bottom: 3rem;
+}
+
+.conversation-wrapper {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+.conversation-example {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.user-message,
+.ai-message {
+    padding: 1.5rem;
+    border-radius: 16px;
+}
+
+.user-message {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ai-message {
+    background: linear-gradient(90deg, rgba(236, 72, 153, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+}
+
+.user-header,
+.submessage {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.user-header img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.conversation-benefits {
+    flex: 0.8;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.conversation-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 16px;
+}
+
+/* Engagement Section */
+.engagement-section {
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.engagement-line {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #EC4899 10%, #ff5e28 100%);
+    color: #fff;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.primary-btn:hover {
+    transform: scale(1.05);
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-layout,
+    .conversation-wrapper {
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .ai-image img {
+        max-width: 100%;
+    }
+
+    .feature {
+        align-items: center;
+    }
+
+    .feature .icon-circle-medium {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .ai-features {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .title-section h2 {
+        font-size: 32px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .card-glass {
+        padding: 2rem 1.5rem;
+    }
+
+    .main-section {
+        padding: 60px 1rem 2rem 1rem;
+    }
+}

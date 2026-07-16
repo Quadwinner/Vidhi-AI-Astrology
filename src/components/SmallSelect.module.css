@@ -1,0 +1,89 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.container[data-open="true"] {
+  z-index: 10001; /* lift above translucent cards/backdrop-filter */
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 12px 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 18px;
+  font-family: 'Work Sans', sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+  min-width: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.trigger span {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: left;
+  display: inline-block;
+  color: #fff !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-right: 8px;
+  overflow: visible;
+  max-width: calc(100% - 30px);
+}
+
+.trigger svg {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-left: auto;
+}
+
+.container[data-disabled="true"] .trigger {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chevDown { 
+  transform: rotate(0deg); 
+  transition: transform .2s ease; 
+}
+.chevUp { 
+  transform: rotate(180deg); 
+  transition: transform .2s ease; 
+}
+
+.dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: rgba(20, 20, 30, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-height: 200px; /* roughly 5-6 rows */
+  overflow-y: auto;
+  z-index: 2147483647; /* ensure above any translucent sibling cards */
+}
+
+.option,
+.optionActive {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+}
+
+.option:hover { background: rgba(255,255,255,0.08); }
+.optionActive { color: #fff; background: rgba(237, 6, 135, 0.18); }
+
+

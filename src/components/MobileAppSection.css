@@ -1,0 +1,234 @@
+/* Mobile App Section */
+.mobile-app-section {
+  width: 100%;
+  background: linear-gradient(135deg, #1a0a1f 0%, #2d1435 50%, #1a0a1f 100%);
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 32px;
+  clear: both;
+}
+
+.mobile-app-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(237, 6, 135, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 50%, rgba(254, 108, 15, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.mobile-app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.mobile-app-content {
+  color: white;
+}
+
+.mobile-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.mobile-app-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 24px 0;
+  color: white;
+}
+
+.mobile-app-subtitle {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 32px 0;
+  max-width: 500px;
+}
+
+.coming-soon-text {
+  font-family: 'Sora', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.store-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.store-button:disabled {
+  opacity: 0.6;
+}
+
+.store-button svg {
+  flex-shrink: 0;
+}
+
+.store-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.store-label {
+  font-size: 11px;
+  opacity: 0.8;
+  display: block;
+}
+
+.store-name {
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+}
+
+.mobile-app-mockup {
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .mobile-app-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .mobile-app-title {
+    font-size: 36px;
+  }
+
+  .coming-soon-text {
+    font-size: 24px;
+  }
+
+  .mobile-app-mockup {
+    height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-app-section {
+    padding: 40px 16px;
+  }
+
+  .mobile-app-container {
+    padding: 0;
+  }
+
+  .mobile-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-app-title {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .mobile-app-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .coming-soon-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .store-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .store-button {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 20px;
+  }
+
+  .store-label {
+    font-size: 10px;
+  }
+
+  .store-name {
+    font-size: 14px;
+  }
+
+  .mobile-app-mockup {
+    height: 150px;
+  }
+}
+
+@media (max-width: 375px) {
+  .mobile-app-section {
+    padding: 30px 12px;
+  }
+
+  .mobile-app-title {
+    font-size: 20px;
+  }
+
+  .mobile-app-subtitle {
+    font-size: 13px;
+  }
+
+  .coming-soon-text {
+    font-size: 16px;
+  }
+
+  .store-button {
+    padding: 8px 16px;
+  }
+}

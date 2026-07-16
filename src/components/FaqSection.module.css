@@ -1,0 +1,93 @@
+/* src/components/FaqSection.module.css */
+
+.faqSection {
+  width: 100%;
+  max-width: 1200px; /* Constrain the width for readability */
+  margin: 0 auto;
+  /* padding: 56px 24px; */
+  padding-inline: 24px;
+  padding-top: 24px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  color: white;
+  font-size: 48px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  color: #FBCFE8;
+  font-size: 20px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  margin-top: 1rem;
+}
+
+.faqList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between each FAQ item */
+}
+
+@media (max-width: 768px) {
+  .faqSection {
+    padding: 60px 20px;
+    gap: 2rem;
+    margin-top: -53px;
+  }
+
+    .title {
+        font-size: 36px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 640px) {
+  .faqSection {
+    padding: 40px 16px;
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    margin-top: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .faqSection {
+    /* padding: 48px 12px; */
+    padding-inline: 12px;
+    padding-top: 48px;
+    padding-bottom: 32px;
+    gap: 1.25rem;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    }
+}

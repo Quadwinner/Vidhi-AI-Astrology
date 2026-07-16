@@ -1,0 +1,320 @@
+
+AuraAI Application: Production Deployment Guide
+Section 1: Project Overview & Architecture ("What We Built")
+
+This document summarizes the core features and technical components of the AuraAI subscription system.
+
+1.1. Core Features
+
+Tiered Access: The application supports three user levels: free, monthly, and yearly, each with different permissions for creating profiles and using "coins".
+
+Multi-Provider Payments: The system intelligently selects a payment gateway based on the user's location, using Stripe for most of the world and Razorpay for India.
+
+Full Subscription Lifecycle Management: The backend automates the entire subscription lifecycle, including initial purchase, renewals, payment failures, and cancellations.
+
+Self-Service Customer Portal: Users can securely manage their own subscriptions (update cards, cancel plans, view invoices) without needing customer support.
+
+1.2. Frontend (React)
+
+AuthContext.tsx: The heart of the application. It manages the user's authentication state, subscription tier (plan_tier), subscription status (active, cancelled), and coin balance.
+
+HomePage.tsx: Displays subscription plans tailored to the user's location.
+
+AccountPage.tsx: A new, secure page where logged-in users can view their current plan and access the payment gateway's portal to manage their subscription.
+
+ProfileDashboardPage.tsx: Enforces the business logic that restricts profile creation based on the user's subscription tier.
+
+1.3. Backend (Supabase Edge Functions)
+
+get-location-and-plans: Automatically detects the user's country and returns the appropriate subscription plans and currency (e.g., USD for the US, INR for India).
+
+create-payment-session: Securely creates a checkout session with either Stripe or Razorpay, linking it to the user's customer record.
+
+create-customer-portal-session: Generates a secure, one-time link for a user to access the Stripe or Razorpay portal to manage their subscription.
+
+stripe-webhook & razorpay-webhook: These are the automated listeners that receive events from the payment gateways (e.g., payment_succeeded, subscription_cancelled) and update the user's status in the database accordingly.
+
+1.4. Database (Supabase Postgres)
+
+public.users table: A custom table that extends the built-in auth.users table. It holds application-specific data like plan_tier, coin_balance, and gateway_customer_id.
+
+public.users_subscriptions table: Stores the details of a user's subscription, including its status and billing period.
+
+Row Level Security (RLS): Security is enforced at the database level. Policies are in place to ensure users can only ever read their own user data and subscription details.
+
+Section 2: Production Go-Live Checklist ("Taking Real Money")
+
+Follow these steps precisely to switch your application from Test Mode to Live Mode.
+
+Step 1: Configure Supabase for Production
+
+Update Site URL:
+
+In your Supabase Dashboard, go to Authentication -> URL Configuration.
+
+Change the Site URL from http://localhost:3000 to your final production domain (e.g., https://www.yourauraai.com).
+
+Why: This is critical for authentication redirects to work correctly on your live site.
+
+Update APP_SITE_URL Secret:
+
+Go to Settings -> Edge Functions.
+
+Update the APP_SITE_URL secret to your production domain.
+
+Why: This ensures the payment gateways redirect users back to your live site after a purchase.
+
+Step 2: Configure Stripe for Live Mode
+
+Switch to Live Mode: In your Stripe Dashboard, toggle the switch in the top-right corner from "Test mode" to "Live mode".
+
+Get Live API Keys:
+
+Go to the Developers -> API keys section.
+
+Copy your Live "Secret key".
+
+In your Supabase Dashboard (Settings -> Edge Functions), update the STRIPE_SECRET_KEY secret with this new live key.
+
+Re-create Products and Prices:
+
+Products and prices you created in Test Mode do not carry over.
+
+Go to the Products section in Stripe's Live Mode and re-create your "Monthly" and "Yearly" plans.
+
+Note the new Price IDs (e.g., price_...). You must update these new IDs in your public.prices table in the Supabase database.
+
+Configure the Live Customer Portal:
+
+Go to Settings -> Customer portal while in Live Mode.
+
+Configure the branding, features (cancellations, updates), and business information just as you did for the test environment. Settings do not carry over.
+
+Create a Live Webhook Endpoint:
+
+Go to Developers -> Webhooks.
+
+Click "Add endpoint".
+
+The Endpoint URL is your deployed Supabase function URL: https://<your-project-ref>.supabase.co/functions/v1/stripe-webhook.
+
+Click "+ Select events" and add the following required events:
+
+checkout.session.completed
+
+invoice.payment_succeeded
+
+invoice.payment_failed
+
+customer.subscription.deleted
+
+After creating the webhook, reveal and copy the Signing secret.
+
+In your Supabase Dashboard (Settings -> Edge Functions), update the STRIPE_WEBHOOK_SIGNING_SECRET with this new live secret.
+
+Step 3: How to Switch to a Different Razorpay Account (Live Mode)
+
+This directly answers your question. Follow these steps for your new/production Razorpay account.
+
+Switch to Live Mode: In your new Razorpay Dashboard, make sure you are in Live Mode.
+
+Get Live API Keys:
+
+Go to Settings -> API Keys.
+
+Generate a new set of Live keys.
+
+Copy the Key ID and Key Secret.
+
+In your Supabase Dashboard (Settings -> Edge Functions), update the RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET with these new live keys.
+
+Configure the Live Customer Portal:
+
+Go to Settings -> Customer Portal in Razorpay's Live Mode and ensure it is enabled and configured.
+
+Create a Live Webhook Endpoint:
+
+Go to Settings -> Webhooks.
+
+Click "+ Add New Webhook".
+
+The Webhook URL is https://<your-project-ref>.supabase.co/functions/v1/razorpay-webhook.
+
+Create a Secret and copy it.
+
+In your Supabase Dashboard (Settings -> Edge Functions), update the RAZORPAY_WEBHOOK_SECRET with this new live secret.
+
+Under "Active Events", select the following events:
+
+payment.captured
+
+subscription.cancelled
+
+subscription.halted
+
+Step 4: Final Deployment
+
+After you have updated all the secrets in your Supabase dashboard, you must redeploy all your functions so they can access the new live keys.
+
+Run the following commands:
+
+code
+Bash
+download
+content_copy
+expand_less
+
+supabase functions deploy get-location-and-plans --no-verify-jwt --use-api
+supabase functions deploy create-payment-session --no-verify-jwt --use-api
+supabase functions deploy create-customer-portal-session --use-api
+supabase functions deploy stripe-webhook --no-verify-jwt --use-api
+supabase functions deploy razorpay-webhook --no-verify-jwt --use-api
+supabase functions deploy reset-user-tier --use-api
+
+Your application is now fully configured for production. It's highly recommended to perform one final end-to-end test with a real, small-value payment to ensure everything is working as expected.
+
+
+
+Production Go-Live & Razorpay Account Switch: A Step-by-Step Guide
+
+This guide provides the exact commands and actions required to transition your application to a live production environment using a new Razorpay account.
+
+Section 1: Pre-requisites
+
+Before you begin, ensure you have the following ready:
+
+Your Production Domain: The final URL of your live website (e.g., https://www.yourauraai.com).
+
+New Razorpay Account Access: Login credentials for the Razorpay account you want to use for production.
+
+Stripe Account Access: Login credentials for your Stripe account.
+
+Section 2: The Commands to Update Your Supabase Project
+
+These commands will update your Supabase project's secrets to use your new Razorpay keys and your live Stripe keys. Run these from your project's root directory in your terminal.
+
+Step 2.1: Get Your Live API Keys
+
+First, retrieve the live keys from your payment gateways.
+
+For your NEW Razorpay Account:
+
+Log in to the new Razorpay account.
+
+Switch to Live Mode.
+
+Go to Settings -> API Keys.
+
+Generate and copy the Live Key ID and Live Key Secret.
+
+For your Stripe Account:
+
+Log in to Stripe.
+
+Switch to Live Mode.
+
+Go to Developers -> API Keys.
+
+Reveal and copy the Live Secret Key.
+
+Go to Developers -> Webhooks. Create a new endpoint for your stripe-webhook function URL. Reveal and copy the Signing secret.
+
+Step 2.2: Set the New Secrets using Supabase CLI Commands
+
+Execute the following commands in your terminal, replacing <VALUE> with the keys you just copied.
+
+code
+Bash
+download
+content_copy
+expand_less
+
+# Set the secret for your NEW Razorpay Live Key ID
+supabase secrets set RAZORPAY_KEY_ID=<PASTE_YOUR_NEW_RAZORPAY_LIVE_KEY_ID>
+
+# Set the secret for your NEW Razorpay Live Key Secret
+supabase secrets set RAZORPAY_KEY_SECRET=<PASTE_YOUR_NEW_RAZORPAY_LIVE_KEY_SECRET>
+
+# Set the secret for your Razorpay Live Webhook Secret
+supabase secrets set RAZORPAY_WEBHOOK_SECRET=<PASTE_YOUR_RAZORPAY_LIVE_WEBHOOK_SECRET>
+
+# Set the secret for your Stripe Live Secret Key
+supabase secrets set STRIPE_SECRET_KEY=<PASTE_YOUR_STRIPE_LIVE_SECRET_KEY>
+
+# Set the secret for your Stripe Live Webhook Signing Secret
+supabase secrets set STRIPE_WEBHOOK_SIGNING_SECRET=<PASTE_YOUR_STRIPE_LIVE_WEBHOOK_SIGNING_SECRET>
+
+# Set the secret for your Production Site URL
+supabase secrets set APP_SITE_URL=<PASTE_YOUR_PRODUCTION_DOMAIN>
+Step 2.3: Update Supabase URL Configuration
+
+This step ensures your authentication redirects work in production.
+
+Go to your Supabase Dashboard.
+
+Navigate to Authentication -> URL Configuration.
+
+Set the Site URL field to your full production domain (e.g., https://www.yourauraai.com).
+
+Click Save.
+
+Section 3: Update Database and Payment Gateway Settings
+Step 3.1: Update Prices in Your Database
+
+Products and prices from Test Mode do not exist in Live Mode.
+
+In Stripe: Go to Products in Live Mode and re-create your "Monthly" and "Yearly" plans. Note the new Price IDs (e.g., price_...).
+
+In Supabase: Go to the Table Editor and open your prices table. Update the gateway_price_id column with the new Stripe Price IDs for your USD/GBP/etc. prices.
+
+Step 3.2: Configure the Gateways
+
+For Stripe (Live Mode):
+
+Go to Settings -> Customer portal.
+
+Configure branding, policies, and enable the features you want (cancellations, updates, etc.).
+
+Click Save.
+
+For your NEW Razorpay Account (Live Mode):
+
+Go to Settings -> Customer Portal.
+
+Enable the portal and configure the allowed actions.
+
+Click Save.
+
+Section 4: Final Deployment Commands
+
+After all secrets and configurations are updated, you must redeploy every function. This action injects the new live secrets and makes them active.
+
+Execute these commands one by one:
+
+code
+Bash
+download
+content_copy
+expand_less
+IGNORE_WHEN_COPYING_START
+IGNORE_WHEN_COPYING_END
+# Deploys the function that serves location-based plans
+supabase functions deploy get-location-and-plans --no-verify-jwt --use-api
+
+# Deploys the function that creates payment checkouts
+supabase functions deploy create-payment-session --no-verify-jwt --use-api
+
+# Deploys the function that generates links for subscription management
+supabase functions deploy create-customer-portal-session --use-api
+
+# Deploys the function that listens for Stripe events
+supabase functions deploy stripe-webhook --no-verify-jwt --use-api
+
+# Deploys the function that listens for Razorpay events
+supabase functions deploy razorpay-webhook --no-verify-jwt --use-api
+
+# Deploys the utility function for tier resets
+supabase functions deploy reset-user-tier --use-api
+Section 5: Final Verification
+
+Your application is now live. It is highly recommended to perform a final end-to-end test with a real credit card for both a Stripe and a Razorpay region to ensure everything is functioning correctly.

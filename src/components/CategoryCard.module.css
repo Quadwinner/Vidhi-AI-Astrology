@@ -1,0 +1,290 @@
+/* src/components/CategoryCard.module.css */
+
+.wrapper {
+  color: #fff;
+  position: relative;
+  overflow: visible;
+  padding: 4px 0 14px 0;
+}
+
+.categoryRow {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.categoryRow::-webkit-scrollbar {
+  display: none;
+}
+
+.categoryButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 10px 14px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 40px;
+}
+
+.categoryButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.categoryButton.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2px;
+}
+
+.categoryIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.categoryIconSvg {
+  color: #ffffff;
+}
+
+/* Arrow rotation */
+.dropdownArrow {
+  margin-left: 4px;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.arrowOpen {
+  transform: rotate(180deg);
+}
+
+/* --- QUESTIONS PANEL CONTAINER --- */
+.questionsPanel {
+  margin-top: 12px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  /* Slight background for contrast */
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  /* Crucial for height animation */
+  overflow: hidden;
+  transform-origin: top;
+
+  /* Soft Entry Animation */
+  animation: subtleFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* --- CLOSING ANIMATION STATE --- */
+.panelClosing {
+  /* Soft Exit Animation */
+  animation: subtleFadeOut 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+  /* Prevent clicks while fading out */
+}
+
+/* --- KEYFRAMES --- */
+@keyframes subtleFadeIn {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-8px);
+    /* Starts slightly above */
+  }
+
+  100% {
+    opacity: 1;
+    max-height: 600px;
+    /* Arbitrary large height to fit content */
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtleFadeOut {
+  0% {
+    opacity: 1;
+    max-height: 600px;
+    transform: translateY(0);
+    /* We must implicitly maintain layout properties at start of exit */
+    margin-top: 12px;
+    padding: 12px;
+    border-width: 1px;
+  }
+
+  100% {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-8px);
+    /* Slides back up slightly */
+
+    /* Remove layout space so items below move up smoothly */
+    margin-top: 0;
+    padding: 0;
+    border-width: 0;
+  }
+}
+
+/* --- PANEL HEADER & CLOSE BUTTON --- */
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.panelTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.closePanelButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.closePanelButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* --- QUESTIONS LIST --- */
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: visible;
+  width: 100%;
+}
+
+.questionButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+
+  /* Staggered entry for individual items */
+  opacity: 0;
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.questionButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.questionCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  box-shadow: 0 0 29.736px 0 rgba(210, 58, 173, 0.60);
+  flex-shrink: 0;
+}
+
+.questionText {
+  flex: 1;
+  text-align: left;
+}
+
+.noQuestions {
+  padding: 16px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0;
+  }
+
+  .categoryRow {
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .categoryButton {
+    padding: 8px 12px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .questionsPanel {
+    margin-top: 12px;
+  }
+
+  .questionsList {
+    max-height: 35vh;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .questionButton {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}

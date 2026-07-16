@@ -1,0 +1,44 @@
+/* src/components/SubscriptionModal.css */
+
+.modal-body .pricing-section {
+  padding: 1rem 1.5rem 2rem 1.5rem;
+  margin-top: 0;
+}
+
+.modal-body .section-title {
+  font-size: 2rem;
+}
+
+.modal-body .section-subtitle {
+  font-size: 1rem;
+  max-width: 100%;
+}
+
+
+.modal-body .pricing-card p,
+.subscription-card p {
+  min-height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+
+@media (max-width: 768px) {
+  .modal-body .pricing-section {
+    padding: 1rem;
+  }
+
+  .modal-body .plans-grid {
+    max-width: 100%;
+  }
+
+  .modal-body .pricing-card {
+    max-width: 100%;
+  }
+
+  .modal-body .recharge-grid {
+    max-width: 100%;
+  }
+}

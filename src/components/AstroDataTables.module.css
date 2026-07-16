@@ -1,0 +1,302 @@
+/* AstroDataTables.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden; 
+}
+
+/* --- MODIFIED SECTION START --- */
+
+/* 1. The Container: Updated border color and thickness */
+.subTabsContainer {
+  display: flex;
+  overflow: hidden; /* Keeps the seamless pill shape */
+  
+  /* UPDATED: Using the new border style */
+  border: 1.21px solid #FE607E; 
+  
+  border-radius: 9999px; /* Perfect pill shape */
+  padding: 0; 
+  width: 100%;
+}
+
+/* 2. The Buttons: Simplified, no individual border-radius needed */
+.subTabButton {
+  flex-grow: 1;
+  text-align: center;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 0; /* All buttons are sharp; the container creates the curve */
+  background: transparent;
+  color: #a0a7b1;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 3. The Separator: Now a full-height border with the correct color */
+.subTabButton:not(:last-child) {
+  /* UPDATED: Switched to a border for full height and applied the new color */
+  border-right: 1.21px solid #FE607E;
+}
+
+
+/* 4. Active and Hover States (No changes needed here) */
+.subTabButton:hover {
+  background-color: rgba(254, 96, 126, 0.1); /* Using a light pink for hover */
+  color: white;
+}
+
+.activeSubTab {
+  color: white;
+  background-color: #FE607E;
+}
+
+.activeSubTab:hover {
+  background-color: #FE607E;
+  color: white;
+}
+/* --- MODIFIED SECTION END --- */
+
+
+/* --- Mobile Carousel Styles (Unchanged) --- */
+.mobileNavContainer {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navButton {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.navButton:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navButton:disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.currentTabLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  color: white;
+  text-align: center;
+  flex-grow: 1;
+}
+
+
+/* --- Shared Content and Table Styles (Unchanged) --- */
+.subTabContent {
+  padding-top: 1rem;
+}
+.chartsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem; /* Adjusted gap for better spacing */
+  align-items: flex-start; /* Align items to the top */
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  margin-bottom: 2.5rem; /* Add space below the charts section */
+}
+
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 45%; /* Allows items to grow and shrink, with a base of 45% */
+  /* min-width: 270px; Prevents charts from becoming too small */
+}
+
+.tableContainer {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2.5rem;
+}
+.divisionalTabsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.divisionalTabButton {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.divisionalTabButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.activeDivisionalTab {
+  background: #FE607E;
+  border-color: #FE607E;
+  font-weight: bold;
+}
+
+
+/* --- Final Responsive Media Queries (Unchanged) --- */
+@media (max-width: 768px) {
+  .chartsContainer {
+    flex-direction: column; /* Stack charts vertically on mobile */
+    gap: 3rem;
+  }
+  .infoTitle {
+    font-size: 1.3rem;
+  }
+  .subTabsContainer, .divisionalTabsContainer {
+    display: none;
+  }
+  .mobileNavContainer {
+    margin-top: 2px;
+    border: 1.21px solid #FE607E;
+    display: flex;
+  }
+  .subTabContent {
+    padding-top: 0.5rem;
+  }
+  .currentTabLabel {
+    font-size: 1rem;
+  }
+}
+
+.infoHeader {
+  margin-top: 10px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  max-width: 700px; /* Constrains width for readability */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.infoTitle {
+  font-family: 'Sora', sans-serif;
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.infoDescription {
+  color: #a0a7b1;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 
+  Add these styles to your AstroDataTables.module.css file.
+  They are scoped and will not interfere with other components.
+*/
+
+/* Keyframes for the spinning mandala animation */
+@keyframes rotateMandala {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Main container for the in-tab loader */
+.yogasLoadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px; /* Give it space to breathe inside the tab */
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* The div that will display and animate the mandala */
+.mandalaAnimation {
+  width: 300px;  /* A good default size for desktop */
+  height: 300px;
+  /* 
+    IMPORTANT: The path to your SVG might need adjustment.
+    This assumes your 'components' folder and 'assets' folder are siblings.
+    e.g., src/components/AstroDataTables.module.css and src/assets/Mandala.svg
+  */
+  background: url('../assets/Mandala.svg') no-repeat center;
+  background-size: contain;
+  animation: rotateMandala 8s linear infinite;
+  margin-bottom: 2rem;
+}
+
+/* Styling for the title below the mandala */
+.loadingTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff; /* Or your theme's primary text color */
+  margin-bottom: 1rem;
+}
+
+/* Styling for the descriptive text */
+.loadingDescription {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8); /* Or your theme's secondary text color */
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+
+/* --- Responsive Adjustments --- */
+
+/* For Tablet screens */
+@media (max-width: 768px) {
+  .mandalaAnimation {
+    width: 250px;
+    height: 250px;
+  }
+  .loadingTitle {
+    font-size: 1.25rem;
+  }
+  .loadingDescription {
+    font-size: 0.9rem;
+  }
+}
+
+/* For Mobile screens */
+@media (max-width: 480px) {
+  .yogasLoadingContainer {
+    min-height: 400px;
+    padding: 20px 15px;
+  }
+  .mandalaAnimation {
+    width: 200px;
+    height: 200px;
+  }
+}

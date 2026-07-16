@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "start": "deno run -A --watch=static/,routes/ index.ts"
+  },
+  "deploy": {
+    "entrypoint": "index.ts"
+  }
+}
+
+

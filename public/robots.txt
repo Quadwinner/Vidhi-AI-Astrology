@@ -1,0 +1,7 @@
+# robots.txt for https://astroaura.ai
+# Reference: https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+Sitemap: https://astroaura.ai/sitemap.xml

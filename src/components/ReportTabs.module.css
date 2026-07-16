@@ -1,0 +1,113 @@
+/* === ReportTabs.module.css === */
+/*     Corrected with Persistent Active State     */
+
+.tabsContainer {
+  display: flex;
+  gap: 0.75rem;
+  width: 50%;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  margin-right: auto;
+}
+
+/* Inactive state style */
+.tabButton {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #D1D5DB;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+
+/* --- THE FIX IS HERE --- */
+/* This hover effect now ONLY applies to the button that is NOT active. */
+.tabButton:not(.active):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+/* The ACTIVE state style (This is now fully independent) */
+.active {
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  box-shadow: 0px 4px 25px rgba(210, 58, 173, 0.50);
+  color: white;
+  font-weight: 700;
+  border-color: transparent;
+}
+
+/* A subtle lift effect when hovering over the ALREADY active tab */
+.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 30px rgba(210, 58, 173, 0.60);
+}
+
+/* --- NEW: Media Query for Mobile Layout --- */
+@media (max-width: 768px) {
+  .tabsContainer {
+    /* Allows this component to grow and fill the available space */
+    flex-grow: 1; 
+
+    /* Overrides the fixed 50% width from the desktop style */
+    width: auto; 
+    
+    /* Remove margins as the parent .pageHeader now controls spacing */
+    margin: 0; 
+  }
+
+  /* Optionally, reduce font size on very small screens if needed */
+  .tabButton {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.5rem; /* Adjust padding for smaller text */
+  }
+}
+
+/* =====================================================================
+   CELESTIAL SEGMENTED SWITCHER (overrides win)
+   ===================================================================== */
+.tabsContainer {
+  width: fit-content;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 9999px;
+  background: rgba(28, 27, 26, 0.6);
+  border: 1px solid rgba(229, 180, 91, 0.18);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  margin-top: 0;
+}
+.tabButton {
+  flex: 0 0 auto;
+  padding: 10px 30px;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  border: none !important;
+  color: #b7a9ab !important;
+  font-family: 'Inter', sans-serif;
+}
+.tabButton:not(.active):hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #e5e2df !important;
+}
+.active {
+  background: #e5b45b !important;
+  background-image: none !important;
+  color: #271900 !important;
+  box-shadow: 0 4px 14px rgba(229, 180, 91, 0.3) !important;
+  border-color: transparent !important;
+}
+.active:hover { transform: none; box-shadow: 0 4px 14px rgba(229, 180, 91, 0.3) !important; }
+
+@media (max-width: 768px) {
+  .tabsContainer { width: 100%; justify-content: center; }
+  .tabButton { flex: 1; padding: 10px 12px; }
+}

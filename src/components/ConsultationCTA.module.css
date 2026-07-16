@@ -1,0 +1,76 @@
+/* Using a CSS variable for the primary color makes it easy to change later */
+:root {
+  --primary-color: #FE607E; /* A vibrant orange, you can change this */
+  --primary-color-hover: #f7375b; /* A slightly darker shade for hover */
+}
+
+.ctaContainer {
+  background-color: #FFF0E7;
+  /* border-radius: 12px; */
+  padding: 32px 24px;
+  margin-top: 32px; /* Adds space above this component */
+  text-align: center;
+}
+
+.ctaText {
+  color: #000000;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto 24px auto; /* Center the text block */
+  text-decoration: none;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px; /* Space between buttons */
+  flex-wrap: wrap; /* Allows buttons to wrap on smaller screens if needed */
+}
+
+.ctaButton {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+  background-color: #FE607E;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 99px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.ctaButton:hover {
+  background-color: var(--primary-color-hover);
+}
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 768px) {
+  .ctaContainer {
+    margin-bottom: 32px;
+    padding: 20px 16px;
+  }
+
+  .ctaText {
+    font-size: 1rem;
+  }
+
+  .buttonContainer {
+    flex-direction: column; /* Stack buttons vertically */
+    width: 100%;
+    max-width: 320px; /* Constrain width on mobile */
+    margin: 0 auto;
+  }
+
+  .ctaButton {
+    width: 100%; /* Make buttons full width of the container */
+    padding: 14px;
+  }
+}

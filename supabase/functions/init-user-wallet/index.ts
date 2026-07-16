@@ -1,0 +1,142 @@
+// src/supabase/functions/init-user-wallet/index.ts
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { corsHeaders } from '../_shared/cors.ts'
+
+const GEOAPIFY_API_URL = 'https://api.geoapify.com/v1/ipinfo';
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  try {
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) throw new Error('Missing Authorization header')
+
+    // NEW: Get the variant name from the request body
+    const requestBody = await req.json();
+    const variant_name = requestBody.variant_name || 'control'; // Default to 'control' for safety
+
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    )
+
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
+    if (authError || !user) throw new Error('Invalid Token')
+
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
+    const { data: userProfile, error: fetchError } = await supabaseAdmin
+      .from('users')
+      .select('currency_code, wallet_balance')
+      .eq('id', user.id)
+      .single()
+
+    if (fetchError) throw new Error(`Fetch failed: ${fetchError.message}`)
+
+    if (userProfile.currency_code) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          is_new_setup: false,
+          currency: userProfile.currency_code,
+          balance: userProfile.wallet_balance || 0
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    console.log(`[init-user-wallet] Setting up user ${user.id} for variant '${variant_name}'...`)
+
+    // A. Detect Country via Geoapify
+    const apiKey = Deno.env.get('GEOAPIFY_API_KEY')
+    if (!apiKey) throw new Error('Server config error: Missing GEOAPIFY_API_KEY')
+    let clientIp = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || ''
+    if (!clientIp) console.warn('Warning: Could not detect Client IP')
+    const geoRes = await fetch(`${GEOAPIFY_API_URL}?ip=${clientIp}&apiKey=${apiKey}`)
+    const geoData = await geoRes.json()
+    const detectedCountry = geoData.country?.iso_code || 'US'
+    console.log(`[init-user-wallet] Detected Country: ${detectedCountry}`)
+
+    // B. Determine Currency
+    let targetCurrency = 'USD';
+    if (detectedCountry === 'IN') targetCurrency = 'INR';
+    else if (detectedCountry === 'GB') targetCurrency = 'GBP';
+    else if (detectedCountry === 'AE') targetCurrency = 'AED';
+
+    // C. --- LOGIC CHANGE: Fetch the price of ONE chat message for the user's variant ---
+    let startingBalance = 0;
+
+    // First attempt: Find price for the specific variant
+    const { data: variantPriceData } = await supabaseAdmin
+      .from('service_prices')
+      .select('price_amount')
+      .eq('service_key', 'chat_message')
+      .eq('currency_code', targetCurrency)
+      .eq('variant_name', variant_name)
+      .single();
+
+    if (variantPriceData) {
+      startingBalance = variantPriceData.price_amount;
+      console.log(`[init-user-wallet] Found price for variant '${variant_name}': ${startingBalance}`);
+    } else {
+      // Fallback: If no price for the specific variant, use the 'control' price
+      console.warn(`[init-user-wallet] No 'chat_message' price found for variant '${variant_name}'. Falling back to 'control'.`);
+      const { data: controlPriceData } = await supabaseAdmin
+        .from('service_prices')
+        .select('price_amount')
+        .eq('service_key', 'chat_message')
+        .eq('currency_code', targetCurrency)
+        .eq('variant_name', 'control')
+        .single();
+
+      if (controlPriceData) {
+        startingBalance = controlPriceData.price_amount;
+        console.log(`[init-user-wallet] Using fallback 'control' price: ${startingBalance}`);
+      } else {
+        // If even control is missing, default to 0 to avoid errors.
+        console.error(`[CRITICAL] Missing 'chat_message' price for currency '${targetCurrency}' in both '${variant_name}' and 'control' variants.`);
+        startingBalance = 0;
+      }
+    }
+
+    // D. Update User in DB
+    const { error: updateError } = await supabaseAdmin
+      .from('users')
+      .update({
+        currency_code: targetCurrency,
+        wallet_balance: startingBalance, // Use the dynamically fetched price
+        country: detectedCountry,
+        is_migrated: true,
+        coin_balance: 0, // Reset legacy coins
+        pricing_variant: variant_name // <-- ADD THIS LINE
+      })
+      .eq('id', user.id)
+
+    if (updateError) throw new Error(`Update failed: ${updateError.message}`)
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        is_new_setup: true,
+        country_detected: detectedCountry,
+        currency: targetCurrency,
+        balance: startingBalance
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+
+  } catch (error) {
+    console.error(`[init-user-wallet] Error:`, error)
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+})

@@ -1,0 +1,214 @@
+@keyframes bounceFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes shadowScale {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(0.85);
+    opacity: 0.3;
+  }
+}
+
+@keyframes tiltRotate {
+  0% {
+    transform: rotate(-8deg); /* Slight tilt left */
+  }
+  100% {
+    transform: rotate(8deg); /* Slight tilt right */
+  }
+}
+
+.Bounce {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+  top: -4px;
+  pointer-events: none;
+}
+
+
+
+.floating {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounceFloat 3s ease-in-out infinite, tiltRotate 6s ease-in-out infinite alternate, moveRightToLeft 6s ease-in-out infinite alternate;;
+  transform-origin: center;
+}
+
+.floating img {
+  position: relative;
+  z-index: 2;
+}
+
+
+.shadow {
+  width: 80px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  filter: blur(4px);
+  margin-top: 10px;
+  animation: shadowScale 3s ease-in-out infinite;
+}
+
+
+.halfAtom {
+  width: 190px;
+  height: 180px;
+  left: -30px;
+  animation-delay: 0s;
+}
+
+.card {
+  width: 100px;
+  height: 120px;
+  left: -21px;
+  animation-delay: 0.5s;
+}
+
+.heartIcon {
+  width: 180px;
+  height: 140px;
+  left: -12px;
+  animation-delay: 1s;
+}
+
+.gift {
+  width: 159px;
+  height: 120px;
+  left: -9px;
+  animation-delay: 1.5s;
+}
+
+.atom {
+  width: 210px;
+  height: 145px;
+  animation-delay: 0s;
+}
+
+.BagIcon {
+  width: 140px;
+  height: 94px;
+  animation-delay: 2s;
+}
+
+.BudhaIcon {
+  width: 180px;
+  height: 160px;
+  animation-delay: 2.5s;
+}
+
+.wheel {
+  width: 205px;
+  height: 186px;
+  left: -41px;
+  animation-delay: 3s;
+}
+
+
+.floating:nth-child(1) .shadow {
+  animation-delay: 0s;
+}
+
+.floating:nth-child(2) .shadow {
+  animation-delay: 0.5s;
+}
+
+.floating:nth-child(3) .shadow {
+  animation-delay: 1s;
+}
+
+.floating:nth-child(4) .shadow {
+  animation-delay: 1.5s;
+}
+
+.floating:nth-child(5) .shadow {
+  animation-delay: 2s;
+}
+
+.floating:nth-child(6) .shadow {
+  animation-delay: 2.5s;
+}
+
+.floating:nth-child(7) .shadow {
+  animation-delay: 3s;
+}
+
+@keyframes moveRightToLeft {
+  0% {
+    transform: translateX(50px);  /* start from right */
+  }
+  50% {
+    transform: translateX(0px);   /* center */
+  }
+  100% {
+    transform: translateX(-50px); /* move to left */
+  }
+}
+
+
+
+/* @media (max-width: 768px) {
+  .floating {
+  
+  }
+  .Bounce {
+    height: 200px;
+  }
+} */
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .Bounce {
+    gap: 15px;       /* less gap between items */
+    top: 0;          /* adjust spacing */
+    height: 150px;   /* reduce container height */
+  }
+
+  .floating img {
+    max-width: 80px;   /* reduce image size */
+    max-height: 80px;
+  }
+
+  .shadow {
+    width: 50px;   /* smaller shadow */
+    height: 12px;
+  }
+
+  /* Optional: scale down all at once */
+  .floating {
+    transform: scale(0.7);
+  }
+
+  /* If you want per-item resizing */
+  .halfAtom { width: 120px; height: 110px; }
+  .card { width: 70px; height: 85px; }
+  .heartIcon { width: 120px; height: 95px; }
+  .gift { width: 100px; height: 80px; }
+  .atom { width: 130px; height: 95px; }
+  .BagIcon { width: 90px; height: 65px; }
+  .BudhaIcon { width: 120px; height: 110px; }
+  .wheel { width: 130px; height: 120px; }
+}
+

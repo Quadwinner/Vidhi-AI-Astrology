@@ -1,0 +1,78 @@
+/* src/components/GenderSelector.module.css */
+
+.genderContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.genderOption {
+  flex: 1 1;
+  min-width: 90px;
+  max-width: 140px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.genderOption:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.genderOption.selected {
+  border: 2px solid #ED0687;
+  background: rgba(237, 6, 135, 0.15);
+  box-shadow: 0 4px 16px rgba(237, 6, 135, 0.3);
+}
+
+/* --- THIS IS THE NEW CODE FOR ICON COLORS --- */
+
+/* Default Icon Colors */
+.male .iconWrapper {
+  color: #60A5FA;
+  /* Blue */
+}
+
+.female .iconWrapper {
+  color: #F472B6;
+  /* Pink */
+}
+
+.other .iconWrapper {
+  color: #C084FC;
+  /* Purple */
+}
+
+/* When a button is selected, its icon becomes white */
+.genderOption.selected .iconWrapper {
+  color: white;
+}

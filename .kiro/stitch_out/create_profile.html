@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI | Create Birth Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#ffb1c2",
+                    "secondary-fixed": "#ffdea9",
+                    "on-primary-fixed": "#3f0018",
+                    "inverse-on-surface": "#31302f",
+                    "secondary-container": "#7d5800",
+                    "surface-variant": "#363533",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "background": "#141312",
+                    "on-surface-variant": "#dbc0c4",
+                    "surface-container-highest": "#363533",
+                    "primary-container": "#61072b",
+                    "surface-tint": "#ffb1c2",
+                    "tertiary-fixed": "#dde2f6",
+                    "on-secondary-container": "#ffd284",
+                    "surface-container-low": "#1c1b1a",
+                    "on-surface": "#e5e2df",
+                    "surface-container": "#201f1e",
+                    "primary-fixed": "#ffd9e0",
+                    "surface-bright": "#3a3937",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "surface-container-high": "#2b2a28",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#2a303f",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "error-container": "#93000a",
+                    "on-background": "#e5e2df",
+                    "tertiary": "#c1c6d9",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "on-primary": "#62082c",
+                    "inverse-primary": "#9f3b59",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "on-secondary": "#422c00",
+                    "on-primary-fixed-variant": "#812342",
+                    "inverse-surface": "#e5e2df",
+                    "outline-variant": "#554245",
+                    "secondary": "#f1bf64",
+                    "on-primary-container": "#e67291",
+                    "surface-dim": "#141312",
+                    "surface": "#141312",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e0d",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#151b29",
+                    "on-secondary-fixed": "#271900",
+                    "tertiary-container": "#292f3e",
+                    "outline": "#a38b8f",
+                    "on-tertiary-container": "#9196a9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-sm": ["Playfair Display"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0c0b;
+            color: #e5e2df;
+            overflow-x: hidden;
+        }
+
+        .star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #61072b 0%, #0d0c0b 100%);
+            opacity: 0.6;
+        }
+
+        .mandala-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .glass-card {
+            background: rgba(20, 19, 18, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(241, 191, 100, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(241, 191, 100, 0.2);
+            border-color: #f1bf64;
+            outline: none;
+        }
+
+        .button-glow {
+            box-shadow: 0 0 20px rgba(241, 191, 100, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .button-glow:hover {
+            box-shadow: 0 0 30px rgba(241, 191, 100, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0d0c0b; }
+        ::-webkit-scrollbar-thumb { background: #61072b; border-radius: 10px; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Decorative Backgrounds -->
+<div class="star-field"></div>
+<div class="mandala-bg" data-alt="A sophisticated gold mandala line-art motif with intricate geometric patterns, inspired by Vedic astrology and sacred geometry, rendered in a faint golden stroke style against a deep celestial maroon and black background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEruLpNIHj1H0FZ5PKYjQ6x4cAfdb8fXMwFIZflcF09alHATNl_Xh0RtEqleQDgl0epyvEI82WIeJ75llE7-AopcznnjF8D0McdbaolmKGTgy-CJU9HtQU2jpCZqBCZVdfbzGhLZFAk6c2E5tAQVkszp3KXr94JbDCeu8qL3mhddTlMmjt2K2wkuK-3lzRNK1YsNp31vq5DfXZqHr33Y4TYXuBdwZgKHKjBcvFe9eGbV15Kq8dwINeJgT-fSS_T999OIjBNfIO_Bmj')"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md dark:bg-surface/80 border-b border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-secondary dark:text-secondary">AuraAI</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Features</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Pricing</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Reviews</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">FAQ</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-secondary transition-all duration-300 font-label-md text-label-md">Sign In</button>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-lg font-bold hover:bg-secondary-fixed-dim transition-all duration-300 font-label-md text-label-md">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="relative z-10 pt-32 pb-20 px-margin-mobile md:px-margin-desktop min-h-screen flex flex-col items-center">
+<!-- Header Section -->
+<header class="w-full max-w-[640px] mb-8 text-left animate-in fade-in slide-in-from-bottom-4 duration-1000">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Hey <span id="user-name">Vidhi</span>,</h1>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">Create a birth profile to unlock your personalized cosmic insights.</p>
+</header>
+<!-- Form Card -->
+<section class="w-full max-w-[640px] glass-card rounded-[20px] p-8 md:p-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+<form action="#" class="space-y-8" onsubmit="return false;">
+<!-- Profile Name -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">person</span>
+                        Profile Name
+                    </label>
+<input class="w-full bg-surface-container-low/40 border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/40 input-glow transition-all font-body-md text-body-md" placeholder="e.g. My Personal Chart" type="text"/>
+</div>
+<!-- Gender -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">wc</span>
+                        Gender
+                    </label>
+<div class="flex flex-wrap gap-3">
+<button class="gender-pill px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant font-label-md text-label-md bg-surface-container-low/20 transition-all hover:border-secondary/50 active-pill" onclick="togglePill(this)" type="button">Male</button>
+<button class="gender-pill px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant font-label-md text-label-md bg-surface-container-low/20 transition-all hover:border-secondary/50" onclick="togglePill(this)" type="button">Female</button>
+<button class="gender-pill px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant font-label-md text-label-md bg-surface-container-low/20 transition-all hover:border-secondary/50" onclick="togglePill(this)" type="button">Other</button>
+</div>
+<style>
+                        .active-pill {
+                            background-color: #f1bf64 !important;
+                            color: #271900 !important;
+                            border-color: #f1bf64 !important;
+                            font-weight: 600;
+                        }
+                    </style>
+<script>
+                        function togglePill(el) {
+                            document.querySelectorAll('.gender-pill').forEach(btn => btn.classList.remove('active-pill'));
+                            el.classList.add('active-pill');
+                        }
+                    </script>
+</div>
+<!-- Date and Time -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Date -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">calendar_today</span>
+                            Date of Birth
+                        </label>
+<div class="relative">
+<input class="w-full bg-surface-container-low/40 border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface input-glow transition-all font-body-md text-body-md [color-scheme:dark]" type="date"/>
+</div>
+</div>
+<!-- Time -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">schedule</span>
+                            Time of Birth
+                        </label>
+<div class="relative">
+<input class="w-full bg-surface-container-low/40 border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface input-glow transition-all font-body-md text-body-md [color-scheme:dark]" type="time"/>
+</div>
+</div>
+</div>
+<!-- Birth Place -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+                        Birth Place
+                    </label>
+<div class="relative">
+<input class="w-full bg-surface-container-low/40 border border-outline-variant/30 rounded-xl pl-12 pr-4 py-3 text-on-surface placeholder-on-surface-variant/40 input-glow transition-all font-body-md text-body-md" placeholder="Search city or town..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40">search</span>
+</div>
+</div>
+<!-- Languages -->
+<div class="space-y-3">
+<label class="flex items-center gap-2 text-[#B7A9AB] font-label-md text-label-md ml-1">
+<span class="material-symbols-outlined text-secondary">language</span>
+                        Preferred Languages
+                    </label>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-highest border border-outline-variant/20 text-on-surface font-label-sm text-label-sm">
+                            English <span class="material-symbols-outlined !text-[14px] cursor-pointer hover:text-primary">close</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-highest border border-outline-variant/20 text-on-surface font-label-sm text-label-sm">
+                            Hindi <span class="material-symbols-outlined !text-[14px] cursor-pointer hover:text-primary">close</span>
+</div>
+<button class="px-3 py-1.5 rounded-lg border border-dashed border-outline-variant text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors font-label-sm text-label-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined !text-[16px]">add</span> Add
+                        </button>
+</div>
+</div>
+<!-- Info Note -->
+<div class="flex items-start gap-3 p-4 rounded-xl bg-primary-container/10 border border-primary-container/20">
+<span class="material-symbols-outlined text-primary !text-[18px] mt-0.5">info</span>
+<p class="text-on-surface-variant text-label-sm font-label-sm leading-relaxed">
+                        Birth details can't be edited after creation — please review carefully. These determine the accuracy of your Vedic transit predictions.
+                    </p>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 space-y-6">
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-bold font-headline-sm text-headline-sm button-glow uppercase tracking-widest">
+                        Proceed
+                    </button>
+<div class="text-center">
+<button class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" type="button">
+                            Cancel and return to dashboard
+                        </button>
+</div>
+</div>
+</form>
+</section>
+<!-- Ambient Glow Elements -->
+<div class="fixed bottom-0 left-0 w-96 h-96 bg-primary-container opacity-20 blur-[120px] rounded-full -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+<div class="fixed top-1/4 right-0 w-64 h-64 bg-secondary opacity-10 blur-[100px] rounded-full translate-x-1/2 pointer-events-none"></div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-4">
+<div class="font-headline-sm text-headline-sm text-secondary">AuraAI</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Bridging cosmic wisdom with artificial intelligence to guide your spiritual and earthly journey.</p>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">© 2024 AuraAI. All celestial rights reserved.</p>
+</div>
+<div class="flex flex-wrap md:justify-end gap-x-8 gap-y-4 items-center">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Cookie Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Subtle Mouse Interaction for Glass Card
+        const card = document.querySelector('.glass-card');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Interactive focus for inputs to trigger more glow
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.style.opacity = '1';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.style.opacity = '';
+            });
+        });
+    </script>
+</body></html>

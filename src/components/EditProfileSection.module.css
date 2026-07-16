@@ -1,0 +1,210 @@
+.container {
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.card {
+    background: transparent;
+    border-radius: 20px;
+    padding: 3rem;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.164);
+}
+
+/* Avatar Section */
+.avatarContainer {
+    flex-shrink: 0;
+}
+
+.initialsAvatar {
+    width: 120px;
+    height: 120px;
+    background-color: #0085FF;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-size: 48px;
+    font-weight: 500;
+    color: white;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cameraBtn {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background: #F472B6;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid #500F31;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+
+/* --- NEW: Right Side Column Wrapper --- */
+.rightColumn {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    /* Spacing between form and button */
+    width: 100%;
+}
+
+/* Form Grid */
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 1.5rem;
+    width: 100%;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.inputGroup label {
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.inputField {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.inputField:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.readOnly {
+    opacity: 0.7;
+    cursor: default;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Location Suggestions Dropdown */
+.locationWrapper {
+    position: relative;
+}
+
+.suggestionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #2a1b25;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-top: 4px;
+    padding: 0;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.suggestionsList li {
+    padding: 12px 16px;
+    color: white;
+    cursor: pointer;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.suggestionsList li:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Footer / Save Button */
+.footer {
+    /* No more absolute positioning */
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.saveButton {
+    background: linear-gradient(90deg, #FF0080 0%, #FF8C00 100%);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 0, 128, 0.3);
+    transition: transform 0.2s;
+}
+
+.saveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 128, 0.5);
+}
+
+.saveButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 900px) {
+    .card {
+        flex-direction: column;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer {
+        justify-content: center;
+        /* Center button on mobile */
+    }
+}

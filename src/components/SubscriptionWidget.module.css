@@ -1,0 +1,107 @@
+/* src/components/SubscriptionWidget.module.css — celestial Vidhi theme */
+
+.widgetContainer {
+  padding: 24px;
+  border-radius: 16px;
+  color: #e5e2df;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  background: rgba(20, 19, 18, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e5e2df;
+}
+
+.planBox {
+  position: relative;
+  background: rgba(229, 180, 91, 0.06);
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.planInfo { display: flex; flex-direction: column; }
+.planName { font-weight: 600; font-size: 18px; color: #e5b45b; }
+.planDescription { font-size: 14px; color: #b7a9ab; margin-top: 4px; }
+
+.statusBadge {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: #4ade80;
+  color: #05310f;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.actionBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(229, 180, 91, 0.14);
+  border-radius: 12px;
+  padding: 16px;
+  color: #e5e2df;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.actionBox:hover {
+  background: rgba(229, 180, 91, 0.07);
+  border-color: rgba(229, 180, 91, 0.4);
+  transform: translateY(-2px);
+}
+
+.actionTitle { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #e5e2df; }
+.actionSubtitle { font-size: 13px; color: #b7a9ab; }
+
+.accountContainer {
+  border: 1px solid rgba(229, 180, 91, 0.16);
+  background: rgba(20, 19, 18, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  color: #e5e2df;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.accountTitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e5e2df;
+}
+
+.accountBox {
+  background: rgba(240, 145, 143, 0.06);
+  border: 1px solid rgba(240, 145, 143, 0.2);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.deleteAction { display: flex; align-items: center; gap: 12px; }
+.deleteIcon { font-size: 20px; color: #f0918f; }
+.deleteText { display: flex; flex-direction: column; }
+.deleteTitle { font-size: 15px; font-weight: 600; color: #f0918f; }
+.deleteSubtitle { font-size: 13px; color: #b7a9ab; }

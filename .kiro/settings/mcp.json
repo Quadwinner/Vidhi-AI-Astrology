@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "command": "npx",
+      "args": ["-y", "stitch-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "jets-1b5fa"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

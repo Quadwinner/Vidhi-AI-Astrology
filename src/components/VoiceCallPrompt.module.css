@@ -1,0 +1,108 @@
+.card {
+    background: linear-gradient(135deg, #4a0d68, #742a74);
+    color: white;
+    padding: 16px;
+    margin-top: 10px;
+    position: relative;
+    left: 90%;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px solid rgba(96, 165, 250, 0.30);
+    background: rgba(30, 58, 138, 0.20);
+}
+
+.icon {
+    margin-bottom: 8px;
+}
+
+.switch {
+    margin: 4px 0;
+    color: #93C5FD;
+    text-align: center;
+    font-family: Sora;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.promptpara {
+    margin: 0 0 12px 0;
+    color: #9CA3AF;
+    font-family: Sora;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.startButton {
+    background: linear-gradient(90deg, #3B82F6 0%, #A855F7 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.startButton:hover {
+    opacity: 0.9;
+}
+
+.closeButton {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        position: relative;
+        left: 22px;
+    }
+
+    .switch {
+        font-size: 13px;
+    }
+
+    .promptpara {
+        font-size: 11px;
+    }
+
+    .startButton {
+        padding: 7px 14px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        position: relative;
+        left: 22px;
+    }
+
+    .startButton {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .switch {
+        font-size: 12px;
+    }
+
+    .promptpara {
+        font-size: 10px;
+    }
+}

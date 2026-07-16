@@ -1,0 +1,233 @@
+/* =====================================================================
+   Vidhi celestial footer — proper, cohesive, self-contained.
+   ===================================================================== */
+
+.footer {
+  /* Own stacking context so content never paints under the homepage's
+     fixed cosmic background layer. */
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
+  padding: 44px 32px 24px;
+  background:
+    radial-gradient(900px 300px at 12% -10%, rgba(97, 7, 43, 0.28), transparent 68%),
+    radial-gradient(700px 260px at 100% 0%, rgba(229, 180, 91, 0.08), transparent 60%),
+    #0c0b0a;
+  border-top: 1px solid rgba(229, 180, 91, 0.22);
+  color: #b7a9ab;
+  font-family: 'Inter', 'Work Sans', sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ---- Newsletter (rendered by FooterEmailBanner) sits at the top ---- */
+.container > :first-child {
+  margin-bottom: 40px;
+}
+
+/* ---- Main grid: brand + links ---- */
+.main {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 34px;
+  border-bottom: 1px solid rgba(229, 180, 91, 0.14);
+}
+
+.brand {
+  max-width: 320px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #e5e2df;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.logoSvg {
+  height: 54px;
+  width: auto;
+}
+
+.description {
+  color: #a8999b;
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  color: #e5b45b;
+  background: rgba(229, 180, 91, 0.07);
+  border: 1px solid rgba(229, 180, 91, 0.2);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.socialIcon:hover {
+  background: rgba(229, 180, 91, 0.16);
+  border-color: rgba(229, 180, 91, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ---- Link columns ---- */
+.links {
+  display: contents;
+}
+
+.columnTitle {
+  color: #e5b45b;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0 0 16px;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linkList a {
+  color: #a8999b;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.linkList a:hover {
+  color: #e5b45b;
+  padding-left: 3px;
+}
+
+/* Accordion header: plain title on desktop, interactive toggle on mobile */
+.accordionHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: default;
+  color: #e5b45b;
+}
+
+/* Toggle icon only matters on mobile */
+.accordionHeader svg { display: none; }
+
+/* ---- Bottom bar ---- */
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 22px;
+  font-size: 13px;
+  color: #8f8284;
+}
+
+.footerBottom p { margin: 0; }
+
+.bottomLinks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bottomLinks a {
+  color: #a8999b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.bottomLinks a:hover { color: #e5b45b; }
+.dot { color: rgba(229, 180, 91, 0.4); }
+.emailLink { color: #a8999b; text-decoration: none; }
+.emailLink:hover { color: #e5b45b; }
+
+/* =====================================================================
+   Tablet
+   ===================================================================== */
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 40px;
+  }
+  .brand { grid-column: 1 / -1; max-width: 420px; }
+}
+
+/* =====================================================================
+   Mobile — collapse link columns into accordions
+   ===================================================================== */
+@media (max-width: 600px) {
+  .footer { padding: 34px 18px 20px; }
+  .container > :first-child { margin-bottom: 28px; }
+
+  .main {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding-bottom: 20px;
+  }
+  .brand { max-width: none; margin-bottom: 20px; }
+
+  .column {
+    border-top: 1px solid rgba(229, 180, 91, 0.12);
+    padding: 6px 0;
+  }
+
+  .accordionHeader { padding: 10px 0; cursor: pointer; }
+  .accordionHeader svg { display: block; }
+  .accordionHeader .columnTitle { margin: 0; }
+
+  .linkList {
+    max-height: 0;
+    overflow: hidden;
+    gap: 0;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  .linkList.open {
+    max-height: 420px;
+    gap: 12px;
+    padding: 8px 0 14px;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 18px;
+  }
+}

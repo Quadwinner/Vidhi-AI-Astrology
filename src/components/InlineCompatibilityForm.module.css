@@ -1,0 +1,240 @@
+/* src/components/InlineCompatibilityForm.module.css */
+
+/* Transparent container - lets the ChatMessage bubble style handle the look */
+.bubbleContainer {
+  background-color: transparent; 
+  width: 100%;
+  position: relative;
+  padding: 8px; /* Slight padding inside the bubble */
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mainTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.subTitle {
+  font-size: 0.75rem;
+  color: #a0a0a0;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeButton:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* Form Layout */
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #aaa;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+/* Inputs */
+.input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.input:focus:not(:disabled) {
+  border-color: #A855F7;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Locked State (Read Only) */
+.input:disabled {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+  font-weight: 500;
+  color: #e0e0e0; /* Brighter text for readability on gray */
+  cursor: default;
+}
+
+/* Locked Container Override (optional visual cue) */
+.bubbleContainer.locked .label {
+  color: #888;
+}
+
+/* Suggestion Dropdown */
+.suggestionsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  top: 100%;
+  margin-top: 4px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.suggestionItem {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: #eee;
+  cursor: pointer;
+  border-bottom: 1px solid #3d3d3d;
+}
+
+.suggestionItem:last-child {
+  border-bottom: none;
+}
+
+.suggestionItem:hover {
+  background: #3d3d3d;
+}
+
+/* Submit Button */
+.submitButton {
+  background: linear-gradient(90deg, #A855F7 0%, #EC4899 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s, transform 0.1s;
+  font-size: 0.95rem;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.successBadge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* src/components/InlineCompatibilityForm.module.css */
+
+.input::-webkit-calendar-picker-indicator {
+  /* Invert black to white */
+  filter: invert(1);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* 1. Style the Select Box itself */
+select.input {
+  appearance: none; /* Removes the ugly default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
+  background-color: rgba(255, 255, 255, 0.05); /* Dark background */
+  color: #ffffff;
+  cursor: pointer;
+  
+  /* Add a custom arrow because 'appearance: none' removes the default one */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 32px; /* Make space for the arrow */
+}
+
+/* 2. Style the Dropdown Options (The part that looks 'weird') */
+select.input option {
+  background-color: #1e1e1e; /* Hard dark background for the list */
+  color: #ffffff; /* White text */
+  padding: 12px;
+}
+
+/* 3. Style the "Select" placeholder option */
+select.input option[disabled] {
+  color: #888;
+}

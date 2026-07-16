@@ -1,0 +1,220 @@
+/* Main form grid layout */
+.formGrid {
+  display: grid;
+  /* 3 equal columns on desktop */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 20px;
+  /* 24px row-gap, 20px column-gap */
+  padding: 20px;
+  border-radius: 16px;
+}
+
+/* Each form field container */
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  /* Prevents overflow in grid cells */
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* --- NEW STYLES FOR CHECKBOX --- */
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.checkboxInput {
+  accent-color: #ED0687;
+  /* Matches your theme color */
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+}
+
+.checkboxText {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 400;
+  user-select: none;
+}
+
+/* Style to visually dim the dropdowns when disabled */
+.disabledGroup {
+  opacity: 0.5;
+  pointer-events: none;
+  /* Prevents clicking */
+}
+
+/* ------------------------------- */
+
+.styledInput,
+.dropdown {
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  /* Important for consistent sizing */
+}
+
+.styledInput {
+  padding-right: 14px;
+  /* Adjust for consistency with dropdown */
+}
+
+.styledInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dropdown {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' d='M7 10L2 5h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  padding-right: 36px;
+  /* Space for the dropdown arrow */
+}
+
+.dropdown option {
+  background: #480328;
+  color: #fff;
+}
+
+/* Group for DOB and TOB dropdowns */
+.inputGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.inputGroup .dropdown {
+  flex: 1;
+  /* Allows dropdowns to share space equally */
+}
+
+/* --- Autocomplete --- */
+.autocompleteWrapper {
+  position: relative;
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  padding: 0;
+  list-style: none;
+  background: #450323;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(62, 0, 29, 0.15);
+  z-index: 20;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestionsList li {
+  padding: 12px 14px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.suggestionsList li:hover {
+  background: #520d33ad;
+}
+
+/* --- CTA Button --- */
+.ctaButtonContainer {
+  /* Aligns the button to the bottom of the grid cell */
+  display: flex;
+  align-items: flex-end;
+}
+
+.ctaButton {
+  /* Position the button at the bottom of the form container */
+  display: block;
+  margin: 0 auto;
+  /* Center the button */
+
+  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px 40px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 0px 30px rgba(210, 58, 173, 0.60);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* --- Error Box --- */
+.errorBox {
+  background-color: #fdecea;
+  color: #b71c1c;
+  padding: 12px 16px;
+  margin: 0 20px 16px;
+  /* Align with form padding */
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #b71c1c;
+}
+
+/* --- Responsive Design --- */
+
+/* For Tablets */
+@media (max-width: 900px) {
+  .formGrid {
+    /* Switch to 2 columns on tablets */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For Mobile Phones */
+@media (max-width: 600px) {
+  .formGrid {
+    /* Switch to 1 column on mobile */
+    grid-template-columns: 1fr;
+    gap: 16px;
+    /* Reduce gap for smaller screens */
+    padding: 16px;
+  }
+
+  .inputGroup {
+    gap: 8px;
+  }
+
+  .ctaButtonContainer {
+    margin-top: 8px;
+  }
+}

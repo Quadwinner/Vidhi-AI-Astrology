@@ -1,0 +1,45 @@
+.chartContainer {
+  max-width: 400px; /* Increased max-width slightly for better viewing */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chartTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.chartImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Styling for the placeholder when the chart image isn't available */
+.placeholder {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: #9CA3AF;
+  padding: 2rem;
+  text-align: center;
+}
+
+.errorMessage {
+  color: #f87171;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}

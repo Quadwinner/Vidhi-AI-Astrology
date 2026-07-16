@@ -1,0 +1,689 @@
+/* WalletRecharge.module.css */
+.walletContainer {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  margin: -120px 0 0 0;
+  padding-top: 140px;
+  background: transparent;
+  color: white;
+  padding-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .walletContainer {
+    padding-bottom: 0;
+  }
+}
+
+/* Header Section */
+.header {
+  padding: 48px 16px 0px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 56px 24px 0px 24px;
+  }
+}
+
+.title {
+  font-family: 'Sora', sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 42px;
+    line-height: 52px;
+    margin: 0 0 16px 0;
+  }
+}
+
+.balanceDisplay {
+  /* margin-bottom: 30px; */
+}
+
+.balanceLabel {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #cccccc;
+  text-align: center;
+}
+
+.rateMeta {
+  margin-top: 4px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: #fbcfe8;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .balanceLabel {
+    font-size: 40px;
+    font-weight: 700;
+  }
+}
+
+/* Subscription Info */
+.subscriptionInfo {
+  margin-top: 16px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .subscriptionInfo {
+    padding: 0 24px;
+    max-width: 860px;
+    margin: 16px auto 20px auto;
+  }
+}
+
+.subscriptionCard {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.subscriptionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.subscriptionPlan {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .subscriptionPlan {
+    font-size: 18px;
+  }
+}
+
+.subscriptionStatus {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: #4ade80;
+  text-transform: capitalize;
+  background: rgba(74, 222, 128, 0.15);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .subscriptionStatus {
+    font-size: 14px;
+    padding: 6px 16px;
+  }
+}
+
+.subscriptionDetails {
+  margin-bottom: 16px;
+}
+
+.renewalDate {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: #cccccc;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .renewalDate {
+    font-size: 14px;
+  }
+}
+
+.subscriptionActions {
+  margin-top: 16px;
+}
+
+.manageButton,
+.upgradeButton {
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.manageButton {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.manageButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.upgradeButton {
+  background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+.upgradeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(74, 222, 128, 0.4);
+}
+
+@media (min-width: 768px) {
+
+  .manageButton,
+  .upgradeButton {
+    font-size: 16px;
+    padding: 14px 28px;
+  }
+}
+
+/* Packages Grid */
+.packagesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 0 16px;
+  margin: 8px auto 16px auto;
+  max-width: 860px;
+}
+
+@media (min-width: 768px) {
+  .packagesGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 24px;
+    margin: 12px auto 20px auto;
+  }
+}
+
+.packageCard {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  height: 120px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .packageCard {
+    height: 140px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.28);
+  }
+}
+
+.packageCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.packageCard.selected {
+  border-color: #ed0687 !important;
+  border-width: 3px;
+  box-shadow: 0 0 24px rgba(237, 6, 135, 0.45), 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.packageCard[data-selected="false"] {
+  opacity: 0.92;
+}
+
+.discountBadge {
+  position: absolute;
+  top: -7px;
+  right: 7px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+}
+
+.packageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.packageAmount {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.packageMinutesLine {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  color: #fbcfe8;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .packageAmount {
+    font-size: 28px;
+  }
+}
+
+.cashbackBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(74, 222, 128, 0.2);
+  border-radius: 9999px;
+  height: 20px;
+  padding: 0 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 9px;
+  color: #4ade80;
+  justify-content: center;
+  margin: 18px 0 8px 0;
+}
+
+.cashbackBadge svg {
+  width: 9px;
+  height: 9px;
+}
+
+.packageQuestions {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin: 8px 0 4px 0;
+}
+
+.packageMinutes {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin: 0;
+}
+
+/* Amount Section */
+.amountSection {
+  padding: 0 16px;
+  margin: 8px auto 16px auto;
+  max-width: 860px;
+}
+
+@media (min-width: 768px) {
+  .amountSection {
+    padding: 0 24px;
+    max-width: 860px;
+    margin: 12px auto 20px auto;
+  }
+}
+
+.amountLabel {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.labelBold {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  color: white;
+}
+
+.labelLight {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  color: #fbcfe8;
+}
+
+.amountInput {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: white;
+  font-family: 'Spartan', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px 0;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.inputUnderline {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin-top: 8px;
+}
+
+.customMinutes {
+  margin-top: 6px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: #fbcfe8;
+}
+
+/* Coupon Section */
+.couponSection {
+  padding: 0 16px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+  .couponSection {
+    padding: 0 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.couponCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid #ed0687;
+  border-radius: 14px;
+  padding: 12px 12px 8px 20px;
+  height: 45px;
+  margin-bottom: 8px;
+}
+
+.couponCode {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.removeCoupon {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  width: 72px;
+  height: 29px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #8cffcc;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.moreCoupons {
+  display: inline-block;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #4ade80;
+  text-decoration: underline;
+  text-transform: capitalize;
+  margin-left: 16px;
+  margin-bottom: 12px;
+}
+
+.offerApplied {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.offerTitle {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: white;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.confetti {
+  font-size: 16px;
+}
+
+.offerDescription {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #fbcfe8;
+  margin: 0;
+}
+
+.offerDescription .highlight {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 700;
+  color: #fe607e;
+}
+
+/* Bottom Section */
+.bottomSection {
+  position: relative;
+  padding: 12px 16px 0 16px;
+  max-width: 860px;
+  margin: 8px auto 0 auto;
+}
+
+@media (min-width: 768px) {
+  .bottomSection {
+    padding: 0 24px 12px 24px;
+    max-width: 860px;
+    margin: 16px auto 0 auto;
+  }
+}
+
+.bottomHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px 20px 0 0;
+}
+
+@media (min-width: 768px) {
+  .bottomHeader {
+    padding: 16px 24px;
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+.walletInfo {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #000;
+}
+
+@media (min-width: 768px) {
+  .walletInfo {
+    font-size: 14px;
+  }
+}
+
+.paymentSummary {
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .paymentSummary {
+    padding: 0;
+  }
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  color: #fbcfe8;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  .summaryRow {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid #fc8e64;
+  border-radius: 16px;
+  padding: 20px;
+  height: 55px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .paymentMethod {
+    height: 60px;
+    padding: 20px 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+}
+
+.paymentMethod:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.paymentMethod span {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: white;
+  flex: 1;
+}
+
+.paymentMethod svg:first-child {
+  width: 42px;
+  height: 42px;
+}
+
+.arrow {
+  transform: rotate(270deg);
+}
+
+.checkoutButton {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(90deg, #ed0687 0%, #fe6c0f 100%);
+  border: none;
+  border-radius: 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(237, 6, 135, 0.3);
+}
+
+@media (min-width: 768px) {
+  .checkoutButton {
+    height: 60px;
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 16px;
+  }
+}
+
+.checkoutButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(237, 6, 135, 0.5);
+}
+
+.checkoutButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.subscriptionPlansBlock {
+  padding: 16px 16px 36px 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .subscriptionPlansBlock {
+    padding: 24px 24px 40px 24px;
+  }
+}
+
+.error {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6b6b;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

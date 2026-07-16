@@ -1,0 +1,1278 @@
+.mockupContainer {
+  position: relative;
+  width: 100%;
+  height: 540px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 18px;
+  min-height: 540px;
+}
+
+.phoneMockup {
+  position: absolute;
+  width: 240px;
+  height: 510px;
+  background: linear-gradient(135deg, #1a0a1f 0%, #2d1435 50%, #1a0a1f 100%);
+  border-radius: 32px;
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 0 2px rgba(192, 132, 252, 0.2),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, z-index 0.3s ease;
+}
+
+.phoneMockup1 {
+  left: calc(50% - 140px);
+  transform: translateX(-50%) scale(0.8) rotate(-6deg);
+  z-index: 1;
+}
+
+.phoneMockup2 {
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  z-index: 3;
+}
+
+.phoneMockup3 {
+  left: calc(50% + 140px);
+  transform: translateX(-50%) scale(0.8) rotate(6deg);
+  z-index: 2;
+}
+
+.phoneMockup:hover {
+  transform: translateX(-50%) scale(1.05) rotate(0deg);
+  z-index: 10;
+}
+
+.phoneMockup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 32px 32px 0 0;
+  z-index: 10;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  background: #881337;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Work Sans', 'Sora', sans-serif;
+}
+
+.screenImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.header {
+  position: absolute;
+  top: 14px;
+  left: 3px;
+  width: 262px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 20;
+}
+
+.hamburgerMenu {
+  width: 17.5px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.hamburgerLine {
+  width: 14px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.profileBadge {
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.7px solid #a6a6a6;
+  border-radius: 4px;
+  height: 23px;
+  padding: 2px 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.profileImage {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1.2px solid #f472b6;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f472b6, #ec4899);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 8px;
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.downIcon {
+  width: 10px;
+  height: 6px;
+  object-fit: contain;
+}
+
+.msgCallBadge {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  height: 23px;
+  padding: 0 9px;
+  display: flex;
+  align-items: center;
+}
+
+.msgCallContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 16px;
+}
+
+.messageCount {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 16px;
+}
+
+.messageIcon {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+}
+
+.countText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 6px;
+  color: white;
+  line-height: 16px;
+}
+
+.divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  margin-left: 4px;
+}
+
+.callTime {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 16px;
+}
+
+.callIcon {
+  width: 8px;
+  height: 9px;
+  object-fit: contain;
+}
+
+.timeText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 6px;
+  color: white;
+  line-height: 16px;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+}
+
+.walletBadge {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  height: 23px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.walletIcon {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+}
+
+.addIcon {
+  position: absolute;
+  left: 34px;
+  top: -9px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #881337;
+  font-weight: bold;
+}
+
+.walletAmount {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 6px;
+  color: white;
+  line-height: 11px;
+}
+
+.notificationIcon {
+  width: 30px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.contentCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 242px;
+  height: 273px;
+  background: linear-gradient(to right, 
+    rgba(99, 102, 241, 0.2) 0%,
+    rgba(168, 85, 247, 0.2) 50%,
+    rgba(236, 72, 153, 0.2) 100%);
+  border: 2px solid rgba(192, 132, 252, 0.3);
+  border-radius: 24px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.cardOverlay {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 238px;
+  height: 269px;
+  opacity: 0.1;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.cardBg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardHeader {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px 12px;
+  z-index: 5;
+}
+
+.aiBadge {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(to right, #f97316, #db2777);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+.aiBadgeDot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.aiBadgeDot:nth-child(1) {
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.aiBadgeDot:nth-child(2) {
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+}
+
+.aiBadgeDot:nth-child(3) {
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.aiBadgeDot:nth-child(4) {
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+}
+
+.aiIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  line-height: 15px;
+}
+
+.aiTag {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 10px;
+  color: #c084fc;
+  line-height: 16px;
+}
+
+.newLaunch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 10px;
+  color: white;
+  opacity: 0.903;
+  line-height: normal;
+}
+
+.mainTitle {
+  position: absolute;
+  top: 156px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+.subtitle {
+  position: absolute;
+  top: 183px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 9px;
+  color: #fbcfe8;
+  text-align: center;
+  width: 223px;
+  line-height: 14px;
+  margin: 0;
+}
+
+.featuresGrid {
+  position: absolute;
+  top: 222px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 169px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  z-index: 5;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+}
+
+.featureIcon {
+  width: 15.75px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.featureIconBlue,
+.featureIconGreen,
+.featureIconPink,
+.featureIconOrange {
+  width: 15.75px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.feature span {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 6px;
+  color: white;
+  line-height: 16px;
+}
+
+.generateButton {
+  position: absolute;
+  top: 277px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 157px;
+  height: 26px;
+  background: linear-gradient(to right, #f97316, #db2777);
+  border: none;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.generateIcon {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+}
+
+.generateText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 8px;
+  color: white;
+  line-height: 20px;
+}
+
+.reportInfo {
+  position: absolute;
+  top: 317px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 8px;
+  color: #c084fc;
+  text-align: center;
+  line-height: 16px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.targetIcon {
+  font-size: 10px;
+}
+
+.introContent {
+  position: absolute;
+  top: 59px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 5;
+}
+
+.zodiacWheel {
+  width: 149px;
+  height: 149px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheelOuter {
+  width: 149px;
+  height: 149px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316, #db2777);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.wheelInner {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.zodiacSign {
+  position: absolute;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+}
+
+.zodiacSign:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+.zodiacSign:nth-child(2) { top: 20px; right: 20px; }
+.zodiacSign:nth-child(3) { top: 50%; right: 0; transform: translateY(-50%); }
+.zodiacSign:nth-child(4) { bottom: 20px; right: 20px; }
+.zodiacSign:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.zodiacSign:nth-child(6) { bottom: 20px; left: 20px; }
+.zodiacSign:nth-child(7) { top: 50%; left: 0; transform: translateY(-50%); }
+.zodiacSign:nth-child(8) { top: 20px; left: 20px; }
+.zodiacSign:nth-child(9) { top: 10px; right: 30px; }
+.zodiacSign:nth-child(10) { bottom: 10px; right: 30px; }
+.zodiacSign:nth-child(11) { bottom: 10px; left: 30px; }
+.zodiacSign:nth-child(12) { top: 10px; left: 30px; }
+
+.introTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 8px 0;
+  line-height: 38px;
+}
+
+.auraAITitle {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 0 0 20px 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.auraText {
+  color: #ed0687;
+}
+
+.aiText {
+  color: #fe6c0f;
+}
+
+.introText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 19px;
+  width: 195px;
+  margin: 0;
+}
+
+.highlight {
+  color: #c084fc;
+}
+
+.voiceHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 61px;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 20;
+}
+
+.headerContent {
+  position: absolute;
+  top: 9px;
+  left: 31px;
+  width: 192px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menuButton {
+  width: 17.5px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backButton {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.headerCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logoContainer {
+  width: 34px;
+  height: 31px;
+  position: relative;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logoGlobe {
+  width: 34px;
+  height: 31px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.globeRing1,
+.globeRing2,
+.globeRing3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.globeRing1 {
+  width: 34px;
+  height: 34px;
+  border-color: rgba(59, 130, 246, 0.6);
+  top: 0;
+  left: 0;
+}
+
+.globeRing2 {
+  width: 28px;
+  height: 28px;
+  border-color: rgba(251, 191, 36, 0.6);
+  top: 3px;
+  left: 3px;
+}
+
+.globeRing3 {
+  width: 22px;
+  height: 22px;
+  border-color: rgba(236, 72, 153, 0.6);
+  top: 6px;
+  left: 6px;
+}
+
+.appTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  line-height: 28px;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 13px;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  background: #4ade80;
+  border-radius: 50%;
+  opacity: 0.695;
+}
+
+.statusText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 8px;
+  color: #86efac;
+  line-height: 16px;
+}
+
+.voiceTitle {
+  position: absolute;
+  top: 87px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  text-align: center;
+  margin: 0;
+  line-height: 32px;
+}
+
+.voiceSubtitle {
+  position: absolute;
+  top: 114px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: #fbcfe8;
+  text-align: center;
+  margin: 0;
+  line-height: 28px;
+}
+
+.microphoneContainer {
+  position: absolute;
+  top: 149px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 170px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.micRing1 {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border: 2px solid rgba(244, 114, 182, 0.3);
+  border-radius: 50%;
+}
+
+.micRing2 {
+  position: absolute;
+  width: 119px;
+  height: 119px;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  border-radius: 50%;
+  opacity: 0.981;
+}
+
+.micRing3 {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(251, 146, 60, 0.5);
+  border-radius: 50%;
+}
+
+.microphoneButton {
+  position: absolute;
+  width: 53px;
+  height: 53px;
+  background: linear-gradient(to right, #f97316, #db2777);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+}
+
+.micIcon {
+  width: 22.593px;
+  height: 27.216px;
+  object-fit: contain;
+}
+
+.micParticles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.particle1 {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #f472b6;
+  border-radius: 50%;
+  top: 93px;
+  left: 19px;
+}
+
+.particle2 {
+  position: absolute;
+  width: 9.797px;
+  height: 9.797px;
+  background: #fb923c;
+  border-radius: 50%;
+  top: 57px;
+  left: 144px;
+}
+
+.particle3 {
+  position: absolute;
+  width: 9.87px;
+  height: 9.87px;
+  background: #c084fc;
+  border-radius: 50%;
+  top: 131px;
+  left: 111px;
+}
+
+.particle4 {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #60a5fa;
+  border-radius: 50%;
+  top: 27px;
+  left: 107px;
+}
+
+.listeningStatus {
+  position: absolute;
+  top: 346px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 46px;
+  background: linear-gradient(to right, 
+    rgba(88, 28, 135, 0.4) 0%,
+    rgba(131, 24, 67, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 5;
+}
+
+.listeningContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+}
+
+.listeningDot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  opacity: 0.778;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.778;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.listeningText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: #86efac;
+  line-height: 20px;
+}
+
+.listeningHint {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 8px;
+  color: #fbcfe8;
+  text-align: center;
+  margin: 0;
+  line-height: 16px;
+}
+
+.actionButtons {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  z-index: 10;
+}
+
+.actionButton {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.actionIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.recordButton {
+  background: linear-gradient(to right, #22c55e, #10b981);
+  border: none;
+  position: relative;
+}
+
+.recordBadge {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+  width: 11px;
+  height: 11px;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+.endCallButton {
+  background: #ef4444;
+}
+
+.addButton {
+  background: linear-gradient(to right, #22c55e, #10b981);
+  position: relative;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 1px solid rgba(20, 20, 30, 0.98);
+}
+
+.decorativeElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.decorativeCircle1 {
+  position: absolute;
+  width: 102px;
+  height: 96px;
+  background: rgba(139, 21, 56, 0.5);
+  border-radius: 50%;
+  top: 444px;
+  left: -24px;
+  opacity: 0.713;
+}
+
+.decorativeCircle2 {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: #60062b;
+  border-radius: 50%;
+  top: 418px;
+  right: -55px;
+  opacity: 0.4;
+}
+
+.decorativeDot1 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fb923c;
+  border-radius: 50%;
+  top: 80px;
+  left: 16px;
+  opacity: 0.778;
+}
+
+.decorativeDot2 {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #f472b6;
+  border-radius: 50%;
+  top: 128px;
+  right: 10px;
+}
+
+.decorativeDot3 {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #c084fc;
+  border-radius: 50%;
+  bottom: 20px;
+  left: 32px;
+  opacity: 0.764;
+}
+
+.decorativeDot4 {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fcd34d;
+  border-radius: 50%;
+  bottom: 60px;
+  right: 10px;
+  opacity: 0.501;
+}
+
+.decorativeDot5 {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #f9a8d4;
+  border-radius: 50%;
+  top: 484.5px;
+  left: 8px;
+  opacity: 0.709;
+}
+
+.decorativeSun {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fb923c;
+  border-radius: 50%;
+  top: 20px;
+  left: 16px;
+  opacity: 0.9;
+}
+
+.decorativeMoon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(139, 21, 56, 0.6);
+  border-radius: 50%;
+  top: 200px;
+  left: -10px;
+  opacity: 0.7;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.decorativeGear {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.3;
+  background: rgba(139, 21, 56, 0.8);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+}
+
+@media (max-width: 968px) {
+  .mockupContainer {
+    height: 360px;
+    min-height: 360px;
+    padding: 18px 14px;
+  }
+
+  .phoneMockup {
+    width: 185px;
+    height: 380px;
+  }
+
+  .phoneMockup1 {
+    left: calc(50% - 95px);
+    transform: translateX(-50%) scale(0.7) rotate(-8deg);
+  }
+
+  .phoneMockup2 {
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+  }
+
+  .phoneMockup3 {
+    left: calc(50% + 95px);
+    transform: translateX(-50%) scale(0.7) rotate(8deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .mockupContainer {
+    height: 290px;
+    min-height: 290px;
+    padding: 14px 12px;
+  }
+
+  .phoneMockup {
+    width: 158px;
+    height: 318px;
+  }
+
+  .phoneMockup1 {
+    left: calc(50% - 60px);
+    transform: translateX(-50%) scale(0.6) rotate(-10deg);
+  }
+
+  .phoneMockup2 {
+    left: 50%;
+    transform: translateX(-50%) scale(0.68);
+  }
+
+  .phoneMockup3 {
+    left: calc(50% + 60px);
+    transform: translateX(-50%) scale(0.6) rotate(10deg);
+  }
+
+  .contentCard {
+    width: 160px;
+    height: 180px;
+  }
+
+  .cardOverlay {
+    width: 156px;
+    height: 176px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mockupContainer {
+    height: 250px;
+    min-height: 250px;
+    padding: 12px 8px;
+  }
+
+  .phoneMockup {
+    width: 128px;
+    height: 258px;
+  }
+
+  .phoneMockup1 {
+    left: calc(50% - 50px);
+    transform: translateX(-50%) scale(0.52) rotate(-12deg);
+  }
+
+  .phoneMockup2 {
+    left: 50%;
+    transform: translateX(-50%) scale(0.6);
+  }
+
+  .phoneMockup3 {
+    left: calc(50% + 50px);
+    transform: translateX(-50%) scale(0.52) rotate(12deg);
+  }
+}
+
+@media (max-width: 375px) {
+  .mockupContainer {
+    height: 225px;
+    min-height: 225px;
+    padding: 10px 6px;
+  }
+
+  .phoneMockup {
+    width: 113px;
+    height: 223px;
+  }
+
+  .phoneMockup1 {
+    left: calc(50% - 42px);
+    transform: translateX(-50%) scale(0.48) rotate(-14deg);
+  }
+
+  .phoneMockup2 {
+    left: 50%;
+    transform: translateX(-50%) scale(0.55);
+  }
+
+  .phoneMockup3 {
+    left: calc(50% + 42px);
+    transform: translateX(-50%) scale(0.48) rotate(14deg);
+  }
+}
+

@@ -1,0 +1,175 @@
+.dashaContainer {
+  font-family: 'Work Sans', sans-serif;
+  color: white;
+}
+
+/* --- Shared Header Styles --- */
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 40px;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableHeader > span:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 1rem;
+}
+
+/* --- Mahadasha (MD) Styles --- */
+.mahadashaSection {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease;
+}
+.mahadashaSection:last-child {
+  border-bottom: none;
+}
+.mahadashaRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 40px;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  align-items: center;
+  transition: background-color 0.2s ease-in-out;
+}
+.mahadashaRow:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.mahadashaRow.active {
+  background-color: rgba(254, 96, 126, 0.15);
+}
+.mahadashaRow > span:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 1rem;
+}
+.mahadashaRow span {
+  font-size: 1rem;
+  font-weight: 500;
+  word-break: break-word; /* Prevents long text from overflowing */
+}
+
+/* --- Chevron Icon Styling --- */
+.chevron {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #a0a7b1;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+/* --- Antardasha (AD) Styles --- */
+.antardashaWrapper {
+  padding: 0.5rem 1rem 1rem 2.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.antardashaHeader {
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 0.8rem 1rem;
+  font-size: 0.85rem;
+}
+.antardashaRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+.antardashaRow:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.antardashaRow > span:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 1rem;
+}
+.antardashaRow span {
+  font-size: 0.95rem;
+  color: #d1d5db;
+}
+
+/* Centered message */
+.centeredMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #a0a7b1;
+}
+
+/* --- Mobile Readability and Stacking Layout --- */
+@media (max-width: 768px) {
+  .tableHeader {
+    display: none;
+  }
+  .mahadashaRow {
+    position: relative; /* Keep this for the icon's positioning context */
+    display: block;
+    padding: 1rem;
+  }
+  .antardashaRow {
+    display: block;
+    padding: 1rem;
+  }
+  .mahadashaRow > span:not(:last-child),
+  .antardashaRow > span:not(:last-child) {
+    border-right: none;
+    padding-right: 0;
+  }
+  .mahadashaRow > span,
+  .antardashaRow > span {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  /* --- ▼▼▼ THE DEFINITIVE FIX ▼▼▼ --- */
+
+  /* 1. Create a "safe zone" on the right side of the text spans */
+  .mahadashaRow > span {
+    padding-right: 45px; /* Generous space to prevent any text overlap */
+  }
+
+  /* 2. Position the icon in a stable, visually pleasing way */
+  .mahadashaRow > .chevron {
+    position: absolute;
+    right: 1rem; /* 16px from the right edge */
+    top: 7.3rem; /* Aligns it vertically with the first line of text */
+    /* We remove `top: 50%` and `transform` for a more stable position */
+  }
+  
+  /* 3. Adjust the rotation for the "open" state */
+  .mahadashaRow > .chevron.open {
+    /* The only transform should be the rotation */
+    transform: rotate(180deg);
+  }
+
+  /* --- ▲▲▲ END OF FIX ▲▲▲ --- */
+
+  .mahadashaRow > span:last-of-type,
+  .antardashaRow > span:last-of-type {
+    border-bottom: none;
+  }
+  .mahadashaRow > span::before,
+  .antardashaRow > span::before {
+    content: attr(data-label);
+    text-align: left;
+    font-weight: 600;
+    color: #a0a7b1;
+    padding-right: 1rem;
+  }
+  .antardashaWrapper {
+    padding: 0;
+    background: transparent;
+  }
+  .antardashaRow {
+     background-color: rgba(0, 0, 0, 0.2);
+     margin-bottom: 0.5rem;
+     padding: 0.5rem 1rem;
+  }
+}

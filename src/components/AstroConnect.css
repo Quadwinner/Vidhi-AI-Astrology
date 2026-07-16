@@ -1,0 +1,51 @@
+.astro-container {
+  background: #fff6f3; /* light peach background */
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid #fca5a5;
+  border-bottom: 1px solid #fca5a5;
+}
+
+.astro-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+}
+
+.astro-subtext {
+  font-size: 16px;
+  font-weight: 400;
+  color: #222;
+  margin: 4px 0 20px;
+}
+
+.astro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.astro-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f43f5e; /* pink */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 999px; /* pill shape */
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.astro-btn:hover {
+  background: #e11d48; /* darker pink on hover */
+}
+
+.astro-icon {
+  font-size: 16px;
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI Pricing & Recharge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#ffd9e0",
+                        "on-tertiary-fixed": "#151b29",
+                        "on-primary": "#62082c",
+                        "on-secondary-container": "#ffd284",
+                        "surface-tint": "#ffb1c2",
+                        "on-tertiary": "#2a303f",
+                        "primary": "#ffb1c2",
+                        "on-tertiary-container": "#9196a9",
+                        "on-background": "#e5e2df",
+                        "surface-container-high": "#2b2a28",
+                        "secondary-container": "#7d5800",
+                        "on-primary-fixed-variant": "#812342",
+                        "surface": "#0d0c0b",
+                        "primary-container": "#61072b",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#dbc0c4",
+                        "on-primary-container": "#e67291",
+                        "inverse-surface": "#e5e2df",
+                        "surface-bright": "#3a3937",
+                        "surface-container-lowest": "#0e0e0d",
+                        "surface-container-highest": "#363533",
+                        "on-primary-fixed": "#3f0018",
+                        "on-secondary": "#422c00",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#dde2f6",
+                        "surface-container-low": "#1c1b1a",
+                        "surface-variant": "#363533",
+                        "tertiary-container": "#292f3e",
+                        "inverse-primary": "#9f3b59",
+                        "surface-container": "#201f1e",
+                        "on-secondary-fixed": "#271900",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#c1c6d9",
+                        "tertiary": "#c1c6d9",
+                        "surface-dim": "#141312",
+                        "outline-variant": "#554245",
+                        "background": "#0d0c0b",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#f1bf64",
+                        "outline": "#a38b8f",
+                        "secondary-fixed": "#ffdea9",
+                        "secondary": "#E5B45B",
+                        "on-secondary-fixed-variant": "#5e4100",
+                        "primary-fixed-dim": "#ffb1c2",
+                        "on-tertiary-fixed-variant": "#414756",
+                        "inverse-on-surface": "#31302f",
+                        "on-surface": "#e5e2df"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1200px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "unit": "8px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Playfair Display"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "label-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(20, 19, 18, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 180, 91, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(229, 180, 91, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px -5px rgba(229, 180, 91, 0.1);
+        }
+        .ambient-glow {
+            background: radial-gradient(circle at center, rgba(97, 7, 43, 0.15) 0%, transparent 70%);
+        }
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(229, 180, 91, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary/30 min-h-screen flex items-center justify-center py-12">
+<!-- Content Canvas -->
+<main class="w-full max-w-[800px] mx-auto px-margin-mobile relative z-10 overflow-hidden">
+<!-- Ambient Background Glows -->
+<div class="absolute -top-40 -left-40 w-80 h-80 bg-primary-container/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-40 -right-40 w-80 h-80 bg-primary-container/10 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Section Header -->
+<div class="text-center mb-unit*4">
+<div class="inline-block px-4 py-1 rounded-full border border-secondary/30 bg-secondary/5 mb-4">
+<span class="font-label-md text-[10px] tracking-widest text-secondary uppercase font-bold">Pricing Plans</span>
+</div>
+<!-- Rates Bar -->
+<div class="max-w-md mx-auto h-[34px] flex items-center justify-center gap-4 border border-outline-variant/20 rounded-full bg-surface-container-low/50 text-label-md px-6 mb-8">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">chat_bubble</span> Chat ₹15/q</span>
+<span class="text-outline-variant/40">|</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">call</span> Call ₹25/min</span>
+<span class="text-outline-variant/40">|</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">description</span> Report ₹100</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Quick Recharge Options</h1>
+<p class="font-body-md text-on-surface-variant max-w-sm mx-auto text-sm">Instant credits for your cosmic consultations.</p>
+</div>
+<!-- Recharge Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-12">
+<!-- Tile 1 -->
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹200</span>
+<span class="text-label-md font-bold text-green-400">Get ₹220</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+10%</span>
+</button>
+<!-- Tile 2 -->
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹500</span>
+<span class="text-label-md font-bold text-green-400">Get ₹600</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+20%</span>
+</button>
+<!-- Tile 3 -->
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹1000</span>
+<span class="text-label-md font-bold text-green-400">Get ₹1250</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+25%</span>
+</button>
+<!-- Tile 4 -->
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹2000</span>
+<span class="text-label-md font-bold text-green-400">Get ₹2600</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+30%</span>
+</button>
+<!-- Row 2 -->
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹3000</span>
+<span class="text-label-md font-bold text-green-400">Get ₹4050</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+35%</span>
+</button>
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Pay ₹5000</span>
+<span class="text-label-md font-bold text-green-400">Get ₹7000</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full shadow-sm">+40%</span>
+</button>
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group border-secondary/40 bg-secondary/5">
+<span class="text-label-sm text-secondary">Pay ₹10k</span>
+<span class="text-label-md font-bold text-green-400">Get ₹15k</span>
+<span class="absolute -top-2 -right-1 bg-secondary text-background font-bold text-[8px] px-1.5 py-0.5 rounded-full">+50%</span>
+</button>
+<button class="glass-card flex flex-col items-center justify-center h-[72px] rounded-xl relative group">
+<span class="text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Custom</span>
+<span class="material-symbols-outlined text-secondary text-xl">add_circle</span>
+</button>
+</div>
+<!-- Subscription Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Free Plan -->
+<div class="glass-card p-6 rounded-2xl flex flex-col h-full border border-outline-variant/10">
+<div class="mb-6">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-widest block mb-2">Basic</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Free</h3>
+</div>
+<ul class="space-y-4 mb-8 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Daily personalized horoscope insights</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Standard Transit Charts</span>
+</li>
+<li class="flex items-start gap-3 opacity-40">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+<span class="text-[13px] leading-snug">Priority Live Access</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-lg border border-outline-variant/30 text-on-surface font-label-md hover:bg-surface-container transition-colors">Current Plan</button>
+</div>
+<!-- Monthly Plan -->
+<div class="glass-card p-6 rounded-2xl flex flex-col h-full border-secondary/40 bg-secondary/5 relative">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-900/80 text-green-300 border border-green-700 font-label-md text-[10px] px-3 py-0.5 rounded-full uppercase tracking-tighter">
+                    Most Popular
+                </div>
+<div class="mb-6">
+<span class="text-label-sm text-secondary uppercase tracking-widest block mb-2">Ascendant</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-2xl text-on-surface">₹499</span>
+<span class="text-on-surface-variant text-xs">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Unlimited Deep-Dive Chat</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">1x Monthly Kundli Analysis</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">24/7 Spiritual Companion</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-lg bg-secondary text-background font-bold text-label-md hover:brightness-110 transition-all shadow-lg shadow-secondary/10">Subscribe Now</button>
+</div>
+<!-- Yearly Plan -->
+<div class="glass-card p-6 rounded-2xl flex flex-col h-full border border-secondary/20 relative">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-background font-bold font-label-md text-[10px] px-3 py-0.5 rounded-full uppercase tracking-tighter">
+                    Best Value
+                </div>
+<div class="mb-6">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-widest block mb-2">Celestial</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-2xl text-on-surface">₹3999</span>
+<span class="text-on-surface-variant text-xs">/yr</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Everything in Monthly plan</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Priority AI Call Scheduling</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="text-[13px] leading-snug">Quarterly Life Prediction Docs</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-lg border border-secondary/40 text-secondary font-bold text-label-md hover:bg-secondary/10 transition-all">Go Yearly</button>
+</div>
+</div>
+<!-- Trust Footer -->
+<div class="mt-12 flex items-center justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="text-[11px] uppercase tracking-widest">Secure Payments</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span class="text-[11px] uppercase tracking-widest">Privacy Encrypted</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span class="text-[11px] uppercase tracking-widest">24/7 Assistance</span>
+</div>
+</div>
+</main>
+<!-- Floating Background Particles (Interactive) -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.createElement('div');
+            canvas.className = 'fixed inset-0 pointer-events-none z-0 overflow-hidden';
+            document.body.prepend(canvas);
+
+            for(let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'absolute bg-secondary/10 rounded-full blur-[1px]';
+                const size = Math.random() * 3 + 1;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                dot.style.animation = `float ${Math.random() * 10 + 10}s infinite linear`;
+                canvas.appendChild(dot);
+            }
+        });
+    </script>
+<style>
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+    </style>
+</body></html>

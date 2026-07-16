@@ -1,0 +1,349 @@
+`<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI - Celestial Luxury Vedic Astrology</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed": "#3f0018",
+                    "surface-container-lowest": "#0e0e0d",
+                    "inverse-surface": "#e5e2df",
+                    "on-primary-fixed-variant": "#812342",
+                    "on-error": "#690005",
+                    "surface-dim": "#141312",
+                    "on-secondary-fixed-variant": "#5e4100",
+                    "tertiary-container": "#292f3e",
+                    "secondary-container": "#7d5800",
+                    "on-surface-variant": "#dbc0c4",
+                    "on-tertiary-fixed-variant": "#414756",
+                    "outline": "#a38b8f",
+                    "primary-container": "#61072b",
+                    "secondary": "#f1bf64",
+                    "outline-variant": "#554245",
+                    "on-secondary": "#422c00",
+                    "surface-tint": "#ffb1c2",
+                    "on-primary": "#62082c",
+                    "inverse-primary": "#9f3b59",
+                    "secondary-fixed-dim": "#f1bf64",
+                    "error": "#ffb4ab",
+                    "surface-container-low": "#1c1b1a",
+                    "surface": "#141312",
+                    "on-tertiary-container": "#9196a9",
+                    "surface-bright": "#3a3937",
+                    "on-surface": "#e5e2df",
+                    "primary-fixed-dim": "#ffb1c2",
+                    "surface-container": "#201f1e",
+                    "secondary-fixed": "#ffdea9",
+                    "on-tertiary-fixed": "#151b29",
+                    "background": "#141312",
+                    "surface-variant": "#363533",
+                    "inverse-on-surface": "#31302f",
+                    "primary-fixed": "#ffd9e0",
+                    "on-tertiary": "#2a303f",
+                    "on-secondary-container": "#ffd284",
+                    "on-background": "#e5e2df",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#363533",
+                    "surface-container-high": "#2b2a28",
+                    "tertiary": "#c1c6d9",
+                    "on-primary-container": "#e67291",
+                    "on-secondary-fixed": "#271900",
+                    "tertiary-fixed-dim": "#c1c6d9",
+                    "tertiary-fixed": "#dde2f6",
+                    "primary": "#ffb1c2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Playfair Display"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0c0b;
+            color: #e5e2df;
+            overflow-x: hidden;
+        }
+
+        .star-field {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.15;
+            animation: twinkle 10s infinite linear;
+        }
+
+        @keyframes twinkle {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        .celestial-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(97, 7, 43, 0.2) 0%, rgba(13, 12, 11, 0) 70%);
+            filter: blur(80px);
+            z-index: 0;
+        }
+
+        .nebula-gold {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(229, 180, 91, 0.05) 0%, rgba(13, 12, 11, 0) 60%);
+            filter: blur(100px);
+            z-index: 0;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 180, 91, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .zodiac-wheel {
+            position: relative;
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(229, 180, 91, 0.1);
+        }
+
+        .rotating {
+            animation: rotate 60s linear infinite;
+        }
+
+        .rotating-slow {
+            animation: rotate 120s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .glow-pulse {
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(229, 180, 91, 0.2)); }
+            50% { filter: drop-shadow(0 0 25px rgba(229, 180, 91, 0.4)); }
+        }
+
+        .btn-gold-aura:hover {
+            box-shadow: 0 0 20px rgba(229, 180, 91, 0.4);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background bg-surface-container-lowest">
+<!-- Navbar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bedtime</span>
+            AuraAI
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Features</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Pricing</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">FAQ</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-secondary font-label-md text-label-md hover:text-secondary-fixed-dim transition-all">Sign In</button>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-md text-label-md font-bold btn-gold-aura transition-all">Get Started</button>
+</div>
+</nav>
+<!-- Hero Canvas -->
+<main class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+<!-- Background Assets -->
+<div class="star-field"></div>
+<div class="celestial-glow -top-20 -left-20"></div>
+<div class="nebula-gold top-1/4 right-0"></div>
+<div class="celestial-glow bottom-0 right-1/4 opacity-40"></div>
+<div class="container mx-auto px-margin-mobile md:px-margin-desktop max-w-container-max relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<!-- Left Column: Copy & CTAs -->
+<div class="flex flex-col space-y-8 max-w-xl">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border-secondary/30 w-fit">
+<span class="material-symbols-outlined text-[16px] text-secondary">auto_awesome</span>
+<span class="font-label-sm text-label-sm text-on-surface tracking-wider">Ancient wisdom · guided by AI</span>
+</div>
+<h1 class="font-display-lg-mobile md:text-display-lg md:font-display-lg leading-tight text-on-surface">
+                        Illuminate your <span class="italic text-secondary">cosmic path</span> with Vedic astrology
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        Your personal 24/7 AI astrologer. Detailed Kundli readings and lifelike live voice calls at your fingertips.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-full font-label-md text-label-md font-bold text-lg btn-gold-aura transition-all flex items-center justify-center gap-2">
+                            Get my free reading
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border border-secondary/50 text-secondary hover:bg-secondary/10 px-8 py-4 rounded-full font-label-md text-label-md font-bold text-lg transition-all">
+                            Explore features
+                        </button>
+</div>
+<div class="pt-8 border-t border-outline-variant/30 grid grid-cols-3 gap-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-secondary">1M+</span>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-tighter">birth charts</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-secondary">100+</span>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-tighter">astrologers' logic</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-secondary">10K+</span>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-tighter">classical texts</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Visual Centerpiece -->
+<div class="relative flex flex-col items-center justify-center">
+<!-- The Zodiac Wheel -->
+<div class="zodiac-wheel glass-card rounded-full p-8 glow-pulse">
+<!-- Orbit Rings -->
+<div class="orbit w-[400px] h-[400px] rotating"></div>
+<div class="orbit w-[320px] h-[320px] rotating-slow"></div>
+<div class="orbit w-[240px] h-[240px] rotating"></div>
+<!-- Core -->
+<div class="w-48 h-48 rounded-full bg-gradient-to-br from-primary-container to-secondary flex flex-col items-center justify-center shadow-2xl relative">
+<div class="absolute inset-0 rounded-full opacity-50 blur-xl bg-secondary"></div>
+<span class="material-symbols-outlined text-[48px] text-on-secondary relative z-10" style="font-variation-settings: 'FILL' 1;">bedtime</span>
+<span class="font-headline-sm text-on-secondary font-bold relative z-10">AuraAI</span>
+</div>
+<!-- Symbols around the wheel (Absolute positioning simulated for impact) -->
+<div class="absolute inset-0 pointer-events-none rotating">
+<!-- Gemini -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 text-secondary opacity-80">
+<span class="material-symbols-outlined text-2xl">admin</span>
+</div>
+<!-- Leo -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-secondary opacity-80">
+<span class="material-symbols-outlined text-2xl">allo</span>
+</div>
+<!-- Scorpio -->
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-80">
+<span class="material-symbols-outlined text-2xl">score</span>
+</div>
+<!-- Aquarius -->
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary opacity-80">
+<span class="material-symbols-outlined text-2xl">square</span>
+</div>
+</div>
+<!-- Floating Planet Dots -->
+<div class="absolute w-[360px] h-[360px] rotating-slow pointer-events-none">
+<div class="absolute top-0 left-1/2 w-3 h-3 bg-secondary rounded-full shadow-[0_0_10px_#f1bf64]"></div>
+</div>
+<div class="absolute w-[280px] h-[280px] rotating pointer-events-none">
+<div class="absolute bottom-10 right-10 w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_#ffb1c2]"></div>
+</div>
+</div>
+<!-- Lower Pill Chips -->
+<div class="flex flex-wrap justify-center gap-3 mt-12">
+<div class="px-5 py-2 rounded-full glass-card border-secondary/40 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">stars</span>
+<span class="font-label-md text-on-surface">Free birth chart</span>
+</div>
+<div class="px-5 py-2 rounded-full glass-card border-secondary/40 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">support_agent</span>
+<span class="font-label-md text-on-surface">24/7 guidance</span>
+</div>
+<div class="px-5 py-2 rounded-full glass-card border-secondary/40 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">magic_exchange</span>
+<span class="font-label-md text-on-surface">1 free prediction</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Simple -->
+<footer class="w-full py-12 bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto items-center">
+<div class="flex flex-col gap-2">
+<div class="font-headline-sm text-headline-sm text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bedtime</span>
+                    AuraAI
+                </div>
+<p class="font-body-md text-on-surface-variant opacity-80">© 2024 AuraAI. All celestial rights reserved.</p>
+</div>
+<div class="flex flex-wrap gap-6 md:justify-end">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth hover micro-interactions for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-2px)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0px)';
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,58 @@
+.container {
+  max-width: 860px;
+  margin: 40px auto;
+  padding: 0 16px 48px 16px;
+}
+
+.heading {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.card {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  margin-bottom: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.cardTitle {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.grid { display: grid; gap: 14px; font-size: 16px; }
+
+.actionsRow { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.primaryBtn, .dangerBtn, .secondaryBtn {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.primaryBtn { background: linear-gradient(90deg,#ED0687 0%, #FE6C0F 100%); color: #fff; }
+.secondaryBtn { background: rgba(255,255,255,0.16); color: #fff; }
+.dangerBtn { background: #dc3545; color: #fff; }
+.primaryBtn:active, .secondaryBtn:active, .dangerBtn:active { transform: scale(0.98); }
+
+.alert { background: rgba(255,0,0,0.08); color: #ff6b6b; border: 1px solid rgba(255,0,0,0.2); border-radius: 10px; padding: 12px 16px; margin-top: 16px; }
+.success { background: rgba(16,122,42,0.12); color: #86efac; border: 1px solid rgba(16,122,42,0.25); border-radius: 10px; padding: 12px 16px; margin-top: 16px; }
+
+@media (max-width: 768px) {
+  .heading { font-size: 24px; }
+  .card { padding: 18px; }
+}
+
+

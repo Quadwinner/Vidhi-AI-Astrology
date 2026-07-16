@@ -1,0 +1,182 @@
+import { useState } from 'react';
+import { supabaseAdmin } from '../supabaseClient';
+import toast from 'react-hot-toast';
+
+interface AdminStats {
+  totalUsers: number;
+  totalBlogs: number;
+  activePrices: number;
+  totalSettings: number;
+}
+
+interface UserAnalytics {
+  planDistribution: Record<string, number>;
+  subscriptionStatus: Record<string, number>;
+  newUsersLast30Days: number;
+  averageCoinBalance: number;
+}
+
+export const useAdminOperations = () => {
+  const [loading, setLoading] = useState(false);
+
+  const exportData = async (table: 'blogs' | 'users' | 'prices', format: 'json' | 'csv' = 'json') => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabaseAdmin.from(table).select('*');
+      if (error) throw error;
+
+      const result = { data, recordCount: (data || []).length };
+
+      const dataStr = JSON.stringify(result.data, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${table}_export_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`${table} data exported successfully (${result.recordCount} records)`);
+      return result;
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error(error instanceof Error ? error.message : 'Export failed');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStats = async (): Promise<AdminStats> => {
+    setLoading(true);
+    try {
+      const [usersCount, blogsCount, pricesCount, settingsCount] = await Promise.all([
+        supabaseAdmin.from('users').select('id', { count: 'exact', head: true }),
+        supabaseAdmin.from('blogs').select('id', { count: 'exact', head: true }),
+        supabaseAdmin.from('prices').select('id', { count: 'exact', head: true }).eq('is_active', true),
+        supabaseAdmin.from('settings').select('id', { count: 'exact', head: true }),
+      ]);
+
+      return {
+        totalUsers: usersCount.count || 0,
+        totalBlogs: blogsCount.count || 0,
+        activePrices: pricesCount.count || 0,
+        totalSettings: settingsCount.count || 0,
+      };
+    } catch (error) {
+      console.error('Stats error:', error);
+      toast.error('Failed to fetch statistics');
+      return {
+        totalUsers: 0,
+        totalBlogs: 0,
+        activePrices: 0,
+        totalSettings: 0,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getUserAnalytics = async (): Promise<UserAnalytics> => {
+    setLoading(true);
+    try {
+      const { data: users, error } = await supabaseAdmin
+        .from('users')
+        .select('plan_tier, subscription_status, created_at, coin_balance');
+
+      if (error) throw error;
+
+      const analytics = {
+        planDistribution: {} as Record<string, number>,
+        subscriptionStatus: {} as Record<string, number>,
+        newUsersLast30Days: 0,
+        averageCoinBalance: 0
+      };
+
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      if (users) {
+        users.forEach((user: any) => {
+          const planTier = user.plan_tier || 'free';
+          analytics.planDistribution[planTier] = (analytics.planDistribution[planTier] || 0) + 1;
+
+          const subStatus = user.subscription_status || 'none';
+          analytics.subscriptionStatus[subStatus] = (analytics.subscriptionStatus[subStatus] || 0) + 1;
+
+          if (user.created_at && new Date(user.created_at) >= thirtyDaysAgo) {
+            analytics.newUsersLast30Days++;
+          }
+        });
+
+        const totalBalance = users.reduce((sum: number, user: any) => sum + (user.coin_balance || 0), 0);
+        analytics.averageCoinBalance = Math.round(totalBalance / users.length);
+      }
+
+      return analytics;
+    } catch (error) {
+      console.error('Analytics error:', error);
+      toast.error('Failed to fetch analytics');
+      return {
+        planDistribution: {},
+        subscriptionStatus: {},
+        newUsersLast30Days: 0,
+        averageCoinBalance: 0
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const bulkUpdateUsers = async (userIds: string[], updates: Record<string, any>) => {
+    setLoading(true);
+    try {
+      const { error } = await supabaseAdmin
+        .from('users')
+        .update(updates)
+        .in('id', userIds);
+
+      if (error) throw error;
+      toast.success('Users updated successfully');
+      return { success: true };
+    } catch (error) {
+      console.error('Bulk update error:', error);
+      toast.error('Failed to update users');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const grantAdminByEmail = async (email: string, accessToken: string) => {
+    setLoading(true);
+    try {
+      const { error } = await supabaseAdmin
+        .from('users')
+        .update({ is_admin: true })
+        .eq('email', email);
+
+      if (error) throw error;
+      toast.success(`Granted admin to ${email}`);
+      return { success: true };
+    } catch (error) {
+      console.error('Grant admin error:', error);
+      toast.error('Failed to grant admin access');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    loading,
+    getStats,
+    getUserAnalytics,
+    bulkUpdateUsers,
+    exportData,
+    grantAdminByEmail,
+  };
+};

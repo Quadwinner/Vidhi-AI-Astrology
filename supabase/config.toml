@@ -1,0 +1,184 @@
+# A string used to distinguish different Supabase projects on the same host.
+project_id = "aura-ai-backend"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://localhost:54321"
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+
+# Use env SITE_URL for flexibility; local CLI reads env at runtime
+site_url = "env(SITE_URL)"
+additional_redirect_urls = ["env(ADDITIONAL_REDIRECT_URLS)"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[auth.external.google]
+enabled = true
+client_id = "env(GOOGLE_CLIENT_ID)"
+secret = "env(GOOGLE_CLIENT_SECRET)"
+
+[functions.create-payment-session]
+verify_jwt = false
+
+[functions.create-customer-portal-session]
+verify_jwt = false
+
+[functions.razorpay-webhook]
+verify_jwt = false
+
+[functions.create-topup-session]
+verify_jwt = false
+
+[functions.admin-operations]
+verify_jwt = false
+
+[functions.firebase-auth-exchange-2]
+verify_jwt = false
+
+[functions.whatsapp-webhook]
+verify_jwt = false
+[functions.create-ultravox-call]
+enabled = true
+verify_jwt = true
+import_map = "./functions/create-ultravox-call/deno.json"
+entrypoint = "./functions/create-ultravox-call/index.ts"
+
+[functions.initiate-agora-call]
+enabled = true
+verify_jwt = true
+import_map = "./functions/initiate-agora-call/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/initiate-agora-call/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/initiate-agora-call/*.html" ]
+
+[functions.initiate-gemini-call]
+enabled = true
+verify_jwt = true
+import_map = "./functions/initiate-gemini-call/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/initiate-gemini-call/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/initiate-gemini-call/*.html" ]
+
+[functions.generate-yogas]
+enabled = true
+verify_jwt = true
+import_map = "./functions/generate-yogas/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/generate-yogas/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/generate-yogas/*.html" ]
+
+[functions.init-user-wallet]
+enabled = true
+verify_jwt = true
+import_map = "./functions/init-user-wallet/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/init-user-wallet/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/init-user-wallet/*.html" ]
+
+[functions.test-get-chat-answer]
+enabled = true
+verify_jwt = true
+import_map = "./functions/test-get-chat-answer/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/test-get-chat-answer/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/test-get-chat-answer/*.html" ]
+
+[functions.test-generate-astro-data]
+enabled = true
+verify_jwt = true
+import_map = "./functions/test-generate-astro-data/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/test-generate-astro-data/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/test-generate-astro-data/*.html" ]
+
+[functions.create-partner-profile]
+enabled = true
+verify_jwt = true
+import_map = "./functions/create-partner-profile/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/create-partner-profile/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/create-partner-profile/*.html" ]
+
+[functions.categorize-chat-intent]
+enabled = true
+verify_jwt = true
+import_map = "./functions/categorize-chat-intent/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/categorize-chat-intent/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/categorize-chat-intent/*.html" ]
+
+[functions.get-compatibility-report]
+enabled = true
+verify_jwt = true
+import_map = "./functions/get-compatibility-report/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/get-compatibility-report/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/get-compatibility-report/*.html" ]
+
+[functions.test-get-compatibility-report]
+enabled = true
+verify_jwt = true
+import_map = "./functions/test-get-compatibility-report/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/test-get-compatibility-report/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/test-get-compatibility-report/*.html" ]
