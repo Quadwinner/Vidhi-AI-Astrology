@@ -168,8 +168,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             });
         }
       }
-      if (userData && !userData.currency_code) {
-        console.log('User has no currency. Initializing wallet for OAuth user...');
+      if (!userData || !userData.currency_code) {
+        // Covers both a brand-new signup where the public.users row isn't created
+        // yet (race with the DB trigger) and an existing row with no currency.
+        // init-user-wallet upserts the row and detects currency from the client IP.
+        console.log('User has no currency (or row not ready). Initializing wallet...');
         try {
           // For OAuth flows (like Google), the user has now been set.
           // The PricingContext's useEffect will now run and get the definitive variant.

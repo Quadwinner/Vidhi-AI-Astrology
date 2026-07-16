@@ -89,15 +89,17 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data: userProfile, error: fetchError } = await supabaseAdmin
+    // maybeSingle(): tolerate a missing row. On fresh OAuth signup the
+    // handle_new_user trigger may not have created the public.users row yet;
+    // in that case we create it below via upsert instead of erroring out
+    // (which previously left the user stuck on the USD default).
+    const { data: userProfile } = await supabaseAdmin
       .from('users')
       .select('currency_code, wallet_balance')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    if (fetchError) throw new Error(`Fetch failed: ${fetchError.message}`)
-
-    if (userProfile.currency_code) {
+    if (userProfile?.currency_code) {
       return new Response(
         JSON.stringify({
           success: true,
@@ -134,18 +136,18 @@ Deno.serve(async (req) => {
     const startingBalance = PROMO_WELCOME_COINS * 100;
     console.log(`[init-user-wallet] Promo welcome credit: ${PROMO_WELCOME_COINS} coins (${startingBalance} units) for ${targetCurrency}.`);
 
-    // D. Update User in DB
+    // D. Upsert User in DB (creates the row if the trigger hasn't yet)
     const { error: updateError } = await supabaseAdmin
       .from('users')
-      .update({
+      .upsert({
+        id: user.id,
         currency_code: targetCurrency,
-        wallet_balance: startingBalance, // Use the dynamically fetched price
+        wallet_balance: startingBalance,
         country: detectedCountry,
         is_migrated: true,
         coin_balance: 0, // Reset legacy coins
-        pricing_variant: variant_name // <-- ADD THIS LINE
-      })
-      .eq('id', user.id)
+        pricing_variant: variant_name
+      }, { onConflict: 'id' })
 
     if (updateError) throw new Error(`Update failed: ${updateError.message}`)
 

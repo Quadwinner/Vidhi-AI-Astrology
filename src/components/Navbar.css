@@ -366,6 +366,28 @@
   box-shadow: 0 0 16px rgba(229, 180, 91, 0.25);
 }
 
+/* Desktop sign-out button */
+.signout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(229, 180, 91, 0.3);
+  color: #E5B45B;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.signout-btn:hover {
+  background: rgba(97, 7, 43, 0.4);
+  border-color: rgba(229, 180, 91, 0.6);
+  box-shadow: 0 0 14px rgba(229, 180, 91, 0.22);
+  transform: scale(1.05);
+}
+
 .wallet-text {
   color: #E5B45B;
   font-family: 'Inter', 'Sora', sans-serif;

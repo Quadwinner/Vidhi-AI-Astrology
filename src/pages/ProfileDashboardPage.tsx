@@ -2,6 +2,7 @@ import {
   IconLayoutDashboard, IconChartArcs, IconMoonStars, IconHeart, IconStars,
   IconSettings, IconHelpCircle, IconArrowsMaximize, IconSun, IconMoon,
   IconInfinity, IconArrowRight, IconUser, IconPlus, IconPencil, IconBrightnessUp,
+  IconLogout,
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +16,7 @@ import LoadingDashboard from '../components/LoadingDashboard';
 import UpgradeForProfilesModal from '../components/UpgradeForProfilesModal';
 
 export default function ProfileDashboardPage() {
-  const { user, userProfiles, checkingStatus, planTier, refreshUserStatus } = useAuth() as any;
+  const { user, userProfiles, checkingStatus, planTier, refreshUserStatus, signOut } = useAuth() as any;
   const navigate = useNavigate();
 
   const [profiles, setProfiles] = useState<EnrichedProfile[]>([]);
@@ -169,6 +170,9 @@ export default function ProfileDashboardPage() {
           </button>
           <button className={styles.navItemSm} onClick={() => navigate('/#faq')}>
             <IconHelpCircle size={20} /><span>Support</span>
+          </button>
+          <button className={styles.navItemSm} onClick={() => signOut()}>
+            <IconLogout size={20} /><span>Sign out</span>
           </button>
         </div>
       </nav>

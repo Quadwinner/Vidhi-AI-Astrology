@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { usePricing } from '../context/PricingContext'; // Import Pricing Context
 import './Navbar.css';
 
-import { IconChevronDown, IconMessageCircle, IconUser, IconWallet } from '@tabler/icons-react';
+import { IconChevronDown, IconMessageCircle, IconUser, IconWallet, IconLogout } from '@tabler/icons-react';
 import logoSvg from '../assets/logo.svg';
 import AuthModal from './AuthModal';
 import CustomLanguageSelector from './CustomLanguageSelector';
@@ -189,6 +189,15 @@ const Navbar: React.FC = () => {
                     <div className="user-status">{getStatusText()}</div>
                   </Link>
                 </div>
+                <button
+                  type="button"
+                  className="signout-btn"
+                  onClick={() => { signOut(); closeAllMenus(); }}
+                  aria-label="Sign out"
+                  title="Sign out"
+                >
+                  <IconLogout size={18} />
+                </button>
               </div>
 
               <div className="language-tools-group">
