@@ -508,7 +508,11 @@ async function handler(req: Request) {
           model: promptData.model_name,
           messages: fireworksMessages,
           stream: true,
-          stream_options: { include_usage: true }
+          stream_options: { include_usage: true },
+          // Reasoning-capable Fireworks models (deepseek, gpt-oss, glm, kimi) default
+          // to heavy internal reasoning, which delays the first visible token by
+          // 10-15s on large prompts. 'low' keeps quality while streaming starts fast.
+          reasoning_effort: 'low'
         };
 
       } else if (isOpenAI) {
