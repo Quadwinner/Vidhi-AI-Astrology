@@ -182,7 +182,18 @@ Deno.serve(async (req) => {
     const { profile_id, voice } = await req.json();
     if (!profile_id) throw new Error('Missing profile_id');
 
-    const { systemPrompt } = await buildSystemPrompt(supabaseAdmin, profile_id);
+    let { systemPrompt } = await buildSystemPrompt(supabaseAdmin, profile_id);
+
+    // The selected voice is MALE, so the astrologer must speak about itself using
+    // masculine Hindi verb forms. Without this, the LLM often drifts into feminine
+    // forms ("सुन रही हूं", "बताती हूं") which clashes with the male voice.
+    // This is appended last so it takes precedence over the DB-stored prompt.
+    systemPrompt += `\n\n# आवाज़ और लिंग (अत्यंत महत्वपूर्ण):\n` +
+      `आप एक पुरुष ज्योतिषी हैं और आपकी आवाज़ पुरुष की है। ` +
+      `अपने बारे में बात करते समय हमेशा पुल्लिंग (पुरुषवाचक) क्रिया रूपों का ही प्रयोग करें। ` +
+      `सही: "मैं सुन रहा हूं", "मैं बताता हूं", "मैंने देखा", "मैं आपकी कुंडली का विश्लेषण कर चुका हूं", "मैं समझाता हूं"। ` +
+      `गलत (कभी प्रयोग न करें): "सुन रही हूं", "बताती हूं", "देखी", "कर चुकी हूं", "समझाती हूं"। ` +
+      `हर वाक्य में इस नियम का कड़ाई से पालन करें।`;
 
     // Reuse the same Hindi voice the "shubham" agent used, so audio is identical.
     // Override via the ULTRAVOX_VOICE_ID secret or request `voice` if desired.
