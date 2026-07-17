@@ -139,6 +139,7 @@ const Navbar: React.FC = () => {
             <Link to="/reports#tables" className="nav-link" onClick={handleAuthRedirect}>Birth Chart</Link>
             <Link to="/chat" className="nav-link" onClick={handleAuthRedirect}>Chat</Link>
             <Link to="/chat?startCall=1" className="nav-link" onClick={handleAuthRedirect}>Call</Link>
+            <Link to="/remedies" className="nav-link" onClick={handleAuthRedirect}>Remedies</Link>
             <div className="nav-dropdown" ref={dropdownRef}>
               <button
                 className="nav-dropdown-toggle"
@@ -270,6 +271,7 @@ const Navbar: React.FC = () => {
               <Link to="/reports#tables" className="mobile-link" onClick={handleAuthRedirect}>Birth Chart</Link>
               <Link to="/chat" className="mobile-link" onClick={handleAuthRedirect}>Chat</Link>
               <Link to="/chat?startCall=1" className="mobile-link" onClick={handleAuthRedirect}>Call</Link>
+              <Link to="/remedies" className="mobile-link" onClick={handleAuthRedirect}>Remedies</Link>
               {/* {user && (<Link to="/chat?startCall=1" className="mobile-link" onClick={closeAllMenus}>Call</Link>)} */}
               <hr className="mobile-menu-divider" />
               <div className="mobile-language-selector"><CustomLanguageSelector /></div>

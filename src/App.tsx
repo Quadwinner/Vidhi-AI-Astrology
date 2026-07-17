@@ -27,6 +27,7 @@ import PlanetaryTransitsBlog from './pages/PlanetaryTransitsBlog';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProfileDashboardPage from './pages/ProfileDashboardPage';
 import QuickRechargePage from './pages/QuickRechargePage';
+import RemediesPage from './pages/RemediesPage';
 import ReportsPage from './pages/ReportsPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
 import TermsAndConditions from './pages/TermsAndConditions';
@@ -38,7 +39,7 @@ import { usePageTracking } from './hooks/usePageTracking';
 
 function AppContent() {
   const location = useLocation();
-  const showFooter = location.pathname !== "/chat" && location.pathname !== "/wallet" && location.pathname !== "/profiles";
+  const showFooter = location.pathname !== "/chat" && location.pathname !== "/wallet" && location.pathname !== "/profiles" && location.pathname !== "/remedies";
   const isChatPage = location.pathname === "/chat";
 
   usePageTracking();
@@ -75,6 +76,7 @@ function AppContent() {
               <Route path="/YearEndPredictions" element={<YearEndBlog />} />
               <Route path="/PlanetaryTransits" element={<PlanetaryTransitsBlog />} />
               <Route path="/quick-recharge" element={<QuickRechargePage />} />
+              <Route path="/remedies" element={<RemediesPage />} />
             </Route>
 
             {/* Hidden Admin - guarded by admin-only route. No links in UI. */}
