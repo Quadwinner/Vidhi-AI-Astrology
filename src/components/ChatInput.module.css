@@ -4,9 +4,15 @@
   gap: 12px;
   padding: 8px 12px;
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(139, 109, 131, 0.3);
+  border: 1px solid rgba(229, 180, 91, 0.30);
+  background: rgba(28, 27, 26, 0.85);
   backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.inputForm:focus-within {
+  border-color: rgba(229, 180, 91, 0.55);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(229, 180, 91, 0.12);
 }
 
 .inputAreaWrapper {
@@ -57,7 +63,7 @@
 
 .iconButton:hover:not(:disabled) {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 62, 159, 0.4);
+  box-shadow: 0 4px 14px rgba(229, 180, 91, 0.45);
 }
 
 .iconButton:disabled {

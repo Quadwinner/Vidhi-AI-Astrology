@@ -41,11 +41,12 @@
 }
 
 .assistantBubble {
-  border-radius: 8px;
-  background: #26231f; /* lifted warm-dark surface for readability */
+  border-radius: 12px;
+  background: #2b2a28; /* Stitch surface_container_high */
   border: 1px solid rgba(229, 180, 91, 0.22);
   color: #F3F0EA; /* bright cream text */
   border-bottom-left-radius: 5px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
 }
 
 .assistantBubble p,
