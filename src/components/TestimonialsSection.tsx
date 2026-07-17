@@ -4,21 +4,21 @@ import React from "react";
 const testimonialsData = [
   {
     quote:
-      "The accuracy of the AI voice call left me speechless. It picked up on subtle transit influences I hadn't even noticed myself.",
-    author: "Priya M.",
-    details: "Marketing Professional",
+      "Vidhi predicted the exact month my career shift would happen, and it did. Having my dasha periods explained in plain language finally made my chart make sense.",
+    author: "Ananya R.",
+    details: "Product Designer, Bengaluru",
   },
   {
     quote:
-      "I've tried a lot of astrology apps, but this one feels different. The reading felt personal and I could see exactly why the prediction was made.",
-    author: "Arun S.",
-    details: "Software Engineer",
+      "I asked about my marriage timing during a late-night voice call and got a calm, detailed reading instantly. It felt like talking to a wise family astrologer.",
+    author: "Rohit V.",
+    details: "Entrepreneur, Pune",
   },
   {
     quote:
-      "My go-to app for clarity. The Kundli analysis is more thorough than many human consultations I've had.",
-    author: "Meera K.",
-    details: "Yoga Instructor",
+      "What I love most is the transparency — every prediction shows the planetary reasoning behind it. The remedies were simple and genuinely grounding.",
+    author: "Sneha T.",
+    details: "Doctor, Hyderabad",
   },
 ];
 

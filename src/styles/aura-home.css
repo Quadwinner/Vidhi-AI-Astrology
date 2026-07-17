@@ -269,10 +269,39 @@
 /* =====================================================================
    TESTIMONIALS
    ===================================================================== */
-.aura-home .aura-reviews { background: var(--aura-maroon); position: relative; overflow: hidden; }
+.aura-home .aura-reviews {
+  position: relative;
+  overflow: hidden;
+  /* Dark cosmic base with a soft maroon glow — no more solid pink block */
+  background:
+    radial-gradient(900px 520px at 15% 0%, rgba(97, 7, 43, 0.38), transparent 60%),
+    radial-gradient(800px 500px at 100% 100%, rgba(97, 7, 43, 0.28), transparent 60%),
+    var(--aura-bg);
+}
+/* subtle starfield for the reviews section */
+.aura-home .aura-reviews::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 30px 40px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 160px 100px, rgba(229,180,91,0.5), transparent),
+    radial-gradient(1px 1px at 280px 180px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 420px 70px, rgba(255,255,255,0.4), transparent);
+  background-repeat: repeat;
+  background-size: 520px 300px;
+  opacity: 0.4;
+}
 .aura-home .aura-review-grid { display: grid; grid-template-columns: 1fr; gap: 28px; position: relative; z-index: 2; }
 @media (min-width: 768px) { .aura-home .aura-review-grid { grid-template-columns: repeat(3, 1fr); } }
-.aura-home .aura-review-card { padding: 32px; background: rgba(20, 19, 18, 0.3); }
+.aura-home .aura-review-card {
+  padding: 32px;
+  background: rgba(43, 42, 40, 0.55); /* Stitch surface_container_high glass */
+  border: 1px solid rgba(229, 180, 91, 0.22);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 2;
+}
+.aura-home .aura-reviews .aura-section-head { position: relative; z-index: 2; }
 .aura-home .aura-stars { display: flex; gap: 2px; color: var(--aura-gold); margin-bottom: 16px; }
 .aura-home .aura-stars .material-symbols-outlined { font-variation-settings: 'FILL' 1; font-size: 20px; }
 .aura-home .aura-review-quote { font-style: italic; color: var(--aura-text); line-height: 1.6; margin: 0 0 24px; }
@@ -282,7 +311,7 @@
   background: rgba(229,180,91,0.15); display: flex; align-items: center; justify-content: center;
   color: var(--aura-gold); font-weight: 700; font-family: var(--aura-serif);
 }
-.aura-home .aura-review-name { font-weight: 700; color: var(--aura-text); }
+.aura-home .aura-review-name { font-weight: 700; color: var(--aura-gold); }
 .aura-home .aura-review-role { font-size: 12px; color: var(--aura-text-dim); }
 
 /* =====================================================================
