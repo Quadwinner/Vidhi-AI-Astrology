@@ -49,6 +49,18 @@ export const PricingProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [variant, setVariant] = useState('control'); // Default to 'control' for safety
   const [showSubscriptions, setShowSubscriptions] = useState(true);
   const [variantIsLoading, setVariantIsLoading] = useState(true);
+  const [refreshTick, setRefreshTick] = useState(0);
+
+  // Live-update prices when an admin edits service_prices/wallet_packages, so the
+  // rate bar and deduction cost reflect changes without a manual reload.
+  useEffect(() => {
+    const ch = supabase
+      .channel('rt-service-prices')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_prices' }, () => setRefreshTick(t => t + 1))
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'wallet_packages' }, () => setRefreshTick(t => t + 1))
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, []);
   // src/context/PricingContext.tsx
 
   // --- ACTION 2: REPLACE THE ENTIRE FIRST useEffect HOOK ---
@@ -146,7 +158,7 @@ export const PricingProvider: React.FC<{ children: ReactNode }> = ({ children })
     };
 
     fetchPricingData();
-  }, [currency, variant]); // <-- This correctly re-runs when the variant changes after login
+  }, [currency, variant, refreshTick]); // re-runs on variant change or a live price update
 
   // --- HELPER FUNCTION (No changes here) ---
   const formatPrice = (amount: number) => {

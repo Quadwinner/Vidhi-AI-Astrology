@@ -18,9 +18,29 @@ interface Settings {
   updated_at: string;
 }
 
+interface ServicePrice {
+  id: string;
+  service_key: string;
+  currency_code: string;
+  price_amount: number;
+  variant_name: string;
+}
+
+// Usage services shown in the pricing editor (backed by service_prices table).
+const USAGE_SERVICES: { key: string; label: string; unit: string }[] = [
+  { key: 'chat_message', label: 'Chat', unit: 'per message' },
+  { key: 'voice_call_minute', label: 'Voice Call', unit: 'per minute' },
+  { key: 'remedy', label: 'Remedies', unit: 'per request' },
+];
+const USAGE_CURRENCIES = ['INR', 'USD', 'AED'];
+const CURRENCY_SYMBOL: Record<string, string> = { INR: '₹', USD: '$', AED: 'د.إ' };
+
 export default function PriceManager() {
   const [prices, setPrices] = useState<Price[]>([]);
   const [settings, setSettings] = useState<Settings[]>([]);
+  const [servicePrices, setServicePrices] = useState<ServicePrice[]>([]);
+  const [spEdits, setSpEdits] = useState<Record<string, string>>({});
+  const [spSaving, setSpSaving] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingPrice, setEditingPrice] = useState<Price | null>(null);
   const [showPriceForm, setShowPriceForm] = useState(false);
@@ -47,6 +67,7 @@ export default function PriceManager() {
       .channel('realtime-admin-prices-settings')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'prices' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'settings' }, () => fetchData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_prices' }, () => fetchData())
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
@@ -56,9 +77,10 @@ export default function PriceManager() {
     try {
       const { data: session } = await supabase.auth.getSession();
       if (!session.session) throw new Error('Not authenticated');
-      const [pricesResult, settingsResult] = await Promise.all([
+      const [pricesResult, settingsResult, servicePricesResult] = await Promise.all([
         supabase.from('prices').select('id, plan_id, currency, amount, gateway_price_id').order('plan_id', { ascending: true }),
-        supabase.from('settings').select('*').order('key', { ascending: true })
+        supabase.from('settings').select('*').order('key', { ascending: true }),
+        supabase.from('service_prices').select('id, service_key, currency_code, price_amount, variant_name')
       ]);
 
       if (pricesResult.error) throw pricesResult.error;
@@ -66,6 +88,7 @@ export default function PriceManager() {
 
       setPrices(pricesResult.data || []);
       setSettings(settingsResult.data || []);
+      if (!servicePricesResult.error) setServicePrices((servicePricesResult.data as ServicePrice[]) || []);
     } catch (error: any) {
       console.error('Error fetching data:', error);
       toast.error(error?.message || 'Failed to fetch data');
@@ -255,6 +278,46 @@ export default function PriceManager() {
     }
   };
 
+  // Current stored amount (minor units) for a service+currency (control variant preferred).
+  const currentServiceMinor = (serviceKey: string, currency: string): number | null => {
+    const rows = servicePrices.filter(sp => sp.service_key === serviceKey && sp.currency_code === currency);
+    const control = rows.find(r => r.variant_name === 'control') || rows[0];
+    return control ? control.price_amount : null;
+  };
+
+  // Save a service price. Admin enters MAJOR units (e.g. 15 for ₹15); we store
+  // minor units (1500). Updates ALL variant rows for that service+currency so
+  // they stay in sync, or inserts a control row if none exist.
+  const saveServicePrice = async (serviceKey: string, currency: string) => {
+    const editKey = `${serviceKey}:${currency}`;
+    const raw = spEdits[editKey];
+    if (raw === undefined || raw === '') return;
+    const major = parseFloat(raw);
+    if (isNaN(major) || major < 0) { toast.error('Enter a valid amount'); return; }
+    const minor = Math.round(major * 100);
+    setSpSaving(editKey);
+    try {
+      const rows = servicePrices.filter(sp => sp.service_key === serviceKey && sp.currency_code === currency);
+      if (rows.length > 0) {
+        const { error } = await supabase.from('service_prices')
+          .update({ price_amount: minor })
+          .eq('service_key', serviceKey).eq('currency_code', currency);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('service_prices')
+          .insert([{ service_key: serviceKey, currency_code: currency, price_amount: minor, variant_name: 'control' }]);
+        if (error) throw error;
+      }
+      toast.success(`${serviceKey.replace('_', ' ')} (${currency}) updated`);
+      setSpEdits(prev => { const n = { ...prev }; delete n[editKey]; return n; });
+      fetchData();
+    } catch (e: any) {
+      toast.error(e?.message || 'Failed to update price');
+    } finally {
+      setSpSaving(null);
+    }
+  };
+
   if (loading && prices.length === 0 && settings.length === 0) {
     return <div style={{ padding: '20px' }}>Loading...</div>;
   }
@@ -358,101 +421,57 @@ export default function PriceManager() {
         </div>
       </div>
 
-      {/* Chat Pricing Section */}
+      {/* Usage Pricing Section — edits the REAL service_prices table used for
+          deduction + display (chat, call, remedies). */}
       <div style={{ marginBottom: '40px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ color: '#ffffff' }}>Chat Pricing</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <h3 style={{ color: '#ffffff' }}>Usage Pricing (Chat / Call / Remedies)</h3>
+          <button onClick={fetchData} style={{ padding: '8px 16px', backgroundColor: '#117a8b', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Refresh</button>
         </div>
-        <div style={{ backgroundColor: '#1f1f1f', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.25)', border: '1px solid #2a2a2a' }}>
-          {(() => {
-            const chatCostSetting = settings.find(s => s.key === 'chat_coin_cost');
-            return (
-              <div>
-                <div style={{ marginBottom: '15px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#cfcfcf', fontWeight: 'bold' }}>
-                    Coins per Chat Message:
-                  </label>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
-                      value={chatCostSetting?.value ?? '1'}
-                      onChange={async (e) => {
-                        await upsertSettingValue(
-                          'chat_coin_cost',
-                          e.target.value,
-                          'Number of coins deducted per chat message'
-                        );
-                      }}
-                      style={{
-                        width: '100px',
-                        padding: '8px',
-                        border: '1px solid #2a2a2a',
-                        borderRadius: '4px',
-                        fontSize: '16px',
-                        backgroundColor: '#161616',
-                        color: '#ffffff'
-                      }}
-                    />
-                    <span style={{ color: '#b5b5b5' }}>coins per message</span>
-                  </div>
-                  <p style={{ marginTop: '8px', fontSize: '14px', color: '#b5b5b5' }}>
-                    {chatCostSetting?.description || 'Number of coins deducted per chat message'}
-                  </p>
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      </div>
+        <p style={{ marginTop: 0, marginBottom: '16px', fontSize: '13px', color: '#b5b5b5' }}>
+          Enter the amount a user pays per action, in the main currency unit (e.g. 15 = ₹15 / $15).
+          Saving updates every pricing variant for that service &amp; currency, and is used both for
+          deduction and for the price shown to users.
+        </p>
 
-      {/* Call Pricing Section */}
-      <div style={{ marginBottom: '40px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ color: '#ffffff' }}>Call Pricing</h3>
-        </div>
-        <div style={{ backgroundColor: '#1f1f1f', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.25)', border: '1px solid #2a2a2a' }}>
-          {(() => {
-            const callCostSetting = settings.find(s => s.key === 'call_coin_cost');
-            return (
-              <div>
-                <div style={{ marginBottom: '15px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#cfcfcf', fontWeight: 'bold' }}>
-                    Coins per Call Minute:
-                  </label>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
-                      value={callCostSetting?.value ?? '20'}
-                      onChange={async (e) => {
-                        await upsertSettingValue(
-                          'call_coin_cost',
-                          e.target.value,
-                          'Number of coins deducted per call minute'
-                        );
-                      }}
-                      style={{
-                        width: '120px',
-                        padding: '8px',
-                        border: '1px solid #2a2a2a',
-                        borderRadius: '4px',
-                        fontSize: '16px',
-                        backgroundColor: '#161616',
-                        color: '#ffffff'
-                      }}
-                    />
-                    <span style={{ color: '#b5b5b5' }}>coins per minute</span>
-                  </div>
-                  <p style={{ marginTop: '8px', fontSize: '14px', color: '#b5b5b5' }}>
-                    {callCostSetting?.description || 'Number of coins deducted per minute of call time'}
-                  </p>
-                </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+          {USAGE_SERVICES.map(svc => (
+            <div key={svc.key} style={{ backgroundColor: '#1f1f1f', borderRadius: '8px', padding: '18px', border: '1px solid #2a2a2a', boxShadow: '0 2px 10px rgba(0,0,0,0.25)' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '14px' }}>
+                <h4 style={{ margin: 0, color: '#E5B45B' }}>{svc.label}</h4>
+                <span style={{ fontSize: '12px', color: '#8f8284' }}>{svc.unit}</span>
               </div>
-            );
-          })()}
+              {USAGE_CURRENCIES.map(cur => {
+                const editKey = `${svc.key}:${cur}`;
+                const stored = currentServiceMinor(svc.key, cur);
+                const storedMajor = stored != null ? (stored / 100).toString() : '';
+                const value = spEdits[editKey] !== undefined ? spEdits[editKey] : storedMajor;
+                const dirty = spEdits[editKey] !== undefined && spEdits[editKey] !== storedMajor;
+                return (
+                  <div key={cur} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                    <span style={{ width: '42px', color: '#cfcfcf', fontWeight: 700 }}>{cur}</span>
+                    <span style={{ color: '#8f8284' }}>{CURRENCY_SYMBOL[cur] || ''}</span>
+                    <input
+                      type="number" min="0" step="0.01"
+                      value={value}
+                      onChange={(e) => setSpEdits(prev => ({ ...prev, [editKey]: e.target.value }))}
+                      style={{ width: '100px', padding: '8px', border: `1px solid ${dirty ? '#E5B45B' : '#2a2a2a'}`, borderRadius: '4px', fontSize: '15px', backgroundColor: '#161616', color: '#fff' }}
+                    />
+                    <button
+                      onClick={() => saveServicePrice(svc.key, cur)}
+                      disabled={!dirty || spSaving === editKey}
+                      style={{ padding: '7px 14px', backgroundColor: dirty ? '#28a745' : '#3a3a3a', color: '#fff', border: 'none', borderRadius: '4px', cursor: dirty ? 'pointer' : 'not-allowed', fontSize: '13px' }}
+                    >
+                      {spSaving === editKey ? 'Saving…' : 'Save'}
+                    </button>
+                  </div>
+                );
+              })}
+              {USAGE_CURRENCIES.every(cur => currentServiceMinor(svc.key, cur) == null) && (
+                <p style={{ fontSize: '12px', color: '#b5b5b5', margin: '4px 0 0' }}>No price set yet — enter a value and Save to create it.</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 

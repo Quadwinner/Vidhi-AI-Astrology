@@ -53,7 +53,7 @@ async function handler(req: Request): Promise<Response> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return json({ error: 'Authentication failed' }, 401);
 
-    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'chat_message', 1, monetization_variant || 'control');
+    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'remedy', 1, monetization_variant || 'control');
     if (!deduction.success) {
       return json({ error: 'insufficient_funds', required: deduction.required, balance: deduction.balance, currency: deduction.currency }, 402);
     }
