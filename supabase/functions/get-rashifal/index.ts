@@ -1,10 +1,15 @@
 // supabase/functions/get-rashifal/index.ts
-// Public daily rashifal for all 12 rashis. Generated once per day per language
-// via the configured Fireworks model and cached in daily_rashifal. Free content.
+// Public daily rashifal for all 12 rashis, sourced from the VedicAstro daily-sun
+// endpoint (authentic, transit-based) and cached once per day per language in
+// daily_rashifal. Users read from the DB cache — the API is called at most once
+// per (day, language), not per user.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders, createCorsWrappedHandler } from '../_shared/cors.ts';
 
+const VEDIC_BASE = 'https://api.vedicastroapi.com/v3-json';
+
+// zodiac index 1..12 -> labels
 const SIGNS = [
   { key: 'aries', en: 'Aries', hi: 'मेष' },
   { key: 'taurus', en: 'Taurus', hi: 'वृषभ' },
@@ -20,8 +25,38 @@ const SIGNS = [
   { key: 'pisces', en: 'Pisces', hi: 'मीन' },
 ];
 
-function todayIso(): string {
-  return new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+function todayIso(): string { return new Date().toLocaleDateString('en-CA'); }
+function toDmy(iso: string): string {
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function ratingFromScore(score: number): number {
+  if (!score && score !== 0) return 3;
+  return Math.max(1, Math.min(5, Math.round(score / 20)));
+}
+
+async function fetchSign(apiKey: string, zodiac: number, dmy: string, lang: string) {
+  const url = `${VEDIC_BASE}/prediction/daily-sun?zodiac=${zodiac}&date=${dmy}&show_same=true&split=true&type=big&lang=${lang}&api_key=${apiKey}`;
+  const r = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  const j = await r.json();
+  if (j?.status !== 200 || !j?.response) throw new Error(`daily-sun ${zodiac}: ${JSON.stringify(j).slice(0, 120)}`);
+  const resp = j.response;
+  const b = resp.bot_response || {};
+  const meta = SIGNS[zodiac - 1];
+  const luckyNum = Array.isArray(resp.lucky_number) ? resp.lucky_number[0] : resp.lucky_number;
+  return {
+    key: meta.key, en: meta.en, hi: meta.hi, sign: meta.en,
+    overall: b.total_score?.split_response || '',
+    love: b.relationship?.split_response || '',
+    career: b.career?.split_response || '',
+    health: b.health?.split_response || '',
+    finance: b.finances?.split_response || '',
+    family: b.family?.split_response || '',
+    lucky_color: resp.lucky_color || '',
+    lucky_color_code: resp.lucky_color_code || '',
+    lucky_number: luckyNum ?? '',
+    rating: ratingFromScore(b.total_score?.score),
+  };
 }
 
 async function handler(req: Request): Promise<Response> {
@@ -35,79 +70,36 @@ async function handler(req: Request): Promise<Response> {
 
     const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
-    // 1. Serve from cache if present
+    // 1. Serve cache
     const { data: cached } = await admin.from('daily_rashifal')
       .select('data').eq('rashi_date', date).eq('lang', lang).maybeSingle();
     if (cached?.data) return json({ date, lang, cached: true, signs: cached.data });
 
-    // 2. Generate via LLM (reuse configured chat model)
-    const { data: promptRow } = await admin.from('system_prompts')
-      .select('model_name, secret_name').eq('prompt_name', 'text_chat_default').eq('is_active', true).maybeSingle();
-    const modelName = promptRow?.model_name || 'accounts/fireworks/models/gpt-oss-120b';
-    const secretName = promptRow?.secret_name || 'FIREWORKS_API_KEY';
-    const apiKey = Deno.env.get(secretName);
-    if (!apiKey) return json({ error: 'LLM key not set' }, 500);
+    // 2. Fetch all 12 from VedicAstro
+    const apiKey = Deno.env.get('VEDICASTRO_API_KEY');
+    if (!apiKey) return json({ error: 'VEDICASTRO_API_KEY not set' }, 500);
+    const dmy = toDmy(date);
 
-    const langName = lang === 'hi' ? 'Hindi' : 'English';
-    const signList = SIGNS.map(s => `${s.en} (${s.hi})`).join(', ');
-    const systemPrompt =
-`You are a warm, insightful Vedic astrologer writing the DAILY RASHIFAL (horoscope) for ${date}.
-Write all text in ${langName}. Cover ALL 12 rashis: ${signList}.
+    const results = await Promise.allSettled(
+      Array.from({ length: 12 }, (_, i) => fetchSign(apiKey, i + 1, dmy, lang))
+    );
+    const signs = results.map((res, i) =>
+      res.status === 'fulfilled' ? res.value : { ...SIGNS[i], sign: SIGNS[i].en, overall: '', rating: 3 }
+    );
 
-Return ONLY a valid JSON object (no markdown/code fences) shaped as { "signs": [ ...12 objects... ] }, with the 12 objects in this exact order (Aries first ... Pisces last). Each object:
-{
-  "sign": "English sign name",
-  "overall": "2-3 sentence general outlook for the day",
-  "love": "1-2 sentences",
-  "career": "1-2 sentences",
-  "health": "1 sentence",
-  "finance": "1 sentence",
-  "lucky_color": "one color",
-  "lucky_number": "a number 1-9",
-  "rating": 4  // overall day rating 1-5 integer
-}
-Keep it positive, practical, non-fear-based. Vary the guidance meaningfully between signs. Text values in ${langName}; keep JSON keys in English.`;
-
-    const isFireworks = modelName.toLowerCase().startsWith('accounts/fireworks/');
-    const apiUrl = isFireworks ? 'https://api.fireworks.ai/inference/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
-
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: modelName,
-        messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: `Give today's rashifal for all 12 signs in ${langName}.` }],
-        temperature: 0.7, max_tokens: 3500, reasoning_effort: 'low',
-        response_format: { type: 'json_object' },
-      }),
-    });
-    if (!res.ok) {
-      const errText = await res.text();
-      console.error(`[get-rashifal] LLM error ${res.status}: ${errText}`);
-      return json({ error: 'llm_error', message: 'Could not prepare rashifal right now.' }, 200);
+    const okCount = results.filter(r => r.status === 'fulfilled').length;
+    if (okCount === 0) {
+      const firstErr = (results[0] as PromiseRejectedResult)?.reason?.message || 'unknown';
+      console.error(`[get-rashifal] all VedicAstro calls failed: ${firstErr}`);
+      return json({ error: 'source_unavailable', message: 'Rashifal source is temporarily unavailable. Please try again shortly.' }, 200);
     }
-    const data = await res.json();
-    let content = data.choices?.[0]?.message?.content || '';
-    // extract array (some models wrap in an object)
-    let signs: any = null;
-    try {
-      const parsed = JSON.parse(content);
-      signs = Array.isArray(parsed)
-        ? parsed
-        : (parsed.signs || parsed.rashifal || parsed.horoscopes || parsed.predictions || parsed.data || parsed.result || null);
-    } catch {
-      const start = content.indexOf('['); const end = content.lastIndexOf(']');
-      if (start !== -1 && end !== -1) { try { signs = JSON.parse(content.slice(start, end + 1)); } catch { /* noop */ } }
+
+    // 3. Cache only if we got a complete set (avoid caching partial days)
+    if (okCount === 12) {
+      await admin.from('daily_rashifal').upsert({ rashi_date: date, lang, data: signs }, { onConflict: 'rashi_date,lang' });
     }
-    if (!Array.isArray(signs) || signs.length === 0) return json({ error: 'parse_error', message: 'Could not prepare rashifal right now.' }, 200);
 
-    // attach hindi labels for UI convenience
-    const enriched = signs.map((s: any, i: number) => ({ ...s, key: SIGNS[i]?.key, hi: SIGNS[i]?.hi, en: SIGNS[i]?.en }));
-
-    // 3. Cache (ignore conflict if another request beat us)
-    await admin.from('daily_rashifal').upsert({ rashi_date: date, lang, data: enriched }, { onConflict: 'rashi_date,lang' });
-
-    return json({ date, lang, cached: false, signs: enriched });
+    return json({ date, lang, cached: false, signs });
   } catch (err: any) {
     console.error(`[get-rashifal] ${err.message}`);
     return json({ error: err.message }, 200);

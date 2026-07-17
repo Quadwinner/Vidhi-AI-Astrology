@@ -106,7 +106,7 @@ export default function RashifalPage() {
                   )}
 
                   <div className={styles.luckyRow}>
-                    {s.lucky_color && <span className={styles.lucky}><i className={styles.dot} style={{ background: colorHex(s.lucky_color) }} />{s.lucky_color}</span>}
+                    {s.lucky_color && <span className={styles.lucky}><i className={styles.dot} style={{ background: (s as any).lucky_color_code || colorHex(s.lucky_color) }} />{s.lucky_color}</span>}
                     {s.lucky_number != null && <span className={styles.lucky}>{lang === 'hi' ? 'शुभ अंक' : 'Lucky'} {s.lucky_number}</span>}
                     <span className={styles.expandHint}>{isOpen ? (lang === 'hi' ? 'कम' : 'Less') : (lang === 'hi' ? 'और' : 'More')}</span>
                   </div>
