@@ -6,6 +6,40 @@ interface AiInsightsDisplayProps {
   insights: { analyst_report: string; } | null;
 }
 
+// Renders a "influence" value that may be a string, an array of {planet,influence}
+// entries, or an object with planetInfluence[] / houseInfluence{} sub-sections.
+function renderInfluenceBlock(content: any, lines: string[]): void {
+  if (content == null) return;
+  if (typeof content === 'string') { lines.push(content + '\n'); return; }
+
+  // planetInfluence: array of { planet, influence }
+  const planetArr = Array.isArray(content) ? content : content.planetInfluence;
+  if (Array.isArray(planetArr) && planetArr.length > 0) {
+    for (const p of planetArr) {
+      if (typeof p === 'string') { lines.push('- ' + p + '\n'); continue; }
+      if (p && (p.planet || p.influence)) {
+        lines.push(`- **${p.planet || ''}** ${p.influence || ''}`.trim() + '\n');
+      }
+    }
+  }
+
+  // houseInfluence: object keyed by house number -> text
+  const houseObj = content.houseInfluence;
+  if (houseObj && typeof houseObj === 'object') {
+    for (const [house, text] of Object.entries(houseObj)) {
+      const clean = typeof text === 'string' ? text.replace(/^→\s*/, '') : JSON.stringify(text);
+      lines.push(`- **House ${house}:** ${clean}\n`);
+    }
+  }
+
+  // Fallback: a plain object of key -> string (no known sub-sections)
+  if (!Array.isArray(content) && !planetArr && !houseObj && typeof content === 'object') {
+    for (const [k, v] of Object.entries(content)) {
+      if (typeof v === 'string') lines.push(`- **${k}:** ${v}\n`);
+    }
+  }
+}
+
 function jsonReportToMarkdown(raw: string): string {
   try {
     const data = JSON.parse(raw);
@@ -93,12 +127,14 @@ function jsonReportToMarkdown(raw: string): string {
       }
     }
 
-    // Varga Influences
+    // Varga Influences — each chart value can be a plain string OR a nested
+    // object with planetInfluence[] / houseInfluence{}. Render those readably
+    // instead of dumping raw JSON.
     if (ov.vargaInfluences && typeof ov.vargaInfluences === 'object') {
       lines.push('\n## Divisional Chart Insights\n');
       for (const [chart, content] of Object.entries(ov.vargaInfluences)) {
         lines.push(`### ${chart}\n`);
-        lines.push((typeof content === 'string' ? content : JSON.stringify(content)) + '\n');
+        renderInfluenceBlock(content, lines);
       }
     }
 
