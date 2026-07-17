@@ -917,7 +917,7 @@ export default function ChatPage() {
   const handleClarificationSelect = (partnerId: string, partnerName: string, accessToken: string, questionText: string) => {
     setChatHistory(prev => prev.filter(msg => !msg.isInteractive));
     const newId = `typing_${Date.now()}`;
-    setChatHistory(prev => [...prev, { id: newId, role: 'assistant', content: 'AuraAI is typing...' }]);
+    setChatHistory(prev => [...prev, { id: newId, role: 'assistant', content: 'Vidhi is typing...' }]);
     setIsReplying(true);
     handleCompatibilityCheck(partnerName, newId, accessToken, questionText, partnerId);
   };
@@ -1084,7 +1084,7 @@ export default function ChatPage() {
     const typingIndicator: ChatMessage = {
       id: `typing_${Date.now()}`,
       role: 'assistant',
-      content: 'AuraAI is typing...'
+      content: 'Vidhi is typing...'
     };
     setChatHistory(prev => [...prev, typingIndicator]);
 
@@ -1144,7 +1144,7 @@ export default function ChatPage() {
 
     // 1. Optimistic UI Update
     const typingId = `typing_${Date.now()}`;
-    setChatHistory(prev => [...prev, { role: 'user', content: questionText }, { id: typingId, role: 'assistant', content: 'AuraAI is typing...' }]);
+    setChatHistory(prev => [...prev, { role: 'user', content: questionText }, { id: typingId, role: 'assistant', content: 'Vidhi is typing...' }]);
     scrollToBottom();
 
     try {
@@ -1430,7 +1430,7 @@ export default function ChatPage() {
                     const cleanContent = rawContent
                       .replace(/\[ANSWER\]/g, '')
                       .replace(/\[\/ANSWER\]/g, '')
-                      .replace(/AuraAI is typing\.\.\./g, 'Drafting prediction...')
+                      .replace(/Vidhi is typing\.\.\./g, 'Drafting prediction...')
                       .trim();
                     
                     const topicData = getChatTopic(cleanContent);

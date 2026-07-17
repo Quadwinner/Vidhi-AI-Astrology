@@ -64,7 +64,7 @@ export default function ChatMessage({
   // Helper variables
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
-  const isTypingIndicator = isAssistant && message.content === 'AuraAI is typing...';
+  const isTypingIndicator = isAssistant && message.content === 'Vidhi is typing...';
 
   // Determine if message is long enough to collapse (e.g. > 380 chars)
   const isLongMessage = displayContent.length > 380;
@@ -237,7 +237,7 @@ export default function ChatMessage({
         <div className={`${styles.bubble} ${isUser ? styles.userBubble : styles.assistantBubble}`}>
           {isTypingIndicator ? (
             <div className={styles.typingIndicator}>
-              <span>AuraAI is typing</span>
+              <span>Vidhi is typing</span>
               <span className={styles.dots}><span>.</span><span>.</span><span>.</span></span>
             </div>
           ) : (

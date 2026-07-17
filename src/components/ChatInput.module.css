@@ -45,7 +45,7 @@
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #ff3e9f 0%, #fe450b 100%);
+  background: linear-gradient(135deg, #61072B 0%, #E5B45B 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@
   position: absolute;
   width: 5px;
   height: 5px;
-  background: linear-gradient(135deg, #ED0687, #FE6C0F);
+  background: linear-gradient(135deg, #61072B, #E5B45B);
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(254, 108, 15, 0.8);
   animation: orbit 2s linear infinite;
@@ -175,7 +175,7 @@
 }
 
 .upgradeBannerButton {
-  background: linear-gradient(90deg, #ED0687 0%, #FE6C0F 100%);
+  background: linear-gradient(90deg, #61072B 0%, #E5B45B 100%);
   color: white;
   font-weight: bold;
   font-size: 1rem;

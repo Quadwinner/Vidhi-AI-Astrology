@@ -21,11 +21,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* --- THIS IS THE UPDATED BACKGROUND FROM YOUR FIGMA DESIGN --- */
-  /* background: linear-gradient(90deg, #60062B 0%, #A14469 100%); */
-  background:#61072B;
-  background-attachment: fixed; /* Ensures the gradient stays in place while scrolling */
-  color: white; /* Sets a sensible default text color for the dark background */
+  /* Vidhi base: dark cosmic background (maroon is used only as an accent). */
+  background: #0d0c0b;
+  background-attachment: fixed; /* Ensures the background stays in place while scrolling */
+  color: #E5E2DF; /* Cream default text on the dark background */
   scroll-behavior: smooth;
 }
 

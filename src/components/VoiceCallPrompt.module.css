@@ -1,5 +1,4 @@
 .card {
-    background: linear-gradient(135deg, #4a0d68, #742a74);
     color: white;
     padding: 16px;
     margin-top: 10px;
@@ -7,8 +6,8 @@
     left: 90%;
     text-align: center;
     border-radius: 12px;
-    border: 1px solid rgba(96, 165, 250, 0.30);
-    background: rgba(30, 58, 138, 0.20);
+    border: 1px solid rgba(229, 180, 91, 0.30);
+    background: rgba(97, 7, 43, 0.25);
 }
 
 .icon {
@@ -17,7 +16,7 @@
 
 .switch {
     margin: 4px 0;
-    color: #93C5FD;
+    color: #E5B45B;
     text-align: center;
     font-family: Sora;
     font-size: 14px;
@@ -37,8 +36,8 @@
 }
 
 .startButton {
-    background: linear-gradient(90deg, #3B82F6 0%, #A855F7 100%);
-    color: white;
+    background: linear-gradient(90deg, #61072B 0%, #E5B45B 100%);
+    color: #fff;
     border: none;
     padding: 8px 16px;
     border-radius: 8px;
