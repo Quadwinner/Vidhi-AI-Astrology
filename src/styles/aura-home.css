@@ -317,7 +317,28 @@
 /* =====================================================================
    FAQ
    ===================================================================== */
-.aura-home .aura-faq { background: var(--aura-surface); }
+.aura-home .aura-faq {
+  position: relative;
+  overflow: hidden;
+  /* Match the celestial cosmic backdrop instead of a flat solid fill */
+  background:
+    radial-gradient(900px 520px at 85% 0%, rgba(97, 7, 43, 0.30), transparent 60%),
+    radial-gradient(800px 500px at 0% 100%, rgba(229, 180, 91, 0.06), transparent 58%),
+    var(--aura-bg);
+}
+.aura-home .aura-faq::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 40px 50px, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1.5px 1.5px at 180px 120px, rgba(229,180,91,0.45), transparent),
+    radial-gradient(1px 1px at 300px 200px, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1.5px 1.5px at 440px 80px, rgba(255,255,255,0.4), transparent);
+  background-repeat: repeat;
+  background-size: 520px 300px;
+  opacity: 0.35;
+}
+.aura-home .aura-faq .aura-container { position: relative; z-index: 2; }
 .aura-home .aura-faq-list { max-width: 768px; margin: 0 auto; display: grid; gap: 16px; }
 .aura-home .aura-faq-item { overflow: hidden; }
 .aura-home .aura-faq-item summary {
