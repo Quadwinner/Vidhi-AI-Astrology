@@ -55,7 +55,7 @@ async function handler(req: Request) {
 
     if (!user) throw new Error("Authentication failed: User not found.");
 
-    const { profile_id, scope, report_type } = await req.json();
+    const { profile_id, scope, report_type, skip_transits } = await req.json();
     if (!profile_id || !scope) throw new Error("Invalid request: Missing profile_id or scope.");
 
     if (scope === 'charts') {
@@ -141,17 +141,25 @@ async function handler(req: Request) {
         //     }
         //   });
       }
-      const step6_startTime = Date.now();
-      const transitData = await fetchAndProcessCurrentTransits(birthDetails, processed_tables.houses);
-      const step6_endTime = Date.now();
-      console.log(`[PERF_LOG] Step 6 (Final): fetchAndProcessCurrentTransits took ${step6_endTime - step6_startTime}ms`);
+      // --- OPTIMIZATION: Skip the live VedicAstro transit call when the caller only needs
+      // the cached birth chart (e.g. the Astral Dashboard just renders north_chart_svg).
+      // This avoids consuming a VedicAstro API call on every dashboard load. Callers that
+      // need fresh transits (Reports page) simply omit skip_transits. ---
+      if (!skip_transits) {
+        const step6_startTime = Date.now();
+        const transitData = await fetchAndProcessCurrentTransits(birthDetails, processed_tables.houses);
+        const step6_endTime = Date.now();
+        console.log(`[PERF_LOG] Step 6 (Final): fetchAndProcessCurrentTransits took ${step6_endTime - step6_startTime}ms`);
 
-      processed_tables.current_transits = transitData.table;
+        processed_tables.current_transits = transitData.table;
 
-      if (!processed_tables.divisional_chart_svgs) {
-        processed_tables.divisional_chart_svgs = {};
+        if (!processed_tables.divisional_chart_svgs) {
+          processed_tables.divisional_chart_svgs = {};
+        }
+        processed_tables.divisional_chart_svgs.current_transit_svg = transitData.svg;
+      } else {
+        console.log(`[PERF_LOG] Step 6 skipped (skip_transits=true). No live transit fetch.`);
       }
-      processed_tables.divisional_chart_svgs.current_transit_svg = transitData.svg;
 
       const functionEndTime = Date.now();
       console.log(`[PERF_LOG] Total function execution time before return: ${functionEndTime - functionStartTime}ms`);

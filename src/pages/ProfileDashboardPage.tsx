@@ -62,7 +62,9 @@ export default function ProfileDashboardPage() {
     (async () => {
       try {
         const { data } = await supabase.functions.invoke('generate-astro-data', {
-          body: { profile_id: primaryId, scope: 'charts' },
+          // Dashboard only renders the cached birth chart SVG; skip the live
+          // VedicAstro transit fetch so revisiting the dashboard costs no API call.
+          body: { profile_id: primaryId, scope: 'charts', skip_transits: true },
         });
         if (!cancelled) setChartSvg(data?.chart_data?.north_chart_svg || null);
       } catch (e) {
