@@ -520,7 +520,16 @@ async function fetchAllChartData(details: BirthDetails) {
     kaalsarp_dosh_details: "/dosha/kaalsarp-dosh",
     pitra_dosh_details: "/dosha/pitra-dosh",
   };
-  const divisionalChartsToProcess = ['D1', 'D3', 'D3-s', 'D7', 'D9', 'D10', 'D10-R', 'D12', 'D16', 'D20', 'D24', 'D24-R', 'D30', 'D40', 'D45', 'D60', 'chalit', 'moon', 'sun'];
+  // Trimmed to the divisional charts actually used by the reports (D9/D10/D16/D30)
+  // plus the ones commonly viewed in the Charts tab. Fetching all 19 (plus an SVG
+  // each) fired ~60+ VedicAstro calls at once, which the API throttled — pushing
+  // first-time generation past the edge function timeout (504). Removed charts
+  // simply won't appear as tabs; nothing breaks.
+  const divisionalChartsToProcess = ['D1', 'D9', 'D10', 'D12', 'D16', 'D24', 'D30', 'D60', 'chalit', 'moon'];
+  // Only render SVG images for the most-viewed / report-relevant charts. Other
+  // charts fall back to the table view (already handled in the UI), avoiding a
+  // separate chart-image API call for each one.
+  const svgChartsToProcess = ['D9', 'D10', 'D16', 'D30'];
   const safelyFetch = (fetchPromise: Promise<any>, endpointName: string) =>
     fetchPromise
       .then(data => ({ [endpointName]: data }))
@@ -540,8 +549,8 @@ async function fetchAllChartData(details: BirthDetails) {
     )
   );
 
-  // Add a new set of promises to fetch the SVG for each divisional chart
-  const divSvgPromises = divisionalChartsToProcess.map(div =>
+  // Fetch SVGs only for the report-relevant charts (others use the table fallback).
+  const divSvgPromises = svgChartsToProcess.map(div =>
     safelyFetch(
       makeVedicastroSvgRequest("/horoscope/chart-image", { ...baseParams, div, style: 'north' }, `Div Chart SVG ${div}`),
       `${div}_svg` // Store result with a key like "D9_svg"
