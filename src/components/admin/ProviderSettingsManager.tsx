@@ -160,6 +160,7 @@ export default function ProviderSettingsManager() {
 
   const getProviderDisplayName = (provider: string) => {
     switch (provider) {
+      case 'ultravox': return 'Ultravox AI Call';
       case 'agora': return 'Agora AI Call';
       case 'custom': return 'Custom Call Provider';
       default: return provider;
@@ -168,6 +169,7 @@ export default function ProviderSettingsManager() {
 
   const getProviderDescription = (provider: string) => {
     switch (provider) {
+      case 'ultravox': return 'Low-latency AI voice calls (default provider)';
       case 'agora': return 'Real-time audio/video calls with AI integration';
       case 'custom': return 'Custom call provider implementation';
       default: return 'Unknown provider';
@@ -216,7 +218,7 @@ export default function ProviderSettingsManager() {
         <h3 style={{ color: '#7db2ff', marginBottom: '20px' }}>Call Provider Toggle</h3>
 
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          {['agora'].map((provider) => {
+          {['ultravox', 'agora'].map((provider) => {
             const isActive = settings.find(s => s.setting_key === 'default_call_provider')?.setting_value === provider;
             return (
               <div
@@ -395,6 +397,7 @@ export default function ProviderSettingsManager() {
                     required
                   >
                     <option value="">Select Provider</option>
+                    <option value="ultravox">Ultravox AI Call</option>
                     <option value="agora">Agora AI Call</option>
                   </select>
                 ) : (

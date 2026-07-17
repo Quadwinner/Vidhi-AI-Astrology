@@ -1350,8 +1350,10 @@ export default function ChatPage() {
       console.error("Attempted to start a call without a selected profile.");
       return;
     }
-    // Use Ultravox for voice calls.
-    setSelectedCallProvider('ultravox');
+    // Respect the admin-selected default call provider (Call Providers panel).
+    // Only 'agora' has a dedicated screen; everything else (ultravox/custom/unset)
+    // falls back to Ultravox, the default provider.
+    setSelectedCallProvider(adminSelectedProvider === 'agora' ? 'agora' : 'ultravox');
     setIsCallActive(true);
   };
 
