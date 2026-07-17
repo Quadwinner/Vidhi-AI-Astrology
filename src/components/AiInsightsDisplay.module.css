@@ -1,24 +1,24 @@
-/* --- FINAL, POLISHED REPORT CONTENT STYLES (LIGHT THEME) --- */
+/* --- REPORT CONTENT STYLES (DARK / VIDHI THEME) --- */
 
 .container {
   padding: 1.5rem 0;
 }
 
 .analystReport {
-  font-family: 'Work Sans', sans-serif;
-  color: #2d3748; /* Dark grey for high readability */
-  line-height: 1.7;
-  font-size: 1.05rem;
+  font-family: 'Inter', 'Work Sans', sans-serif;
+  color: #E5E2DF; /* Cream — high readability on dark bg */
+  line-height: 1.8;
+  font-size: 1.02rem;
 }
 
-/* --- Light Theme Markdown Element Styling --- */
+/* --- Headings --- */
 .analystReport :global(h1),
 .analystReport :global(h2),
 .analystReport :global(h3) {
-  font-family: 'Sora', sans-serif;
-  color: #1a202c; /* Very dark grey/nearly black for contrast */
-  margin-top: 2.5rem;
-  margin-bottom: 1.2rem;
+  font-family: 'Playfair Display', 'Sora', serif;
+  color: #E5B45B; /* Gold */
+  margin-top: 2.2rem;
+  margin-bottom: 1rem;
   line-height: 1.3;
   font-weight: 600;
 }
@@ -28,57 +28,70 @@
 }
 
 .analystReport :global(h1) {
-  font-size: 2rem;
-  border-bottom: 2px solid #e2e8f0; /* Light grey border */
+  font-size: 1.9rem;
+  border-bottom: 1px solid rgba(229, 180, 91, 0.35); /* soft gold divider */
   padding-bottom: 0.5rem;
 }
 
 .analystReport :global(h2) {
-  font-size: 1.5rem;
-  border-bottom: 1px solid #e2e8f0; /* Light grey border */
-  padding-bottom: 0.3rem;
+  font-size: 1.45rem;
+  border-bottom: 1px solid rgba(229, 180, 91, 0.25);
+  padding-bottom: 0.35rem;
 }
 
 .analystReport :global(h3) {
-  font-size: 1.25rem;
-  margin-top: 2rem;
-  color: #4a5568; /* Medium grey for subheadings */
+  font-size: 1.18rem;
+  margin-top: 1.6rem;
+  color: #f0d9a8; /* lighter gold for subheadings */
 }
 
 .analystReport :global(p) {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.1rem;
+  color: #E5E2DF;
 }
 
 .analystReport :global(ul),
 .analystReport :global(ol) {
   margin-left: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.4rem;
   padding-left: 1rem;
 }
 
 .analystReport :global(li) {
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.55rem;
+  color: #E5E2DF;
 }
 
 .analystReport :global(strong) {
-  color: #000000; /* Black for strong emphasis */
+  color: #ffffff; /* white for emphasis */
   font-weight: 700;
 }
 
+.analystReport :global(em) {
+  color: #c9b98f;
+}
+
 .analystReport :global(blockquote) {
-  border-left: 4px solid #FE607E; /* Brand color accent */
-  margin: 1.5rem 0;
-  padding: 0.5rem 1.5rem;
-  color: #4a5568; /* Medium grey text */
-  background-color: #fff5f7; /* Very light, tinted pink background */
+  border-left: 4px solid #E5B45B; /* gold accent */
+  margin: 1.4rem 0;
+  padding: 0.6rem 1.4rem;
+  color: #cfcac2;
+  background-color: rgba(97, 7, 43, 0.25); /* subtle maroon tint */
+  border-radius: 0 8px 8px 0;
   font-style: italic;
 }
 
 .analystReport :global(a) {
-  color: #FE6C0F; /* Brand orange for links */
+  color: #E5B45B;
   text-decoration: none;
   font-weight: 600;
 }
 .analystReport :global(a):hover {
   text-decoration: underline;
+}
+
+.analystReport :global(hr) {
+  border: none;
+  border-top: 1px solid rgba(229, 180, 91, 0.2);
+  margin: 1.8rem 0;
 }

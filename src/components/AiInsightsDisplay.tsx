@@ -141,6 +141,19 @@ function jsonReportToMarkdown(raw: string): string {
       }
     }
 
+    // FAQ / Life Answers (used by destiny_blueprint and others)
+    const faq = data.faq;
+    if (faq) {
+      const faqItems = Array.isArray(faq) ? faq : faq.items;
+      if (Array.isArray(faqItems) && faqItems.length > 0) {
+        lines.push('\n## Life Answers\n');
+        for (const item of faqItems) {
+          if (item.question) lines.push(`**${item.question}**\n`);
+          if (item.answer) lines.push(item.answer + '\n');
+        }
+      }
+    }
+
     // Guidance
     const guidance = data.guidance;
     if (guidance) {

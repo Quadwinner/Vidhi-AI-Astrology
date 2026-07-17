@@ -462,13 +462,17 @@ async function generateAiInsights(
   const isFireworks = modelName.startsWith('accounts/fireworks/');
   if (isFireworks) {
     const openai = new OpenAI({ apiKey, baseURL: 'https://api.fireworks.ai/inference/v1' });
-    // reasoning_effort:'low' keeps gpt-oss reasoning short so reports return in a
-    // few seconds instead of ~60s (which was tripping the edge worker limit / 546).
+    // reasoning_effort:'low' keeps gpt-oss reasoning short so reports return quickly
+    // (was ~60s with glm-5p2, tripping the edge worker limit / 546).
+    // max_tokens must be large enough for the full JSON report — too small truncates
+    // it into invalid JSON, which the frontend then can't parse and dumps as raw text.
+    // response_format json_object forces the model to return complete, valid JSON.
     const completion = await openai.chat.completions.create({
       model: modelName,
       temperature: 0.2,
-      max_tokens: 2800,
+      max_tokens: 8000,
       reasoning_effort: 'low',
+      response_format: { type: 'json_object' },
       messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }],
     } as any);
     analyst_report = completion.choices[0].message.content?.trim() || null;
