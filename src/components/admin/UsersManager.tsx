@@ -8,8 +8,12 @@ interface DbUser {
   plan_tier?: string | null;
   subscription_status?: string | null;
   coin_balance?: number | null;
+  wallet_balance?: number | null;
+  currency_code?: string | null;
   is_admin?: boolean | null;
 }
+
+const CURRENCY_SYMBOL: Record<string, string> = { INR: '₹', USD: '$', AED: 'د.إ', EUR: '€', GBP: '£' };
 
 export default function UsersManager() {
   const [users, setUsers] = useState<DbUser[]>([]);
@@ -27,7 +31,7 @@ export default function UsersManager() {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, email, plan_tier, subscription_status, coin_balance, is_admin')
+        .select('id, email, plan_tier, subscription_status, coin_balance, wallet_balance, currency_code, is_admin')
         .order('email', { ascending: true });
       if (error) throw error;
       setUsers(data || []);
@@ -79,7 +83,7 @@ export default function UsersManager() {
               <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Email</th>
               <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Plan</th>
               <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Sub Status</th>
-              <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Coins</th>
+              <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Wallet Balance</th>
               <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Admin</th>
               <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #2a2a2a' }}>Actions</th>
             </tr>
@@ -90,7 +94,10 @@ export default function UsersManager() {
                 <td style={{ padding: 12, color: '#ffffff' }}>{u.email}</td>
                 <td style={{ padding: 12 }}>{u.plan_tier || 'free'}</td>
                 <td style={{ padding: 12 }}>{u.subscription_status || 'none'}</td>
-                <td style={{ padding: 12 }}>{u.coin_balance ?? 0}</td>
+                <td style={{ padding: 12 }}>
+                  {(CURRENCY_SYMBOL[u.currency_code || ''] || '')}
+                  {((u.wallet_balance ?? 0) / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </td>
                 <td style={{ padding: 12 }}>
                   <span style={{
                     padding: '2px 8px', borderRadius: 12, fontSize: 12,
