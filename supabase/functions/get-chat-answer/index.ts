@@ -533,10 +533,11 @@ async function handler(req: Request) {
           // to heavy internal reasoning, which delays the first visible token by
           // 10-15s on large prompts. 'low' keeps quality while streaming starts fast.
           reasoning_effort: 'low',
-          // Cap output length. The prompt asks for at most ~12-15 sentences, but the
-          // model was generating 600+ token essays (~15-20s of extra streaming time).
-          // ~900 tokens is plenty for a detailed Hindi astrology answer.
-          max_tokens: 900
+          // Cap output length so answers stay reasonably quick. gpt-oss is a
+          // reasoning model, so its internal reasoning also counts toward this
+          // budget — 900 was too tight and truncated answers mid-sentence.
+          // 2600 leaves room for reasoning + a complete 12-15 sentence answer.
+          max_tokens: 2600
         };
 
       } else if (isOpenAI) {

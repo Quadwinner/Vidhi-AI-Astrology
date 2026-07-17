@@ -1220,8 +1220,12 @@ export default function ChatPage() {
         await handleCompatibilityCheck(currentPartner.name, typingId, session.access_token, questionText, currentPartner.id);
       }
 
-      // ROUTE 2: NEW INQUIRY (Show Form + General Insight)
-      else if (detectedCategory === 'love_compatibility' || isNewPersonIntent) {
+      // ROUTE 2: NEW INQUIRY — only when the user actually references a specific
+      // person/partner or a birth date. A bare "love_compatibility" category is NOT
+      // enough: the categorizer often mislabels general questions (e.g. "mere life
+      // ke baare me batao"), which used to hijack them into a brief teaser + form
+      // instead of a full answer. Genuine compatibility asks still flow here.
+      else if (isNewPersonIntent) {
 
         // A. Extract Data (Local Regex)
         let extractedDob = catData?.entities?.partner_dob;
