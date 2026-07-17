@@ -299,7 +299,11 @@ async function handler(req: Request) {
         'divisional_charts.D30': '{{D30_CHART_DATA}}',
       };
 
-      for (const tablePath of config.requiredTables) {
+      // Inject ALL available tables (not just config.requiredTables). Several prompts
+      // reference divisional charts / aspects / doshas that weren't in their narrow
+      // requiredTables list, causing the model to refuse ("data not provided"). We
+      // have this data cached, so provide everything the placeholder map supports.
+      for (const tablePath of Object.keys(placeholderMap)) {
         const placeholder = placeholderMap[tablePath];
         if (!placeholder) continue; // Skip if no placeholder is defined
 
@@ -458,12 +462,15 @@ async function generateAiInsights(
   const isFireworks = modelName.startsWith('accounts/fireworks/');
   if (isFireworks) {
     const openai = new OpenAI({ apiKey, baseURL: 'https://api.fireworks.ai/inference/v1' });
+    // reasoning_effort:'low' keeps gpt-oss reasoning short so reports return in a
+    // few seconds instead of ~60s (which was tripping the edge worker limit / 546).
     const completion = await openai.chat.completions.create({
       model: modelName,
       temperature: 0.2,
-      max_tokens: 4096,
+      max_tokens: 2800,
+      reasoning_effort: 'low',
       messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }],
-    });
+    } as any);
     analyst_report = completion.choices[0].message.content?.trim() || null;
   } else if (apiProvider === 'openai') {
     const openai = new OpenAI({ apiKey });
