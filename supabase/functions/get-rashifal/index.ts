@@ -25,7 +25,9 @@ const SIGNS = [
   { key: 'pisces', en: 'Pisces', hi: 'मीन' },
 ];
 
-function todayIso(): string { return new Date().toLocaleDateString('en-CA'); }
+// Daily rollover is based on India time (IST), not UTC — the edge runtime is UTC,
+// so without this the rashifal lags a day for users after IST midnight.
+function todayIso(): string { return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); }
 function toDmy(iso: string): string {
   const [y, m, d] = iso.split('-');
   return `${d}/${m}/${y}`;

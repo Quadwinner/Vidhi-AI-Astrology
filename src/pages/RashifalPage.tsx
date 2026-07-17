@@ -59,7 +59,9 @@ export default function RashifalPage() {
     return () => { cancelled = true; };
   }, [lang]);
 
-  const prettyDate = date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  // Format in UTC so the shown day matches the backend's date string exactly
+  // (avoids an off-by-one when the browser timezone differs).
+  const prettyDate = date ? new Date(date + 'T00:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '';
 
   return (
     <div className={styles.page}>
