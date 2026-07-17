@@ -435,11 +435,22 @@ async function handler(req: Request) {
         "If the user writes in Hinglish (Hindi in Roman letters), answer in the same Hinglish style. " +
         "Never switch to a different language on your own. Match the user's language every time.";
 
-      finalSingleSystemPrompt += LANGUAGE_DIRECTIVE;
-      staticSystemPrompt += LANGUAGE_DIRECTIVE;
+      // --- NAME LOCK ---
+      // The model was hallucinating the name "Ravi" — the Sun is called Ravi/Surya
+      // in Vedic charts, and the model confused that planet name with the person.
+      // Pin the real profile name explicitly.
+      const NAME_DIRECTIVE =
+        `\n\n# USER'S NAME (VERY IMPORTANT):\n` +
+        `The person you are advising is named "${profileName}". ` +
+        `Always address them as "${profileName}" (for example "${profileName} ji"). ` +
+        `NEVER invent or use any other name. In particular, note that "Ravi"/"Surya" is the SUN (a planet) in the chart data — it is NOT the person's name. Do not call the user "Ravi".`;
+
+      const EXTRA = LANGUAGE_DIRECTIVE + NAME_DIRECTIVE;
+      finalSingleSystemPrompt += EXTRA;
+      staticSystemPrompt += EXTRA;
       if (Array.isArray(system_blocks_for_anthropic) && system_blocks_for_anthropic.length > 0) {
         const lastBlock = system_blocks_for_anthropic[system_blocks_for_anthropic.length - 1];
-        if (lastBlock && typeof lastBlock.text === 'string') lastBlock.text += LANGUAGE_DIRECTIVE;
+        if (lastBlock && typeof lastBlock.text === 'string') lastBlock.text += EXTRA;
       }
 
       const apiKey = Deno.env.get(promptData.secret_name);
