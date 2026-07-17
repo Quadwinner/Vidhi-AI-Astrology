@@ -299,14 +299,23 @@ export default function PriceManager() {
     try {
       const rows = servicePrices.filter(sp => sp.service_key === serviceKey && sp.currency_code === currency);
       if (rows.length > 0) {
-        const { error } = await supabase.from('service_prices')
+        // .select() so we can detect a silently-blocked write (0 rows = RLS/permission issue).
+        const { data: updated, error } = await supabase.from('service_prices')
           .update({ price_amount: minor })
-          .eq('service_key', serviceKey).eq('currency_code', currency);
+          .eq('service_key', serviceKey).eq('currency_code', currency)
+          .select();
         if (error) throw error;
+        if (!updated || updated.length === 0) {
+          throw new Error('Update was blocked (no rows changed). You may not have admin permission.');
+        }
       } else {
-        const { error } = await supabase.from('service_prices')
-          .insert([{ service_key: serviceKey, currency_code: currency, price_amount: minor, variant_name: 'control' }]);
+        const { data: inserted, error } = await supabase.from('service_prices')
+          .insert([{ service_key: serviceKey, currency_code: currency, price_amount: minor, variant_name: 'control' }])
+          .select();
         if (error) throw error;
+        if (!inserted || inserted.length === 0) {
+          throw new Error('Insert was blocked. You may not have admin permission.');
+        }
       }
       toast.success(`${serviceKey.replace('_', ' ')} (${currency}) updated`);
       setSpEdits(prev => { const n = { ...prev }; delete n[editKey]; return n; });
