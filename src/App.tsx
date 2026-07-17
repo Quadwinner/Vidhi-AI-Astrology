@@ -27,6 +27,7 @@ import PlanetaryTransitsBlog from './pages/PlanetaryTransitsBlog';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProfileDashboardPage from './pages/ProfileDashboardPage';
 import QuickRechargePage from './pages/QuickRechargePage';
+import RashifalPage from './pages/RashifalPage';
 import RemediesPage from './pages/RemediesPage';
 import ReportsPage from './pages/ReportsPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
@@ -57,6 +58,7 @@ function AppContent() {
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/BlogPage" element={<BlogPostPage />} />
 
+            <Route path="/rashifal" element={<RashifalPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 

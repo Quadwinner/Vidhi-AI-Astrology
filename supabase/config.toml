@@ -67,6 +67,10 @@ verify_jwt = false
 
 [functions.whatsapp-webhook]
 verify_jwt = false
+
+[functions.get-rashifal]
+verify_jwt = false
+
 [functions.create-ultravox-call]
 enabled = true
 verify_jwt = true
