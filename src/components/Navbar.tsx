@@ -5,7 +5,6 @@ import { usePricing } from '../context/PricingContext'; // Import Pricing Contex
 import './Navbar.css';
 
 import { IconChevronDown, IconMessageCircle, IconUser, IconWallet, IconLogout } from '@tabler/icons-react';
-import logoSvg from '../assets/logo.svg';
 import AuthModal from './AuthModal';
 import CustomLanguageSelector from './CustomLanguageSelector';
 import GoogleTranslateWidget from './GoogleTranslateWidget';
@@ -125,8 +124,13 @@ const Navbar: React.FC = () => {
     <>
       <nav className="navbar-container">
         <div className="navbar-group-left">
-          <Link to="/" className="navbar-logo">
-            <img src={logoSvg} alt="Vidhi Logo" className="logo-svg" />
+          <Link to="/" className="navbar-logo" aria-label="Vidhi home">
+            <span className="logo-emblem">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12.1818 2.05459C12.4437 2.03606 12.6934 2.14819 12.8631 2.34836C13.0327 2.54854 13.097 2.8087 13.0387 3.06456C12.383 5.92984 13.4357 8.94901 15.6568 10.7417C17.8778 12.5343 20.9324 12.8465 23.4478 11.5369C23.6706 11.4191 23.9351 11.4552 24.123 11.6289C24.3108 11.8026 24.3855 12.0805 24.3138 12.3364C23.0039 17.0601 18.5772 20.4842 13.5 20.4842C7.14873 20.4842 2 15.3354 2 8.98418C2 5.09311 4.10398 1.68817 7.42084 0.170607C7.65342 0.0603831 7.92506 0.113038 8.11322 0.304561C8.30137 0.496084 8.37346 0.793744 8.29656 1.06368C7.6322 3.39349 8.15174 5.92953 9.77443 7.71261C11.3971 9.4957 13.9103 10.2796 16.3533 9.7667C15.9388 9.53932 15.5401 9.27854 15.1618 8.98418C12.222 6.64334 10.963 2.53034 12.1818 2.05459Z" fill="currentColor" />
+                <path d="M19.5 2.5L20.1633 4.83669L22.5 5.5L20.1633 6.16331L19.5 8.5L18.8367 6.16331L16.5 5.5L18.8367 4.83669L19.5 2.5Z" fill="currentColor" />
+              </svg>
+            </span>
             <div className="logo-text">Vidhi</div>
           </Link>
         </div>
