@@ -58,11 +58,28 @@ async function fetchCurrentTransits(birth: { lat: number; lon: number; tz: numbe
 }
 
 async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promise<{ systemPrompt: string; gender: string }> {
-  const { data: profileRes, error: profileError } = await supabaseAdmin
-    .from('user_profiles')
-    .select('name, user_birth_details(gender, date_of_birth, birth_lat, birth_lng, timezone_offset)')
-    .eq('id', profile_id)
-    .single();
+  // PERF: these three reads are independent — run them concurrently instead of
+  // one-after-another to cut call-setup latency.
+  const [profileResult, astroResult, promptResult] = await Promise.all([
+    supabaseAdmin
+      .from('user_profiles')
+      .select('name, user_birth_details(gender, date_of_birth, birth_lat, birth_lng, timezone_offset)')
+      .eq('id', profile_id)
+      .single(),
+    supabaseAdmin
+      .from('profile_astro_data')
+      .select('processed_tables_path, vimshottari_dasha, yogas_llm, current_transits_cache, current_transits_date')
+      .eq('profile_id', profile_id)
+      .maybeSingle(),
+    supabaseAdmin
+      .from('system_prompts')
+      .select('prompt_text')
+      .eq('prompt_name', 'voice_call_default')
+      .eq('is_active', true)
+      .single(),
+  ]);
+
+  const { data: profileRes, error: profileError } = profileResult;
   if (profileError) throw new Error(`Failed to fetch profile: ${profileError.message}`);
 
   const profileName = profileRes?.name || 'the user';
@@ -76,11 +93,7 @@ async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promis
   let fullAstroJson = '{}';
   let housesArr: any[] = [];
 
-  const { data: astroData } = await supabaseAdmin
-    .from('profile_astro_data')
-    .select('processed_tables_path, vimshottari_dasha, yogas_llm, current_transits_cache, current_transits_date')
-    .eq('profile_id', profile_id)
-    .maybeSingle();
+  const { data: astroData } = astroResult;
 
   if (astroData) {
     if (Array.isArray(astroData.vimshottari_dasha) && astroData.vimshottari_dasha.length > 0) {
@@ -136,12 +149,7 @@ async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promis
     }
   } catch (e) { console.error(`[create-ultravox-call] transit block failed: ${(e as Error).message}`); }
 
-  const { data: promptData, error: promptError } = await supabaseAdmin
-    .from('system_prompts')
-    .select('prompt_text')
-    .eq('prompt_name', 'voice_call_default')
-    .eq('is_active', true)
-    .single();
+  const { data: promptData, error: promptError } = promptResult;
   if (promptError || !promptData) throw new Error("System prompt 'voice_call_default' could not be loaded.");
 
   // Raw fields — used both to assemble an inline prompt AND as templateContext

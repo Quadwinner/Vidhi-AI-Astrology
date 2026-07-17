@@ -73,10 +73,36 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
       initStartedRef.current = true;
 
       try {
-        // 1. Wallet / price check + call log
-        const { data: startData, error: startError } = await supabase.functions.invoke('start-call', {
+        // PERF: fire the wallet check and the Ultravox call creation concurrently
+        // instead of one-after-another. They're independent (start-call gates the
+        // wallet/creates the call log; create-ultravox-call builds the prompt and
+        // creates the Ultravox call). We still validate the wallet result before
+        // joining, so a failed balance check never connects the call.
+        const startCallPromise = supabase.functions.invoke('start-call', {
           body: { profile_id: profile.id }
         });
+        const createCallPromise = supabase.functions.invoke('create-ultravox-call', {
+          body: { profile_id: profile.id, agentId: process.env.REACT_APP_ULTRAVOX_AGENT_ID }
+        });
+
+        // Probe mic permission WHILE the two edge calls are in flight (overlap
+        // the permission prompt with network latency). Release the probe tracks
+        // immediately so the Ultravox SDK can open the mic itself (mobile can't
+        // hold the mic twice — see startupSequence note below).
+        try {
+          const probe = await navigator.mediaDevices.getUserMedia({ audio: true });
+          probe.getTracks().forEach((t) => t.stop());
+          if (isCancelled) return;
+          setPermissionState('granted');
+        } catch (permErr) {
+          if (isCancelled) return;
+          console.error('Microphone permission was denied.', permErr);
+          setPermissionState('denied');
+          return;
+        }
+
+        // 1. Wallet / price check + call log (gate)
+        const { data: startData, error: startError } = await startCallPromise;
         if (startError || startData?.error) {
           const msg = startError?.message || startData?.error || 'Failed to start call';
           throw new Error(/insufficient|balance|fund/i.test(msg)
@@ -87,11 +113,8 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
         callStartTimeRef.current = Date.now();
         trackEvent('Voice Call Started', { provider: 'ultravox', profile_id: profile.id, call_log_id: startData.call_log_id });
 
-        // 2. Create the Ultravox call (returns joinUrl). Use the configured
-        // agent so its voice + persona are used.
-        const { data, error: invokeError } = await supabase.functions.invoke('create-ultravox-call', {
-          body: { profile_id: profile.id, agentId: process.env.REACT_APP_ULTRAVOX_AGENT_ID }
-        });
+        // 2. Ultravox call (already in-flight) — returns joinUrl.
+        const { data, error: invokeError } = await createCallPromise;
         if (invokeError) throw new Error(invokeError.message);
         if (data?.error) throw new Error(data.error);
         if (!data?.joinUrl) throw new Error('Could not retrieve call configuration from server.');
@@ -155,25 +178,12 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
       }
     };
 
-    const startupSequence = async () => {
-      try {
-        // Only probe for mic permission — then immediately release the tracks.
-        // If we keep this stream open, the Ultravox SDK opens the mic a second
-        // time; mobile browsers (esp. iOS) can't hold the mic twice and drop the
-        // audio session, ending the call right after the intro.
-        const probe = await navigator.mediaDevices.getUserMedia({ audio: true });
-        probe.getTracks().forEach((t) => t.stop());
-        if (isCancelled) return;
-        setPermissionState('granted');
-        initializeAndStartCall();
-      } catch (err) {
-        if (isCancelled) return;
-        console.error('Microphone permission was denied.', err);
-        setPermissionState('denied');
-      }
-    };
-
-    startupSequence();
+    // Kick off the whole sequence. initializeAndStartCall fires the edge calls
+    // and probes the mic concurrently, then joins once both are ready. The mic
+    // probe releases its tracks immediately so the Ultravox SDK can open the mic
+    // itself (mobile browsers, esp. iOS, can't hold the mic twice and would drop
+    // the audio session, ending the call right after the intro).
+    initializeAndStartCall();
 
     return () => {
       isCancelled = true;
