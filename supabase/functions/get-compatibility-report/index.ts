@@ -213,8 +213,11 @@ async function handler(req: Request) {
             }
 
             // --- 5. LLM PROMPT INJECTION ---
-            const { data: promptData } = await supabaseAdmin.from('system_prompts').select('*').eq('prompt_name', 'love_compatibility_ashtakoot').single();
-            
+            const { data: promptData } = await supabaseAdmin.from('system_prompts').select('*').eq('prompt_name', 'love_compatibility_ashtakoot').eq('is_active', true).maybeSingle();
+            if (!promptData || !promptData.prompt_text) {
+              throw new Error("Compatibility analysis is not configured yet. Please try a general question instead.");
+            }
+
             let finalPrompt = promptData.prompt_text
               .replace('{{USER_PROFILE_NAME}}', userProfileData.name)
               .replace('{{PARTNER_PROFILE_NAME}}', partnerProfile.partner_name)
@@ -235,26 +238,55 @@ async function handler(req: Request) {
             
             finalPrompt += `\nINSTRUCTION: Perform Planetary Synastry by comparing the User's charts with the Partner's charts. Look for overlay (conjunctions) and mutual aspects.`;
 
-            const anthropicResponse = await fetch("https://api.anthropic.com/v1/messages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "x-api-key": Deno.env.get(promptData.secret_name), "anthropic-version": "2023-06-01" },
-                body: JSON.stringify({
-                    model: promptData.model_name, 
-                    system: finalPrompt,
-                    messages: [{ role: 'user', content: question_text || `Analyze compatibility for ${userProfileData.name} and ${partnerProfile.partner_name}.`}],
-                    stream: true, 
-                    max_tokens: 4096,
-                })
-            });
+            // Provider selection. The chat stack runs on Fireworks (no Anthropic key
+            // is configured), so route Fireworks/OpenRouter models through the
+            // OpenAI-compatible endpoint and only use Anthropic for claude* models.
+            const apiKey = Deno.env.get(promptData.secret_name);
+            if (!apiKey) throw new Error(`API key secret '${promptData.secret_name}' is not set.`);
+            const modelLower = (promptData.model_name || '').toLowerCase();
+            const isAnthropic = modelLower.startsWith('claude');
+            const userMessage = question_text || `Analyze compatibility for ${userProfileData.name} and ${partnerProfile.partner_name}.`;
 
-            // Pipe Stream
+            let apiUrl: string;
+            let headers: Record<string, string>;
+            let reqBody: Record<string, any>;
+            if (isAnthropic) {
+                apiUrl = "https://api.anthropic.com/v1/messages";
+                headers = { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" };
+                reqBody = { model: promptData.model_name, system: finalPrompt, messages: [{ role: 'user', content: userMessage }], stream: true, max_tokens: 4096 };
+            } else {
+                apiUrl = modelLower.startsWith('accounts/fireworks/')
+                    ? "https://api.fireworks.ai/inference/v1/chat/completions"
+                    : "https://openrouter.ai/api/v1/chat/completions";
+                headers = { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` };
+                reqBody = {
+                    model: promptData.model_name,
+                    messages: [{ role: 'system', content: finalPrompt }, { role: 'user', content: userMessage }],
+                    stream: true, stream_options: { include_usage: true }, max_tokens: 2048, reasoning_effort: 'low',
+                };
+            }
+
+            const llmResponse = await fetch(apiUrl, { method: "POST", headers, body: JSON.stringify(reqBody) });
+            if (!llmResponse.ok) {
+                const errText = await llmResponse.text();
+                throw new Error(`Compatibility LLM error ${llmResponse.status}: ${errText.slice(0, 200)}`);
+            }
+
+            // Pipe Stream (handles both Anthropic and OpenAI-style SSE)
             let fullResponseContent = '', inputTokens = 0, outputTokens = 0;
-            for await (const chunk of anthropicResponse.body) {
-                const lines = decoder.decode(chunk).split('\n');
+            let sseBuf = '';
+            for await (const chunk of llmResponse.body) {
+                const text = sseBuf + decoder.decode(chunk, { stream: true });
+                const lines = text.split('\n');
+                sseBuf = lines.pop() || '';
                 for (const line of lines) {
-                    if (line.trim().startsWith('data:')) {
-                        try {
-                            const data = JSON.parse(line.substring(5));
+                    const l = line.trim();
+                    if (!l.startsWith('data:')) continue;
+                    const dataStr = l.substring(5).trim();
+                    if (!dataStr || dataStr === '[DONE]') continue;
+                    try {
+                        const data = JSON.parse(dataStr);
+                        if (isAnthropic) {
                             if (data.type === 'message_start') inputTokens = data.message.usage.input_tokens;
                             if (data.type === 'content_block_delta' && data.delta?.type === 'text_delta') {
                                 const content = data.delta.text || '';
@@ -262,8 +294,12 @@ async function handler(req: Request) {
                                 await writer.write(encoder.encode(content));
                             }
                             if (data.type === 'message_delta') outputTokens = data.usage.output_tokens;
-                        } catch { }
-                    }
+                        } else {
+                            const content = data.choices?.[0]?.delta?.content || '';
+                            if (content) { fullResponseContent += content; await writer.write(encoder.encode(content)); }
+                            if (data.usage) { inputTokens = data.usage.prompt_tokens || inputTokens; outputTokens = data.usage.completion_tokens || outputTokens; }
+                        }
+                    } catch { }
                 }
             }
 
