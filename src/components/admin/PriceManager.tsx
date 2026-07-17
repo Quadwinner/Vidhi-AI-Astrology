@@ -35,6 +35,12 @@ const USAGE_SERVICES: { key: string; label: string; unit: string }[] = [
 const USAGE_CURRENCIES = ['INR', 'USD', 'AED'];
 const CURRENCY_SYMBOL: Record<string, string> = { INR: '₹', USD: '$', AED: 'د.إ' };
 
+// Legacy pricing keys that used to live in the generic `settings` table but are
+// no longer used for real deduction/display (the app reads service_prices via
+// the Usage Pricing section above). Hidden here so admins don't edit dead values
+// that conflict with the real per-currency prices.
+const HIDDEN_LEGACY_SETTING_KEYS = new Set(['call_coin_cost', 'chat_coin_cost', 'topup_price_per_coin_minor']);
+
 export default function PriceManager() {
   const [prices, setPrices] = useState<Price[]>([]);
   const [settings, setSettings] = useState<Settings[]>([]);
@@ -486,7 +492,7 @@ export default function PriceManager() {
 
       {/* Settings Section */}
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <h3 style={{ color: '#ffffff' }}>System Settings</h3>
           <button
             onClick={() => setShowSettingForm(true)}
@@ -502,6 +508,10 @@ export default function PriceManager() {
             Add New Setting
           </button>
         </div>
+        <p style={{ marginTop: 0, marginBottom: '16px', fontSize: '13px', color: '#b5b5b5' }}>
+          Chat &amp; call rates are managed in the <strong>Usage Pricing</strong> section above (per currency).
+          The old <code>chat_coin_cost</code> / <code>call_coin_cost</code> keys are hidden here as they no longer drive live pricing.
+        </p>
 
         <div style={{ backgroundColor: '#1f1f1f', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 10px rgba(0,0,0,0.25)', border: '1px solid #2a2a2a' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -514,7 +524,7 @@ export default function PriceManager() {
               </tr>
             </thead>
             <tbody>
-              {settings.map((setting) => (
+              {settings.filter((setting) => !HIDDEN_LEGACY_SETTING_KEYS.has(setting.key)).map((setting) => (
                 <tr key={setting.id} style={{ borderBottom: '1px solid #dee2e6' }}>
                   <td style={{ padding: '12px', fontFamily: 'monospace', fontWeight: 'bold', color: '#ffffff' }}>{setting.key}</td>
                   <td style={{ padding: '12px', fontFamily: 'monospace', color: '#eaeaea' }}>{setting.value}</td>
