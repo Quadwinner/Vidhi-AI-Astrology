@@ -146,17 +146,37 @@ async function handler(req: Request) {
       // This avoids consuming a VedicAstro API call on every dashboard load. Callers that
       // need fresh transits (Reports page) simply omit skip_transits. ---
       if (!skip_transits) {
-        const step6_startTime = Date.now();
-        const transitData = await fetchAndProcessCurrentTransits(birthDetails, processed_tables.houses);
-        const step6_endTime = Date.now();
-        console.log(`[PERF_LOG] Step 6 (Final): fetchAndProcessCurrentTransits took ${step6_endTime - step6_startTime}ms`);
+        const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
 
-        processed_tables.current_transits = transitData.table;
+        // Transits only change once per day. Reuse a same-day cached result so repeated
+        // Reports/Dashboard loads don't each burn a VedicAstro API call.
+        if (cachedPaths && cachedPaths.current_transits_date === today && cachedPaths.current_transits_cache) {
+          console.log(`[TRANSIT CACHE HIT] Reusing cached transits for ${today}. No live fetch.`);
+          const cachedTransit = cachedPaths.current_transits_cache;
+          processed_tables.current_transits = cachedTransit.table;
+          if (!processed_tables.divisional_chart_svgs) processed_tables.divisional_chart_svgs = {};
+          processed_tables.divisional_chart_svgs.current_transit_svg = cachedTransit.svg;
+        } else {
+          const step6_startTime = Date.now();
+          const transitData = await fetchAndProcessCurrentTransits(birthDetails, processed_tables.houses);
+          const step6_endTime = Date.now();
+          console.log(`[PERF_LOG] Step 6 (Final): fetchAndProcessCurrentTransits took ${step6_endTime - step6_startTime}ms`);
 
-        if (!processed_tables.divisional_chart_svgs) {
-          processed_tables.divisional_chart_svgs = {};
+          processed_tables.current_transits = transitData.table;
+
+          if (!processed_tables.divisional_chart_svgs) {
+            processed_tables.divisional_chart_svgs = {};
+          }
+          processed_tables.divisional_chart_svgs.current_transit_svg = transitData.svg;
+
+          // Persist today's transit so subsequent same-day loads reuse it (no API call).
+          supabaseAdmin.from('profile_astro_data').update({
+            current_transits_cache: { table: transitData.table, svg: transitData.svg },
+            current_transits_date: today,
+          }).eq('profile_id', profile_id).then(({ error }) => {
+            if (error) console.error(`[TRANSIT CACHE] Failed to persist transits: ${error.message}`);
+          });
         }
-        processed_tables.divisional_chart_svgs.current_transit_svg = transitData.svg;
       } else {
         console.log(`[PERF_LOG] Step 6 skipped (skip_transits=true). No live transit fetch.`);
       }
