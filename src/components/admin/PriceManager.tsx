@@ -31,6 +31,7 @@ const USAGE_SERVICES: { key: string; label: string; unit: string }[] = [
   { key: 'chat_message', label: 'Chat', unit: 'per message' },
   { key: 'voice_call_minute', label: 'Voice Call', unit: 'per minute' },
   { key: 'remedy', label: 'Remedies', unit: 'per request' },
+  { key: 'report_premium', label: 'Report (Premium)', unit: 'per report' },
 ];
 const USAGE_CURRENCIES = ['INR', 'USD', 'AED'];
 const CURRENCY_SYMBOL: Record<string, string> = { INR: '₹', USD: '$', AED: 'د.إ' };
