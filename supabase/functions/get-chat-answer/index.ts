@@ -422,6 +422,26 @@ async function handler(req: Request) {
         dynamicUserContext = "";
       }
 
+      // --- LANGUAGE MIRRORING ---
+      // The base prompt is written for Hindi, but users may ask in English (or
+      // Hinglish). Force the model to reply in the SAME language as the user's
+      // question. Appended last so it overrides the DB prompt, and added to every
+      // provider path (single system prompt, Gemini static prompt, Anthropic block).
+      const LANGUAGE_DIRECTIVE =
+        "\n\n# LANGUAGE (VERY IMPORTANT):\n" +
+        "Reply in the SAME language as the user's latest question. " +
+        "If the user writes in English, answer fully in English. " +
+        "If the user writes in Hindi (Devanagari), answer in Hindi. " +
+        "If the user writes in Hinglish (Hindi in Roman letters), answer in the same Hinglish style. " +
+        "Never switch to a different language on your own. Match the user's language every time.";
+
+      finalSingleSystemPrompt += LANGUAGE_DIRECTIVE;
+      staticSystemPrompt += LANGUAGE_DIRECTIVE;
+      if (Array.isArray(system_blocks_for_anthropic) && system_blocks_for_anthropic.length > 0) {
+        const lastBlock = system_blocks_for_anthropic[system_blocks_for_anthropic.length - 1];
+        if (lastBlock && typeof lastBlock.text === 'string') lastBlock.text += LANGUAGE_DIRECTIVE;
+      }
+
       const apiKey = Deno.env.get(promptData.secret_name);
       if (!apiKey) throw new Error(`API key secret named '${promptData.secret_name}' is not set.`);
 

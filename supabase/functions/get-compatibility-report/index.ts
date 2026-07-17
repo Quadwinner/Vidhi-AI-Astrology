@@ -237,6 +237,7 @@ async function handler(req: Request) {
             finalPrompt += `D10 (Dasamsa): ${JSON.stringify(d10Data || 'Not Available')}\n`;
             
             finalPrompt += `\nINSTRUCTION: Perform Planetary Synastry by comparing the User's charts with the Partner's charts. Look for overlay (conjunctions) and mutual aspects.`;
+            finalPrompt += `\n\n# LANGUAGE (VERY IMPORTANT): Reply in the SAME language as the user's question. If the user asks in English, answer fully in English; if in Hindi, answer in Hindi; if in Hinglish, mirror that style. Never switch language on your own.`;
 
             // Provider selection. The chat stack runs on Fireworks (no Anthropic key
             // is configured), so route Fireworks/OpenRouter models through the
