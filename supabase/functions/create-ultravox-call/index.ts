@@ -78,7 +78,7 @@ async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promis
 
   const { data: astroData } = await supabaseAdmin
     .from('profile_astro_data')
-    .select('processed_tables_path, vimshottari_dasha, yogas_llm')
+    .select('processed_tables_path, vimshottari_dasha, yogas_llm, current_transits_cache, current_transits_date')
     .eq('profile_id', profile_id)
     .maybeSingle();
 
@@ -121,10 +121,19 @@ async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promis
 
   let currentTransitsJson = '[]';
   try {
-    const lat = parseFloat(birth?.birth_lat) || 0;
-    const lon = parseFloat(birth?.birth_lng) || 0;
-    const tz = parseFloat(birth?.timezone_offset) || 5.5;
-    currentTransitsJson = JSON.stringify(await fetchCurrentTransits({ lat, lon, tz }, housesArr));
+    // Transits only change once per day. Reuse the same-day cache populated by
+    // generate-astro-data (Dashboard/Reports) so starting a call skips the live
+    // VedicAstro fetch entirely — this makes call setup faster, never slower.
+    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+    if (astroData?.current_transits_date === today && astroData?.current_transits_cache?.table) {
+      console.log('[create-ultravox-call] transit cache hit — no live fetch.');
+      currentTransitsJson = JSON.stringify(astroData.current_transits_cache.table);
+    } else {
+      const lat = parseFloat(birth?.birth_lat) || 0;
+      const lon = parseFloat(birth?.birth_lng) || 0;
+      const tz = parseFloat(birth?.timezone_offset) || 5.5;
+      currentTransitsJson = JSON.stringify(await fetchCurrentTransits({ lat, lon, tz }, housesArr));
+    }
   } catch (e) { console.error(`[create-ultravox-call] transit block failed: ${(e as Error).message}`); }
 
   const { data: promptData, error: promptError } = await supabaseAdmin
