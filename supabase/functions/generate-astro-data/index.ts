@@ -450,7 +450,22 @@ async function generateAiInsights(
   const apiKey = Deno.env.get(secretName);
   if (!apiKey) { throw new Error(`CRITICAL: The specified secret '${secretName}' was not found.`); }
   let analyst_report: string | null = null;
-  if (apiProvider === 'openai') {
+
+  // Fireworks models (accounts/fireworks/...) use the OpenAI-compatible Fireworks
+  // endpoint. The report prompts are configured with api_provider 'openrouter' but
+  // point at Fireworks models + FIREWORKS_API_KEY, so route by model prefix. This
+  // is what actually powers reports (there is no OpenAI/Anthropic key configured).
+  const isFireworks = modelName.startsWith('accounts/fireworks/');
+  if (isFireworks) {
+    const openai = new OpenAI({ apiKey, baseURL: 'https://api.fireworks.ai/inference/v1' });
+    const completion = await openai.chat.completions.create({
+      model: modelName,
+      temperature: 0.2,
+      max_tokens: 4096,
+      messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }],
+    });
+    analyst_report = completion.choices[0].message.content?.trim() || null;
+  } else if (apiProvider === 'openai') {
     const openai = new OpenAI({ apiKey });
     const completion = await openai.chat.completions.create({ model: modelName, temperature: 0.2, messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }], }); // Use finalUserPrompt here
     analyst_report = completion.choices[0].message.content?.trim() || null;
