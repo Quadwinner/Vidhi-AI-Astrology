@@ -54,7 +54,7 @@ body {
 
 @media (max-width: 768px) {
   .pageContainer {
-    padding-top: 4px !important; /* Minimal padding for professional spacing */
+    padding-top: 0 !important; /* let the hero fill to the very top under the floating navbar */
   }
 }
 

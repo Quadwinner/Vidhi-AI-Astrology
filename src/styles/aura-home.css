@@ -126,9 +126,14 @@
    ===================================================================== */
 .aura-home .aura-hero {
   position: relative; overflow: hidden;
-  padding: 140px 0 96px;
+  padding: 84px 0 56px;
+  /* Full-bleed cosmic wash from the very top so the hero reads as one
+     continuous section behind the floating navbar (no dark "separate" frame). */
+  background:
+    radial-gradient(130% 90% at 50% -12%, rgba(97, 7, 43, 0.6) 0%, rgba(97, 7, 43, 0.22) 38%, transparent 66%),
+    var(--aura-bg);
 }
-@media (min-width: 768px) { .aura-home .aura-hero { padding: 180px 0 128px; } }
+@media (min-width: 768px) { .aura-home .aura-hero { padding: 132px 0 128px; } }
 
 .aura-home .aura-hero-grid {
   position: relative; z-index: 2;
