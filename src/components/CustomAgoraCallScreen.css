@@ -69,14 +69,39 @@
   animation: spin 1s linear infinite;
 }
 
-/* Mandala animation for connecting state */
+/* Celestial "Solar Core" loader for connecting state (designed via Stitch) */
 .connecting-state .mandala-animation {
+  position: relative;
   width: 200px;
   height: 200px;
   margin: 0 auto 16px;
-  background: url('../assets/Mandala.svg') no-repeat center;
-  background-size: contain;
-  animation: rotateMandala 8s linear infinite;
+  border-radius: 50%;
+  background: radial-gradient(circle at center,
+    #f1bf64 0 6px,
+    rgba(229, 180, 91, 0.55) 7px 12px,
+    rgba(97, 7, 43, 0.28) 13px 44%,
+    transparent 62%);
+  animation: corePulse 2.8s ease-in-out infinite;
+}
+.connecting-state .mandala-animation::before {
+  content: '';
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(229, 180, 91, 0.18);
+  background: radial-gradient(circle at 50% 0%, #e5b45b 0 5px, transparent 6px) no-repeat;
+  filter: drop-shadow(0 0 6px rgba(229, 180, 91, 0.8));
+  animation: orbitCW 7s linear infinite;
+}
+.connecting-state .mandala-animation::after {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(229, 180, 91, 0.12);
+  background: radial-gradient(circle at 50% 0%, #ffe9c2 0 4px, transparent 5px) no-repeat;
+  filter: drop-shadow(0 0 5px rgba(255, 233, 194, 0.8));
+  animation: orbitCCW 4.6s linear infinite;
 }
 
 @media (min-width: 769px) {
@@ -85,6 +110,13 @@
     height: 280px;
     margin-bottom: 20px;
   }
+}
+
+@keyframes orbitCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbitCCW { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes corePulse {
+  0%, 100% { box-shadow: 0 0 26px rgba(97, 7, 43, 0.5), 0 0 60px rgba(97, 7, 43, 0.28); }
+  50% { box-shadow: 0 0 40px rgba(229, 180, 91, 0.35), 0 0 92px rgba(97, 7, 43, 0.4); }
 }
 
 @keyframes rotateMandala {

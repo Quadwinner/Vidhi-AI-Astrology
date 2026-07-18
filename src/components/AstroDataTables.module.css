@@ -241,19 +241,45 @@
   text-align: center;
 }
 
-/* The div that will display and animate the mandala */
+/* Celestial "Solar Core" loader (designed via Stitch) */
 .mandalaAnimation {
-  width: 300px;  /* A good default size for desktop */
-  height: 300px;
-  /* 
-    IMPORTANT: The path to your SVG might need adjustment.
-    This assumes your 'components' folder and 'assets' folder are siblings.
-    e.g., src/components/AstroDataTables.module.css and src/assets/Mandala.svg
-  */
-  background: url('../assets/Mandala.svg') no-repeat center;
-  background-size: contain;
-  animation: rotateMandala 8s linear infinite;
+  position: relative;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center,
+    #f1bf64 0 7px,
+    rgba(229, 180, 91, 0.55) 8px 14px,
+    rgba(97, 7, 43, 0.28) 15px 44%,
+    transparent 62%);
+  animation: corePulse 2.8s ease-in-out infinite;
   margin-bottom: 2rem;
+}
+.mandalaAnimation::before {
+  content: '';
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(229, 180, 91, 0.18);
+  background: radial-gradient(circle at 50% 0%, #e5b45b 0 5px, transparent 6px) no-repeat;
+  filter: drop-shadow(0 0 6px rgba(229, 180, 91, 0.8));
+  animation: orbitCW 7s linear infinite;
+}
+.mandalaAnimation::after {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(229, 180, 91, 0.12);
+  background: radial-gradient(circle at 50% 0%, #ffe9c2 0 4px, transparent 5px) no-repeat;
+  filter: drop-shadow(0 0 5px rgba(255, 233, 194, 0.8));
+  animation: orbitCCW 4.6s linear infinite;
+}
+@keyframes orbitCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbitCCW { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes corePulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(97, 7, 43, 0.5), 0 0 70px rgba(97, 7, 43, 0.28); }
+  50% { box-shadow: 0 0 46px rgba(229, 180, 91, 0.35), 0 0 110px rgba(97, 7, 43, 0.4); }
 }
 
 /* Styling for the title below the mandala */
