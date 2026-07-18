@@ -1,0 +1,133 @@
+/* Celestial 3D orbital loader — Vidhi (gold #e5b45b, maroon #61072b, cream) */
+.cl-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+  margin: 0 auto;
+}
+
+/* Twinkling starfield behind the system */
+.cl-stars {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.4px 1.4px at 15% 25%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.4px 1.4px at 70% 15%, rgba(229,180,91,0.8), transparent),
+    radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.4px 1.4px at 85% 60%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 25% 85%, rgba(229,180,91,0.7), transparent),
+    radial-gradient(1px 1px at 60% 40%, rgba(255,255,255,0.5), transparent);
+  background-repeat: no-repeat;
+  animation: cl-twinkle 3.5s ease-in-out infinite;
+}
+
+.cl-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: grid;
+  place-items: center;
+}
+
+/* --- Sun --- */
+.cl-sun {
+  position: absolute;
+  width: 26%;
+  height: 26%;
+  display: grid;
+  place-items: center;
+  z-index: 5;
+}
+.cl-sun-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fff6df 0%, #f1bf64 38%, #e5b45b 62%, #b9832f 100%);
+  box-shadow:
+    0 0 22px rgba(241, 191, 100, 0.9),
+    0 0 55px rgba(229, 180, 91, 0.55),
+    0 0 110px rgba(97, 7, 43, 0.5);
+  animation: cl-sun-pulse 2.8s ease-in-out infinite;
+}
+/* rotating flare halo around the sun */
+.cl-sun-halo {
+  position: absolute;
+  inset: -70%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    rgba(229,180,91,0) 0deg,
+    rgba(229,180,91,0.35) 40deg,
+    rgba(229,180,91,0) 90deg,
+    rgba(229,180,91,0.25) 200deg,
+    rgba(229,180,91,0) 260deg);
+  filter: blur(6px);
+  animation: cl-spin 9s linear infinite;
+}
+
+/* --- Orbits (tilted ellipses in 3D) --- */
+.cl-orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(229, 180, 91, 0.28);
+  transform-style: preserve-3d;
+}
+.cl-orbit1 { width: 54%; height: 54%; border-color: rgba(229,180,91,0.5); box-shadow: 0 0 18px rgba(229,180,91,0.12) inset; animation: cl-o1 6s linear infinite; }
+.cl-orbit2 { width: 76%; height: 76%; border-color: rgba(229,180,91,0.36); animation: cl-o2 9s linear infinite; }
+.cl-orbit3 { width: 98%; height: 98%; border-color: rgba(229,180,91,0.24); animation: cl-o3 13s linear infinite; }
+
+/* --- Planets ride the top of each orbit --- */
+.cl-planet {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+}
+.cl-p1 {
+  background: radial-gradient(circle at 35% 30%, #fff2d6, #e5b45b 70%);
+  box-shadow: 0 0 12px rgba(229, 180, 91, 0.95);
+}
+.cl-p2 {
+  width: 15px; height: 15px; margin-left: -7.5px; top: -7.5px;
+  background: radial-gradient(circle at 35% 30%, #ff9db4, #61072b 75%);
+  box-shadow: 0 0 14px rgba(97, 7, 43, 0.9);
+}
+.cl-p3 {
+  width: 9px; height: 9px; margin-left: -4.5px; top: -4.5px;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #d8cfc2 75%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* --- Keyframes --- */
+/* Each orbit keeps a fixed tilt (rotateX/rotateY) and spins around Z, so its
+   planet traces a 3D-looking ellipse. Different tilts + speeds + directions. */
+@keyframes cl-o1 {
+  from { transform: rotateX(68deg) rotateY(0deg) rotateZ(0deg); }
+  to   { transform: rotateX(68deg) rotateY(0deg) rotateZ(360deg); }
+}
+@keyframes cl-o2 {
+  from { transform: rotateX(72deg) rotateY(24deg) rotateZ(360deg); }
+  to   { transform: rotateX(72deg) rotateY(24deg) rotateZ(0deg); }
+}
+@keyframes cl-o3 {
+  from { transform: rotateX(60deg) rotateY(-18deg) rotateZ(0deg); }
+  to   { transform: rotateX(60deg) rotateY(-18deg) rotateZ(360deg); }
+}
+@keyframes cl-spin { to { transform: rotate(360deg); } }
+@keyframes cl-sun-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.08); filter: brightness(1.15); }
+}
+@keyframes cl-twinkle {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-orbit, .cl-sun-halo, .cl-sun-core, .cl-stars { animation-duration: 0s; }
+}

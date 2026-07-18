@@ -8,15 +8,22 @@
   margin-top:50px;
 }
 .loading {
-      margin-top: 64px;
-     
+  margin-top: 28px;
+  text-align: center;
 }
 .loading-msg {
-  font-size: 17px;
-  font-weight: 600;
-  font-family: 'Spartan';
-  color:#ffffff;
-  margin-right:-37px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #e5b45b;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+  animation: captionFade 2.4s ease-in-out infinite;
+}
+@keyframes captionFade {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
 /* --- Celestial "Solar Core" loader (designed via Stitch) --- */

@@ -1,6 +1,6 @@
 import React, { FC} from "react";
 import "./LoadingDashboard.css";
-import foot from "../assets/foot.svg";
+import CelestialLoader from "./CelestialLoader";
 
 const LoadingDashboard: FC = () => {
   
@@ -8,12 +8,9 @@ const LoadingDashboard: FC = () => {
   return (
     <main>
       <div className="loading-container">
-        <div className="mandala-animation"></div>
+        <CelestialLoader size={300} />
         <div className="loading">
-          <p className="loading-msg">
-             <h2>Loading DashBoard</h2>
-          </p>
-          <img src={foot} alt="alt" />
+          <h2 className="loading-msg">Loading Dashboard…</h2>
         </div>
       </div>
     </main>
