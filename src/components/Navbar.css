@@ -517,14 +517,20 @@
 @media (max-width: 1200px) {
   .navbar-container {
     position: fixed;
-    /* Fixed position on mobile */
     z-index: 10000;
-    /* Ensure navbar is above everything including menu */
-    margin-top: 0;
-    /* Remove top margin on mobile */
-    margin-bottom: 0;
-    /* Remove bottom margin */
+    /* Floating glass pill — inset from the screen edges so it never touches them */
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(229, 180, 91, 0.14);
   }
+  /* the desktop gold hairline underline doesn't suit a floating pill */
+  .navbar-container::after { display: none; }
 
   .navbar-group-right {
     display: none;
