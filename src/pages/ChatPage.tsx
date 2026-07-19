@@ -349,8 +349,10 @@ export default function ChatPage() {
 
   const updateChatPadding = useCallback(() => {
     const inputHeight = inputContainerRef.current?.offsetHeight ?? 0;
-    const basePadding = 120;
-    const calculated = inputHeight > 0 ? inputHeight + 40 : basePadding;
+    const basePadding = 84;
+    // Just enough to clear the fixed input bar + a small gap (was +40 which left
+    // a large empty space after the last message).
+    const calculated = inputHeight > 0 ? inputHeight + 10 : basePadding;
     setChatBottomPadding(Math.max(calculated, basePadding));
   }, []);
 
