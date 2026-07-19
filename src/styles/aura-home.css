@@ -192,6 +192,22 @@
   .aura-home .aura-feat-c4 { grid-column: span 4; }
 }
 
+/* Compact 2-column feature grid on mobile so the section isn't a long scroll */
+@media (max-width: 767px) {
+  .aura-home .aura-bento { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .aura-home .aura-feat { padding: 16px 14px; border-radius: 16px; }
+  .aura-home .aura-feat-featured { grid-column: 1 / -1; }
+  .aura-home .aura-feat-featured .aura-chatmock { display: none; }
+  .aura-home .aura-feat-badge { width: 40px; height: 40px; margin-bottom: 2px; }
+  .aura-home .aura-feat-badge .material-symbols-outlined { font-size: 22px; }
+  .aura-home .aura-feat h4 { font-size: 15px; margin-bottom: 6px; }
+  .aura-home .aura-feat p {
+    font-size: 12.5px; line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .aura-home .aura-explore { font-size: 12px; opacity: 1; margin-top: 10px; }
+}
+
 .aura-home .aura-feat {
   position: relative; overflow: hidden; border-radius: 24px; padding: 32px;
   background: rgba(255, 255, 255, 0.03);
@@ -318,6 +334,10 @@
 }
 .aura-home .aura-review-name { font-weight: 700; color: var(--aura-gold); }
 .aura-home .aura-review-role { font-size: 12px; color: var(--aura-text-dim); }
+@media (max-width: 767px) {
+  .aura-home .aura-review-grid { gap: 16px; }
+  .aura-home .aura-review-card { padding: 22px 18px; }
+}
 
 /* =====================================================================
    FAQ

@@ -1481,10 +1481,15 @@
   .cel-header h2 { font-size: 32px; }
   .cel-header p { font-size: 14px; }
   .cel-rates {
-    width: 100%;
+    width: auto;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: hidden;
+    /* Contain it as a rounded strip, inset from the edges like the cards */
+    margin: 0 6px 26px;
+    border: 1px solid rgba(229, 180, 91, 0.18);
+    border-radius: 14px;
+    background: rgba(20, 19, 18, 0.4);
   }
   .cel-rates > span {
     width: 100%;
@@ -1528,7 +1533,7 @@
 }
 
 @media (max-width: 420px) {
-  .cel-pricing { padding-inline: 8px; }
+  .cel-pricing { padding-inline: 16px; }
   .cel-board,
   .cel-recharge-panel,
   .cel-membership-panel { width: 100%; min-width: 0; max-width: 100%; }
