@@ -482,6 +482,11 @@
   will-change: scroll-position;
 }
 
+/* Anchor messages to the bottom so short conversations sit just above the input
+   instead of leaving a large empty gap. When content overflows, this margin
+   collapses to 0 and normal scrolling is preserved. */
+.chatMessages > :first-child { margin-top: auto; }
+
 /* --- Input Area --- */
 .inputContainer {
   flex-shrink: 0;
