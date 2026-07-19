@@ -335,8 +335,23 @@
 .aura-home .aura-review-name { font-weight: 700; color: var(--aura-gold); }
 .aura-home .aura-review-role { font-size: 12px; color: var(--aura-text-dim); }
 @media (max-width: 767px) {
-  .aura-home .aura-review-grid { gap: 16px; }
-  .aura-home .aura-review-card { padding: 22px 18px; }
+  /* Horizontal swipe carousel so testimonials take one card height, not three stacked */
+  .aura-home .aura-review-grid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+    margin: 0 -4px;
+  }
+  .aura-home .aura-review-grid::-webkit-scrollbar { display: none; }
+  .aura-home .aura-review-card {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+    padding: 22px 18px;
+  }
 }
 
 /* =====================================================================
