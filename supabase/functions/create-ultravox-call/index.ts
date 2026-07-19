@@ -225,16 +225,11 @@ Deno.serve(async (req) => {
       languageHint: 'hi',
       firstSpeakerSettings: { agent: {} },
       medium: { webRtc: {} },
-      // Turn detection tuned so full questions (with natural pauses) are captured
-      // before the agent responds, and brief noises don't interrupt it.
       vadSettings: {
-        turnEndpointDelay: '1.2s',
+        turnEndpointDelay: '0.8s',
         minimumTurnDuration: '0s',
-        minimumInterruptionDuration: '0.9s',
+        minimumInterruptionDuration: '0.15s',
       },
-      // Without this, the session ends within seconds of the intro if the user is
-      // quiet (or their speech isn't recognized). Instead, re-prompt in Hindi a few
-      // times and only hang up after ~75s of continuous silence.
       inactivityMessages: [
         { duration: '30s', message: 'क्या आप वहाँ हैं? आप किस विषय में जानना चाहते हैं?' },
         { duration: '30s', message: 'अगर आपका कोई सवाल हो तो बेझिझक पूछिए।' },

@@ -111,3 +111,6 @@ treat all keys in it as secrets, referenced by name only.
 - Before making claims about DB schema, RPCs, or edge function behavior, check the actual
   migration files / function source rather than relying solely on `CLAUDE.md`, since it may
   drift from the code over time.
+- Do NOT write comments in code. Keep the code itself clean and self-explanatory (use clear
+  names) — no explanatory, sectioning, or "why" comments in the files you edit or create.
+  Put any explanation in your chat response instead, not in the code.
