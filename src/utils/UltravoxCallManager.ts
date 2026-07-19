@@ -33,6 +33,7 @@ export class UltravoxCallManager {
         // First time we reach an active conversational state, mark started.
         if (!this.joined && (status === 'idle' || status === 'listening' || status === 'speaking' || status === 'thinking')) {
           this.joined = true;
+          try { session.unmuteMic(); } catch (e) { log('unmuteMic on join failed:', e); }
           this.onCallStarted();
         }
 
