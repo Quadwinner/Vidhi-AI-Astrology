@@ -312,15 +312,40 @@
   background-size: 520px 300px;
   opacity: 0.4;
 }
-.aura-home .aura-review-grid { display: grid; grid-template-columns: 1fr; gap: 28px; position: relative; z-index: 2; }
-@media (min-width: 768px) { .aura-home .aura-review-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Auto-scrolling marquee (right → left) */
+.aura-home .aura-review-marquee {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  /* fade the edges so cards enter/exit softly */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.aura-home .aura-review-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 24px;
+  padding: 8px 12px;
+  animation: aura-review-scroll 38s linear infinite;
+}
+.aura-home .aura-review-marquee:hover .aura-review-grid { animation-play-state: paused; }
 .aura-home .aura-review-card {
+  flex: 0 0 380px;
+  max-width: 88vw;
   padding: 32px;
   background: rgba(43, 42, 40, 0.55); /* Stitch surface_container_high glass */
   border: 1px solid rgba(229, 180, 91, 0.22);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
   position: relative;
   z-index: 2;
+}
+@keyframes aura-review-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aura-home .aura-review-grid { animation: none; }
 }
 .aura-home .aura-reviews .aura-section-head { position: relative; z-index: 2; }
 .aura-home .aura-stars { display: flex; gap: 2px; color: var(--aura-gold); margin-bottom: 16px; }
@@ -335,23 +360,8 @@
 .aura-home .aura-review-name { font-weight: 700; color: var(--aura-gold); }
 .aura-home .aura-review-role { font-size: 12px; color: var(--aura-text-dim); }
 @media (max-width: 767px) {
-  /* Horizontal swipe carousel so testimonials take one card height, not three stacked */
-  .aura-home .aura-review-grid {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 6px;
-    margin: 0 -4px;
-  }
-  .aura-home .aura-review-grid::-webkit-scrollbar { display: none; }
-  .aura-home .aura-review-card {
-    flex: 0 0 84%;
-    scroll-snap-align: center;
-    padding: 22px 18px;
-  }
+  .aura-home .aura-review-card { flex: 0 0 82vw; padding: 22px 18px; }
+  .aura-home .aura-review-grid { gap: 14px; animation-duration: 26s; }
 }
 
 /* =====================================================================

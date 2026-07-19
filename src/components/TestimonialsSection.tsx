@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 
 const testimonialsData = [
@@ -33,15 +32,13 @@ export default function TestimonialsSection() {
           <p className="aura-lead">Real experiences from Vidhi users around the world.</p>
         </div>
 
+        <div className="aura-review-marquee">
         <div className="aura-review-grid">
-          {testimonialsData.map((t, index) => (
-            <motion.div
+          {[...testimonialsData, ...testimonialsData].map((t, index) => (
+            <div
               key={index}
               className="aura-glass aura-review-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              aria-hidden={index >= testimonialsData.length}
             >
               <div className="aura-stars">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -56,8 +53,9 @@ export default function TestimonialsSection() {
                   <div className="aura-review-role">{t.details}</div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
+        </div>
         </div>
       </div>
     </section>
