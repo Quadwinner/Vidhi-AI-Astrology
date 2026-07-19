@@ -635,7 +635,7 @@
   .chatMessages {
     padding: 1rem;
     padding-top: 116px;
-    padding-bottom: 96px;
+    padding-bottom: 12px;
   }
 
   /* Show TopBar on Mobile */

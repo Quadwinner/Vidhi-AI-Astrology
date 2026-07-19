@@ -348,10 +348,15 @@ export default function ChatPage() {
   // =========================================================
 
   const updateChatPadding = useCallback(() => {
+    // On mobile/tablet (<=1024px) the input bar is position:sticky (in-flow), so it
+    // reserves its own space — the messages area needs almost no bottom padding.
+    // Adding the desktop-style clearance here was what left the big empty gap.
+    if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
+      setChatBottomPadding(12);
+      return;
+    }
     const inputHeight = inputContainerRef.current?.offsetHeight ?? 0;
     const basePadding = 84;
-    // Just enough to clear the fixed input bar + a small gap (was +40 which left
-    // a large empty space after the last message).
     const calculated = inputHeight > 0 ? inputHeight + 10 : basePadding;
     setChatBottomPadding(Math.max(calculated, basePadding));
   }, []);
