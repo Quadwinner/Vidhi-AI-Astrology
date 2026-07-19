@@ -26,11 +26,22 @@
 }
 
 .bubble {
-  max-width: 95%;
+  max-width: 100%;
   padding: 0.6rem 1rem;
   border-radius: 16px;
   line-height: 1.5;
   font-size: 1rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+/* keep long words/URLs/markdown from overflowing the bubble */
+.bubble * { overflow-wrap: break-word; word-break: break-word; max-width: 100%; }
+.bubble pre, .bubble code { white-space: pre-wrap; }
+
+@media (max-width: 768px) {
+  .messageWrapper { max-width: 90%; }
+  .bubble { font-size: 0.95rem; padding: 0.55rem 0.85rem; }
 }
 
 .userBubble {
