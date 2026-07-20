@@ -23,7 +23,7 @@
   --aura-serif: 'Playfair Display', Georgia, serif;
   --aura-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  --aura-max: 1200px;
+  --aura-max: 1340px;
 
   background: var(--aura-bg);
   color: var(--aura-text);
@@ -140,7 +140,7 @@
   display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center;
 }
 @media (min-width: 1024px) {
-  .aura-home .aura-hero-grid { grid-template-columns: 1.1fr 0.9fr; gap: 64px; }
+  .aura-home .aura-hero-grid { grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; }
 }
 
 .aura-home .aura-hero-title {
