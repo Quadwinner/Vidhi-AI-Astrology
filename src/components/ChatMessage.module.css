@@ -53,19 +53,21 @@
 
 .assistantBubble {
   border-radius: 12px;
-  background: #2b2a28; /* Stitch surface_container_high */
-  border: 1px solid rgba(229, 180, 91, 0.22);
-  color: #F3F0EA; /* bright cream text */
+  background: #fffdf7;
+  border: 1px solid rgba(97, 7, 43, 0.16);
+  color: #3a2418;
   border-bottom-left-radius: 5px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 6px 18px rgba(97, 7, 43, 0.08);
 }
 
 .assistantBubble p,
 .assistantBubble li,
 .assistantBubble span {
-  color: #F3F0EA;
+  color: #3a2418;
 }
-.assistantBubble strong { color: #ffffff; }
+.assistantBubble strong { color: #61072B; }
+.assistantBubble h1, .assistantBubble h2, .assistantBubble h3, .assistantBubble h4 { color: #61072B; }
+.assistantBubble a { color: #a15a12; }
 
 @keyframes fadeIn {
   from {
@@ -364,9 +366,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #EFEFEF;
+  background: rgba(97, 7, 43, 0.05);
+  border: 1px solid rgba(97, 7, 43, 0.14);
+  color: #3a2418;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -378,8 +380,8 @@
 }
 
 .followUpChip:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(229, 180, 91, 0.16);
+  border-color: rgba(229, 180, 91, 0.5);
   transform: translateX(4px);
 }
 
