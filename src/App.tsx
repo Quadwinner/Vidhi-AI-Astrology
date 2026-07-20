@@ -32,6 +32,11 @@ import RemediesPage from './pages/RemediesPage';
 import ReportsPage from './pages/ReportsPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
 import TarotPage from './pages/TarotPage';
+import KundliMatchingPage from './pages/KundliMatchingPage';
+import PanchangPage from './pages/PanchangPage';
+import DoshaPage from './pages/DoshaPage';
+import NumerologyPage from './pages/NumerologyPage';
+import GemstonePage from './pages/GemstonePage';
 import TermsAndConditions from './pages/TermsAndConditions';
 import WalletPage from './pages/WalletPage';
 import YearEndBlog from './pages/YearEndBlog';
@@ -61,6 +66,11 @@ function AppContent() {
 
             <Route path="/rashifal" element={<RashifalPage />} />
             <Route path="/tarot" element={<TarotPage />} />
+            <Route path="/kundli-matching" element={<KundliMatchingPage />} />
+            <Route path="/panchang" element={<PanchangPage />} />
+            <Route path="/doshas" element={<DoshaPage />} />
+            <Route path="/numerology" element={<NumerologyPage />} />
+            <Route path="/gemstones" element={<GemstonePage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 

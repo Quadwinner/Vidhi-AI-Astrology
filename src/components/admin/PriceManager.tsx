@@ -33,6 +33,10 @@ const USAGE_SERVICES: { key: string; label: string; unit: string }[] = [
   { key: 'remedy', label: 'Remedies', unit: 'per request' },
   { key: 'report_premium', label: 'Report (Premium)', unit: 'per report' },
   { key: 'tarot_draw', label: 'Tarot Draw', unit: 'per draw (non-premium)' },
+  { key: 'kundli_matching', label: 'Kundli Matching', unit: 'per match (non-premium)' },
+  { key: 'dosha_report', label: 'Dosha Report', unit: 'per report (non-premium)' },
+  { key: 'numerology', label: 'Numerology', unit: 'per report (non-premium)' },
+  { key: 'gemstone', label: 'Gemstone/Rudraksha', unit: 'per report (non-premium)' },
 ];
 const USAGE_CURRENCIES = ['INR', 'USD', 'AED'];
 const CURRENCY_SYMBOL: Record<string, string> = { INR: '₹', USD: '$', AED: 'د.إ' };

@@ -28,10 +28,12 @@ const Navbar: React.FC = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isLearnMoreOpen, setIsLearnMoreOpen] = useState<boolean>(false);
+  const [isToolsOpen, setIsToolsOpen] = useState<boolean>(false);
   const [isMobilePricingOpen, setIsMobilePricingOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const toolsRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
 
   // ... (Keep existing useEffects for closing menus/scroll lock unchanged) ...
@@ -47,6 +49,16 @@ const Navbar: React.FC = () => {
     document.addEventListener('mousedown', handleDocClick);
     return () => document.removeEventListener('mousedown', handleDocClick);
   }, [isLearnMoreOpen]);
+
+  useEffect(() => {
+    if (!isToolsOpen) return;
+    const handleDocClick = (e: MouseEvent) => {
+      if (!toolsRef.current) return;
+      if (!toolsRef.current.contains(e.target as Node)) setIsToolsOpen(false);
+    };
+    document.addEventListener('mousedown', handleDocClick);
+    return () => document.removeEventListener('mousedown', handleDocClick);
+  }, [isToolsOpen]);
 
   const closeAllMenus = () => {
     setIsMenuOpen(false);
@@ -146,6 +158,26 @@ const Navbar: React.FC = () => {
             <Link to="/remedies" className="nav-link" onClick={handleAuthRedirect}>Remedies</Link>
             <Link to="/rashifal" className="nav-link">Rashifal</Link>
             <Link to="/tarot" className="nav-link">Tarot</Link>
+            <div className="nav-dropdown" ref={toolsRef}>
+              <button
+                className="nav-dropdown-toggle"
+                onClick={() => setIsToolsOpen(!isToolsOpen)}
+                aria-haspopup="true"
+                aria-expanded={isToolsOpen}
+              >
+                Astrology
+                <IconChevronDown size={16} className={`dropdown-arrow ${isToolsOpen ? 'open' : ''}`} />
+              </button>
+              {isToolsOpen && (
+                <div className="nav-dropdown-menu">
+                  <Link to="/kundli-matching" className="nav-dropdown-item" onClick={() => setIsToolsOpen(false)}>Kundli Matching</Link>
+                  <Link to="/panchang" className="nav-dropdown-item" onClick={() => setIsToolsOpen(false)}>Panchang</Link>
+                  <Link to="/doshas" className="nav-dropdown-item" onClick={() => setIsToolsOpen(false)}>Doshas</Link>
+                  <Link to="/numerology" className="nav-dropdown-item" onClick={() => setIsToolsOpen(false)}>Numerology</Link>
+                  <Link to="/gemstones" className="nav-dropdown-item" onClick={() => setIsToolsOpen(false)}>Gemstones</Link>
+                </div>
+              )}
+            </div>
             <div className="nav-dropdown" ref={dropdownRef}>
               <button
                 className="nav-dropdown-toggle"
@@ -280,6 +312,11 @@ const Navbar: React.FC = () => {
               <Link to="/remedies" className="mobile-link" onClick={handleAuthRedirect}>Remedies</Link>
               <Link to="/rashifal" className="mobile-link" onClick={closeAllMenus}>Rashifal</Link>
               <Link to="/tarot" className="mobile-link" onClick={closeAllMenus}>Tarot</Link>
+              <Link to="/kundli-matching" className="mobile-link" onClick={closeAllMenus}>Kundli Matching</Link>
+              <Link to="/panchang" className="mobile-link" onClick={closeAllMenus}>Panchang</Link>
+              <Link to="/doshas" className="mobile-link" onClick={closeAllMenus}>Doshas</Link>
+              <Link to="/numerology" className="mobile-link" onClick={closeAllMenus}>Numerology</Link>
+              <Link to="/gemstones" className="mobile-link" onClick={closeAllMenus}>Gemstones</Link>
               {/* {user && (<Link to="/chat?startCall=1" className="mobile-link" onClick={closeAllMenus}>Call</Link>)} */}
               <hr className="mobile-menu-divider" />
               <div className="mobile-language-selector"><CustomLanguageSelector /></div>
