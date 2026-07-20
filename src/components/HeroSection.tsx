@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./AuthModal";
 
+
+
 interface PhoneAuthHandlers {
   requestOtp: (payload: { phone: string; firstName?: string; lastName?: string; email?: string }) => Promise<void>;
   verifyOtp: (payload: { phone: string; otp: string; firstName?: string; lastName?: string; email?: string }) => Promise<void>;
@@ -75,6 +77,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ user, onGoogleSignIn, phoneAu
     <section className="aura-hero">
       <video
         className="aura-hero-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/videos/hero-cosmos-poster.jpg"
+        aria-hidden="true"
+      >
+        <source src="/videos/hero-planets.mp4" type="video/mp4" />
+      </video>
+      <video
+        className="aura-hero-video aura-hero-video-2"
         autoPlay
         muted
         loop
