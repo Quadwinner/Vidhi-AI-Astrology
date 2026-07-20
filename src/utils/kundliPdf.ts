@@ -131,7 +131,6 @@ export async function generateKundliPdf(profile: Profile, astro: AstroBundle): P
   y = renderTable(doc, y, 'Remedies', pt.remedies);
   y = renderTable(doc, y, 'Vimshottari Dasha Timeline', pt.vimshottari_dasha,
     ['Mahadasha Lord', 'Antardasha Lord', 'Start Date', 'End Date']);
-  y = renderTable(doc, y, 'Birth-Year Transits', pt.birth_year_transits);
 
   await renderDivisionalCharts(doc, pt);
 
@@ -165,7 +164,6 @@ function renderTable(doc: jsPDF, y: number, title: string, rows: any[], preferre
     headStyles: { fillColor: MAROON, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.8 },
     alternateRowStyles: { fillColor: [250, 244, 232] },
     theme: 'grid',
-    didDrawPage: () => { paintPageBg(doc); },
   });
   return (doc as any).lastAutoTable.finalY + 26;
 }

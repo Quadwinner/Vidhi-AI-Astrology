@@ -11,6 +11,7 @@ import { EnrichedProfile } from '../components/ProfileCard';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
 import { generateKundliPdf } from '../utils/kundliPdf';
+import { generateKundliPdfHindi } from '../utils/kundliPdfHi';
 import styles from './ProfileDashboardPage.module.css';
 
 import EditProfileSection from '../components/EditProfileSection';
@@ -128,18 +129,19 @@ export default function ProfileDashboardPage() {
   const firstName = (primary?.name || user?.user_metadata?.full_name || 'Seeker').split(' ')[0];
   const isPremium = planTier === 'monthly' || planTier === 'yearly';
 
-  const handleDownloadPdf = async () => {
+  const handleDownloadPdf = async (lang: 'en' | 'hi' = 'en') => {
     if (!primary || pdfLoading) return;
     setPdfLoading(true);
-    const toastId = toast.loading('Preparing your Kundli PDF…');
+    const toastId = toast.loading(lang === 'hi' ? 'हिंदी कुंडली तैयार हो रही है…' : 'Preparing your Kundli PDF…');
     try {
       const { data, error } = await supabase.functions.invoke('generate-astro-data', {
         body: { profile_id: primary.id, scope: 'charts', skip_transits: true },
       });
       if (error) throw new Error(error.message);
       if (!data?.processed_tables) throw new Error('Chart data is not ready yet. Please try again shortly.');
-      await generateKundliPdf(primary, data);
-      toast.success('Kundli PDF downloaded', { id: toastId });
+      if (lang === 'hi') await generateKundliPdfHindi(primary, data);
+      else await generateKundliPdf(primary, data);
+      toast.success(lang === 'hi' ? 'कुंडली PDF डाउनलोड हो गई' : 'Kundli PDF downloaded', { id: toastId });
     } catch (e: any) {
       toast.error(e?.message || 'Could not generate the PDF. Please try again.', { id: toastId });
     } finally {
@@ -223,7 +225,7 @@ export default function ProfileDashboardPage() {
                 <p className={styles.panelSub}>Real-time planetary alignment</p>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button className={styles.iconBtn} onClick={handleDownloadPdf} disabled={!primary || pdfLoading} aria-label="Download Kundli PDF" title="Download full Kundli PDF">
+                <button className={styles.iconBtn} onClick={() => handleDownloadPdf('en')} disabled={!primary || pdfLoading} aria-label="Download Kundli PDF" title="Download full Kundli PDF">
                   <IconFileText size={20} />
                 </button>
                 <button className={styles.iconBtn} onClick={() => navigate('/reports')} aria-label="Open chart">
@@ -249,10 +251,16 @@ export default function ProfileDashboardPage() {
                 </>
               )}
             </div>
-            <button className={styles.kundliPdfBtn} onClick={handleDownloadPdf} disabled={!primary || pdfLoading}>
-              <IconFileText size={18} />
-              {pdfLoading ? 'Preparing PDF…' : 'Download Full Kundli PDF'}
-            </button>
+            <div className={styles.kundliPdfRow}>
+              <button className={styles.kundliPdfBtn} onClick={() => handleDownloadPdf('en')} disabled={!primary || pdfLoading}>
+                <IconFileText size={18} />
+                {pdfLoading ? 'Preparing…' : 'Download PDF (English)'}
+              </button>
+              <button className={`${styles.kundliPdfBtn} ${styles.kundliPdfBtnAlt}`} onClick={() => handleDownloadPdf('hi')} disabled={!primary || pdfLoading}>
+                <IconFileText size={18} />
+                {pdfLoading ? 'तैयार…' : 'हिंदी PDF'}
+              </button>
+            </div>
           </section>
 
           {/* Right column */}
