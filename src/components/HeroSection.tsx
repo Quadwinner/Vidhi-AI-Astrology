@@ -73,6 +73,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ user, onGoogleSignIn, phoneAu
 
   return (
     <section className="aura-hero">
+      <video
+        className="aura-hero-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="/videos/hero-cosmos.mp4" type="video/mp4" />
+      </video>
+      <div className="aura-hero-video-overlay" aria-hidden="true" />
       <div className="aura-stars-layer" />
       <div className="aura-glow" style={{ top: "4%", left: "8%", width: 360, height: 360, background: "rgba(97,7,43,0.5)" }} />
       <div className="aura-glow" style={{ bottom: "0%", right: "6%", width: 340, height: 340, background: "rgba(229,180,91,0.16)" }} />
