@@ -2,13 +2,15 @@ import {
   IconLayoutDashboard, IconChartArcs, IconMoonStars, IconHeart, IconStars,
   IconSettings, IconHelpCircle, IconArrowsMaximize, IconSun, IconMoon,
   IconInfinity, IconArrowRight, IconUser, IconPlus, IconPencil, IconBrightnessUp,
-  IconLogout,
+  IconLogout, IconFileText,
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { EnrichedProfile } from '../components/ProfileCard';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
+import { generateKundliPdf } from '../utils/kundliPdf';
 import styles from './ProfileDashboardPage.module.css';
 
 import EditProfileSection from '../components/EditProfileSection';
@@ -25,6 +27,7 @@ export default function ProfileDashboardPage() {
   const [isUpgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [chartSvg, setChartSvg] = useState<string | null>(null);
   const [chartLoading, setChartLoading] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
 
   useEffect(() => {
     const fetchBirthDetails = async () => {
@@ -124,6 +127,25 @@ export default function ProfileDashboardPage() {
   const primary = profiles[0];
   const firstName = (primary?.name || user?.user_metadata?.full_name || 'Seeker').split(' ')[0];
   const isPremium = planTier === 'monthly' || planTier === 'yearly';
+
+  const handleDownloadPdf = async () => {
+    if (!primary || pdfLoading) return;
+    setPdfLoading(true);
+    const toastId = toast.loading('Preparing your Kundli PDF…');
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-astro-data', {
+        body: { profile_id: primary.id, scope: 'charts', skip_transits: true },
+      });
+      if (error) throw new Error(error.message);
+      if (!data?.processed_tables) throw new Error('Chart data is not ready yet. Please try again shortly.');
+      await generateKundliPdf(primary, data);
+      toast.success('Kundli PDF downloaded', { id: toastId });
+    } catch (e: any) {
+      toast.error(e?.message || 'Could not generate the PDF. Please try again.', { id: toastId });
+    } finally {
+      setPdfLoading(false);
+    }
+  };
   const tierLabel = planTier === 'yearly' ? 'Celestial Tier' : planTier === 'monthly' ? 'Ascendant Tier' : 'Free Tier';
 
   const navItems = [
@@ -200,9 +222,14 @@ export default function ProfileDashboardPage() {
                 <h2 className={styles.panelTitle}>Kundli Visualization</h2>
                 <p className={styles.panelSub}>Real-time planetary alignment</p>
               </div>
-              <button className={styles.iconBtn} onClick={() => navigate('/reports')} aria-label="Open chart">
-                <IconArrowsMaximize size={20} />
-              </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className={styles.iconBtn} onClick={handleDownloadPdf} disabled={!primary || pdfLoading} aria-label="Download Kundli PDF" title="Download full Kundli PDF">
+                  <IconFileText size={20} />
+                </button>
+                <button className={styles.iconBtn} onClick={() => navigate('/reports')} aria-label="Open chart">
+                  <IconArrowsMaximize size={20} />
+                </button>
+              </div>
             </div>
             <div className={styles.chartStage}>
               <div className={`${styles.ring} ${styles.ringOuter}`} />
@@ -222,6 +249,10 @@ export default function ProfileDashboardPage() {
                 </>
               )}
             </div>
+            <button className={styles.kundliPdfBtn} onClick={handleDownloadPdf} disabled={!primary || pdfLoading}>
+              <IconFileText size={18} />
+              {pdfLoading ? 'Preparing PDF…' : 'Download Full Kundli PDF'}
+            </button>
           </section>
 
           {/* Right column */}

@@ -110,6 +110,18 @@
   transition: background 0.2s ease;
 }
 .iconBtn:hover { background: rgba(54, 53, 51, 0.9); }
+.iconBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.kundliPdfBtn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 0 20px 20px; padding: 12px 18px; border-radius: 12px; cursor: pointer;
+  font-size: 14px; font-weight: 700; color: #271900;
+  background: linear-gradient(135deg, #f1bf64, #C7902F);
+  border: none; box-shadow: 0 8px 20px rgba(229, 180, 91, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.kundliPdfBtn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(229, 180, 91, 0.35); }
+.kundliPdfBtn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 /* Kundli chart */
 .kundliHead { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 24px 0; position: relative; z-index: 2; }
