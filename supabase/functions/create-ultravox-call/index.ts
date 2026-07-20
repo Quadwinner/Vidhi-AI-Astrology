@@ -228,7 +228,7 @@ Deno.serve(async (req) => {
       vadSettings: {
         turnEndpointDelay: '0.8s',
         minimumTurnDuration: '0s',
-        minimumInterruptionDuration: '0.15s',
+        minimumInterruptionDuration: '0.09s',
       },
       inactivityMessages: [
         { duration: '30s', message: 'क्या आप वहाँ हैं? आप किस विषय में जानना चाहते हैं?' },
