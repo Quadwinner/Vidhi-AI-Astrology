@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   IconSparkles, IconHeart, IconBriefcase, IconActivity, IconCoin,
   IconCards, IconThumbUp, IconCookie,
 } from '@tabler/icons-react';
 import { supabase } from '../supabaseClient';
+import { useAuth } from '../context/AuthContext';
+import { usePricing } from '../context/PricingContext';
 import { trackEvent } from '../utils/analytics';
 import styles from './TarotPage.module.css';
 
@@ -14,6 +17,10 @@ interface TarotResponse {
   id?: string; name?: string; direction?: string; meaning?: string; description?: string;
   health?: string; relationship?: string; career?: string; finance?: string;
   careerPaths?: string[]; card_image?: CardImage; card_images_back?: CardImage;
+}
+interface DrawMeta {
+  charged: boolean; cost: number; currency: string; wallet_balance: number;
+  is_premium: boolean; free_draws_limit: number; free_draws_used: number; free_draws_remaining: number;
 }
 
 const READINGS: { key: ReadingType; label: string; blurb: string; icon: React.ReactNode }[] = [
@@ -27,24 +34,54 @@ const READINGS: { key: ReadingType; label: string; blurb: string; icon: React.Re
 const CARD_BACK = 'https://s3.ap-south-1.amazonaws.com/images.vedicastroapi/tarot_images/tarot_back/dark.png';
 
 export default function TarotPage() {
+  const { user, subscriptionStatus, updateWalletBalance } = useAuth() as any;
+  const { prices, formatPrice } = usePricing() as any;
+  const tarotPrice = prices['tarot_draw'];
+  const isPremium = subscriptionStatus === 'active';
+
   const [selected, setSelected] = useState<ReadingType>('daily');
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [insufficient, setInsufficient] = useState(false);
   const [result, setResult] = useState<{ type: ReadingType; data: TarotResponse | string } | null>(null);
+  const [freeRemaining, setFreeRemaining] = useState<number | null>(null);
 
-  const active = READINGS.find(r => r.key === selected)!;
+  useEffect(() => {
+    if (!user?.id || !isPremium) { setFreeRemaining(null); return; }
+    let cancelled = false;
+    (async () => {
+      const [{ data: usr }, { data: setting }] = await Promise.all([
+        supabase.from('users').select('tarot_free_draws_used').eq('id', user.id).single(),
+        supabase.from('settings').select('value').eq('key', 'tarot_free_draws_premium').maybeSingle(),
+      ]);
+      if (cancelled) return;
+      const limit = Number.parseInt(setting?.value ?? '', 10) || 50;
+      const used = usr?.tarot_free_draws_used ?? 0;
+      setFreeRemaining(Math.max(0, limit - used));
+    })();
+    return () => { cancelled = true; };
+  }, [user?.id, isPremium]);
 
   const drawCard = async () => {
-    setLoading(true); setError(null); setResult(null); setFlipped(false);
+    setLoading(true); setError(null); setInsufficient(false); setResult(null); setFlipped(false);
     try {
       trackEvent('Tarot Draw', { type: selected });
       const { data, error } = await supabase.functions.invoke('get-tarot-reading', { body: { type: selected } });
+      const status = (error as any)?.context?.status;
+      if (status === 402 || data?.error === 'insufficient_funds') { setInsufficient(true); return; }
       if (error) throw new Error(error.message);
       if (data?.error) { setError('The cards are resting right now. Please try again in a moment.'); return; }
+
       setResult({ type: selected, data: data.response });
       setTimeout(() => setFlipped(true), 120);
+
+      const meta: DrawMeta | undefined = data.meta;
+      if (meta) {
+        if (typeof meta.wallet_balance === 'number') updateWalletBalance(meta.wallet_balance);
+        if (meta.is_premium) setFreeRemaining(meta.free_draws_remaining);
+      }
     } catch {
       setError('The cards are resting right now. Please try again in a moment.');
     } finally {
@@ -55,6 +92,9 @@ export default function TarotPage() {
   const cardObj = result && typeof result.data === 'object' ? result.data as TarotResponse : null;
   const cardImg = cardObj?.card_image?.artwork || cardObj?.card_image?.classic || cardObj?.card_image?.dark;
 
+  const priceLabel = tarotPrice != null ? formatPrice(tarotPrice) : null;
+  const drawIsFree = isPremium && (freeRemaining === null || freeRemaining > 0);
+
   return (
     <div className={styles.page}>
       <div className={styles.inner}>
@@ -62,6 +102,18 @@ export default function TarotPage() {
           <div className={styles.kicker}><IconSparkles size={14} /> Tarot Reading</div>
           <h1 className={styles.title}>Draw Your Card</h1>
           <p className={styles.subtitle}>Focus on your intention, choose a spread, and let the cards speak.</p>
+
+          <div className={styles.priceBanner}>
+            {isPremium ? (
+              freeRemaining !== null && freeRemaining <= 0 ? (
+                <span>You&rsquo;ve used all your free draws. Each draw now costs {priceLabel || '—'}.</span>
+              ) : (
+                <span><b>Premium</b> · {freeRemaining !== null ? `${freeRemaining} free draws left` : 'Free draws included'}</span>
+              )
+            ) : (
+              <span>Each tarot draw costs <b>{priceLabel || '…'}</b>. Go Premium for 50 free draws.</span>
+            )}
+          </div>
         </header>
 
         <div className={styles.typeGrid}>
@@ -69,7 +121,7 @@ export default function TarotPage() {
             <button
               key={r.key}
               className={`${styles.typeCard} ${selected === r.key ? styles.typeActive : ''}`}
-              onClick={() => { setSelected(r.key); setResult(null); setFlipped(false); setError(null); }}
+              onClick={() => { setSelected(r.key); setResult(null); setFlipped(false); setError(null); setInsufficient(false); }}
             >
               <span className={styles.typeIcon}>{r.icon}</span>
               <span className={styles.typeLabel}>{r.label}</span>
@@ -103,9 +155,18 @@ export default function TarotPage() {
           <button className={styles.drawBtn} onClick={drawCard} disabled={loading}>
             {loading ? 'Shuffling…' : result ? 'Draw Again' : 'Draw Card'}
           </button>
+          {!drawIsFree && priceLabel && !loading && (
+            <span className={styles.costHint}>{priceLabel} per draw</span>
+          )}
         </div>
 
-        {error && <div className={styles.errorCard}>{error}</div>}
+        {insufficient && (
+          <div className={styles.errorCard}>
+            You don&rsquo;t have enough balance for a tarot draw.{' '}
+            <Link to="/wallet" className={styles.rechargeLink}>Recharge your wallet</Link> to continue.
+          </div>
+        )}
+        {error && !insufficient && <div className={styles.errorCard}>{error}</div>}
 
         {result && !error && (
           <div className={styles.reading}>

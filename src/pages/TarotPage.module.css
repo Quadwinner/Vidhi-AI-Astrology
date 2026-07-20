@@ -25,6 +25,17 @@
 }
 .subtitle { margin: 0 auto; color: #b7a9ab; font-size: 15px; max-width: 520px; line-height: 1.6; }
 
+.priceBanner {
+  display: inline-block; margin-top: 16px; padding: 8px 18px; border-radius: 9999px;
+  font-size: 13px; color: #e5d9c4;
+  background: rgba(97, 7, 43, 0.28); border: 1px solid rgba(229, 180, 91, 0.28);
+}
+.priceBanner b { color: #e5b45b; }
+
+.costHint { font-size: 12px; color: #8f8284; margin-top: -12px; }
+
+.rechargeLink { color: #e5b45b; font-weight: 700; text-decoration: underline; }
+
 .typeGrid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
   margin-bottom: 22px;
