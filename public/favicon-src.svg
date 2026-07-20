@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vidhi logo">
+  <defs>
+    <radialGradient id="vidhiDisc" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#FBE7A8"/>
+      <stop offset="60%" stop-color="#E5B45B"/>
+      <stop offset="100%" stop-color="#C7902F"/>
+    </radialGradient>
+    <linearGradient id="vidhiMaroon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a1a4c"/>
+      <stop offset="55%" stop-color="#61072B"/>
+      <stop offset="100%" stop-color="#3a0619"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Bright gold celestial disc -->
+  <circle cx="32" cy="32" r="30" fill="url(#vidhiDisc)"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#3a0619" stroke-width="2"/>
+
+  <!-- Bold maroon crescent moon -->
+  <path d="M41.5 15.5a19 19 0 1 0 6.8 22.7A15.2 15.2 0 0 1 41.5 15.5z" fill="url(#vidhiMaroon)"/>
+
+  <!-- Four-point sparkle / guiding star -->
+  <path d="M27 24.5c.9 3.9 2.1 5.1 6 6-3.9.9-5.1 2.1-6 6-.9-3.9-2.1-5.1-6-6 3.9-.9 5.1-2.1 6-6z" fill="#FBE7A8"/>
+</svg>

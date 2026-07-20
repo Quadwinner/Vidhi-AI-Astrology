@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vidhi - Premium Navigation</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#62082c",
+                        "tertiary": "#cac6c3",
+                        "tertiary-fixed-dim": "#cac6c3",
+                        "on-primary-container": "#e67291",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "surface-container-lowest": "#0e0e0d",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#7d5800",
+                        "inverse-surface": "#e5e2df",
+                        "on-primary-fixed-variant": "#812342",
+                        "tertiary-fixed": "#e6e1df",
+                        "surface-container-low": "#1c1c1a",
+                        "surface-container-highest": "#353533",
+                        "outline": "#a38b8f",
+                        "outline-variant": "#554245",
+                        "on-secondary-fixed-variant": "#5e4100",
+                        "background": "#131312",
+                        "secondary-fixed": "#ffdea9",
+                        "inverse-on-surface": "#31302f",
+                        "tertiary-container": "#312f2e",
+                        "error-container": "#93000a",
+                        "secondary": "#f1bf64",
+                        "surface-variant": "#353533",
+                        "surface-container-high": "#2a2a28",
+                        "primary": "#ffb1c2",
+                        "on-tertiary-container": "#9a9694",
+                        "primary-container": "#61072b",
+                        "on-surface-variant": "#dbc0c4",
+                        "secondary-fixed-dim": "#f1bf64",
+                        "primary-fixed": "#ffd9e0",
+                        "on-error": "#690005",
+                        "on-secondary": "#422c00",
+                        "surface-container": "#20201e",
+                        "surface-bright": "#3a3937",
+                        "on-surface": "#e5e2df",
+                        "inverse-primary": "#9f3b59",
+                        "on-tertiary-fixed": "#1d1b1a",
+                        "on-tertiary": "#32302f",
+                        "surface-dim": "#131312",
+                        "on-secondary-fixed": "#271900",
+                        "surface-tint": "#ffb1c2",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb1c2",
+                        "on-secondary-container": "#ffd284",
+                        "surface": "#131312",
+                        "on-primary-fixed": "#3f0018",
+                        "on-background": "#e5e2df"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Orbital Glow Background */
+        body {
+            background-color: #131312; /* background */
+            background-image: radial-gradient(circle at 50% 0%, rgba(97, 7, 43, 0.15) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism gradient border effect */
+        .glass-border-bottom {
+            position: relative;
+        }
+        .glass-border-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(241, 191, 100, 0.3), transparent);
+        }
+        
+        /* Nav Item Hover Glow */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #f1bf64;
+            transition: width 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 8px rgba(241, 191, 100, 0);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            box-shadow: 0 0 8px rgba(241, 191, 100, 0.6);
+        }
+    </style>
+</head>
+<body class="text-on-background min-h-[2048px] m-0 p-0 antialiased font-body-md overflow-x-hidden">
+<!-- TopNavBar Component -->
+<header class="bg-background/80 backdrop-blur-xl sticky top-0 w-full h-[76px] z-50 shadow-none flex justify-between items-center px-margin-desktop max-w-container-max mx-auto glass-border-bottom">
+<!-- Brand Logo -->
+<div class="font-display-lg text-display-lg text-secondary flex items-center gap-2 cursor-pointer scale-95 active:scale-90 transition-transform">
+<!-- Crescent Moon & Star Icon SVG -->
+<svg class="text-secondary drop-shadow-[0_0_8px_rgba(241,191,100,0.5)]" fill="none" height="40" viewbox="0 0 24 24" width="40" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.1818 2.05459C12.4437 2.03606 12.6934 2.14819 12.8631 2.34836C13.0327 2.54854 13.097 2.8087 13.0387 3.06456C12.383 5.92984 13.4357 8.94901 15.6568 10.7417C17.8778 12.5343 20.9324 12.8465 23.4478 11.5369C23.6706 11.4191 23.9351 11.4552 24.123 11.6289C24.3108 11.8026 24.3855 12.0805 24.3138 12.3364C23.0039 17.0601 18.5772 20.4842 13.5 20.4842C7.14873 20.4842 2 15.3354 2 8.98418C2 5.09311 4.10398 1.68817 7.42084 0.170607C7.65342 0.0603831 7.92506 0.113038 8.11322 0.304561C8.30137 0.496084 8.37346 0.793744 8.29656 1.06368C7.6322 3.39349 8.15174 5.92953 9.77443 7.71261C11.3971 9.4957 13.9103 10.2796 16.3533 9.7667C15.9388 9.53932 15.5401 9.27854 15.1618 8.98418C12.222 6.64334 10.963 2.53034 12.1818 2.05459Z" fill="currentColor"></path>
+<path d="M19.5 2.5L20.1633 4.83669L22.5 5.5L20.1633 6.16331L19.5 8.5L18.8367 6.16331L16.5 5.5L18.8367 4.83669L19.5 2.5Z" fill="currentColor"></path>
+</svg>
+<span class="tracking-tight drop-shadow-[0_0_8px_rgba(241,191,100,0.3)]">Vidhi</span>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center gap-gutter font-label-md text-label-md uppercase tracking-widest">
+<!-- Active State Example -->
+<a class="text-secondary border-b-2 border-secondary pb-1 drop-shadow-[0_0_8px_rgba(241,191,100,0.4)] transition-all" href="#">Reports</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link" href="#">Birth Chart</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link" href="#">Chat</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link" href="#">Call</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link" href="#">Remedies</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link" href="#">Rashifal</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors nav-link flex items-center gap-1" href="#">
+                Learn More
+                <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</a>
+</nav>
+<!-- Right Cluster Actions -->
+<div class="flex items-center gap-4">
+<!-- Wallet Pill -->
+<div class="hidden lg:flex items-center gap-2 border border-secondary/30 rounded-full px-4 py-1.5 bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-secondary text-[18px] group-hover:drop-shadow-[0_0_4px_rgba(241,191,100,0.6)]">account_balance_wallet</span>
+<span class="font-label-md text-label-md text-secondary">₹740</span>
+</div>
+<!-- Language Selector -->
+<button class="text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-1 hover:opacity-80 transition-all duration-300">
+<span class="material-symbols-outlined text-[20px]">language</span>
+<span class="font-label-md text-label-md">EN</span>
+</button>
+<!-- User Profile Dropdown Trigger -->
+<div class="flex items-center gap-3 ml-2 border-l border-secondary/20 pl-4 cursor-pointer hover:opacity-80 transition-all duration-300">
+<div class="flex flex-col items-end hidden md:flex">
+<span class="font-label-md text-label-md text-on-surface">Shubham Kushwaha</span>
+<span class="text-[12px] text-secondary">Premium Member</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container border border-secondary/50 overflow-hidden flex items-center justify-center relative shadow-[0_0_12px_rgba(97,7,43,0.5)]">
+<img class="w-full h-full object-cover" data-alt="A striking digital portrait of a sophisticated user avatar set against a cosmic minimalist backdrop. The lighting is soft and ethereal with a subtle celestial glow highlighting the edges. The color palette features deep royal maroons and pristine whites, accented with delicate gold touches to signify premium status. The mood is authoritative yet serene, perfectly capturing the essence of high-end spiritual guidance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7J6HaIOhgy-d397FQzREX7TFLXm13raXxymPRqVYaStBf68mmjjBRAO2DXQ2woXPGHtafTV1JED9oDdOFxkF3Be4pD-Nm5nghB-1kyDDhA5fX0szHyvaLuSPAO0wBESKj1MsRo7KV6pTMTG7NA6EV5GQp6Rq7Skh5lCu11hQoq3_DoS5e249slhYMgNkRtdxYJ66ZTFtXoNhFPDDCq5xRKobbVJb55ErNkPOIVIHjGQfjVDqg0hStVWZqL_NFF7zwoBmZo4yMNORK"/>
+</div>
+</div>
+<!-- Logout -->
+<button class="text-on-surface-variant hover:text-secondary transition-colors ml-2 hover:opacity-80 transition-all duration-300" title="Logout">
+<span class="material-symbols-outlined">logout</span>
+</button>
+<!-- Mobile Menu Toggle (Visible only on small screens) -->
+<button class="md:hidden text-secondary ml-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas (To demonstrate sticky behavior and background) -->
+<main class="max-w-container-max mx-auto px-margin-desktop py-24 relative z-10">
+<!-- Atmospheric Glow Element -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-96 bg-primary-container/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+<section class="mb-32">
+<h1 class="font-display-lg text-display-lg text-secondary mb-6 drop-shadow-[0_0_12px_rgba(241,191,100,0.3)]">Cosmic Clarity Awaits</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-12">
+                Scroll down to observe the sophisticated glassmorphism effect of the navigation bar as it glides over content, maintaining a premium, unobtrusive presence while providing essential guidance tools.
+            </p>
+<!-- Bento Grid Placeholder for visual context -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-2 rounded-xl border border-secondary/10 bg-surface-container-highest/20 backdrop-blur-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-primary-container/50 border border-secondary/30 rounded-full font-label-md text-[12px] text-secondary mb-4">Daily Insight</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Planetary Alignments</h2>
+<p class="font-body-md text-tertiary">Discover how today's celestial configurations influence your personal energy fields.</p>
+</div>
+</div>
+<!-- Small Card -->
+<div class="rounded-xl border border-secondary/10 bg-surface-container-highest/20 backdrop-blur-xl p-8 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 rounded-full border border-secondary/40 flex items-center justify-center mb-4 shadow-[0_0_16px_rgba(241,191,100,0.1)]">
+<span class="material-symbols-outlined text-secondary text-[32px]">auto_awesome</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-secondary">Kundli</h3>
+</div>
+</div>
+</section>
+<!-- Extra content to enable scrolling -->
+<div class="h-[800px] border border-dashed border-outline-variant/30 rounded-xl flex items-center justify-center text-outline">
+            Scroll Area
+        </div>
+</main>
+</body></html>

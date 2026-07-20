@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  padding: 96px 0 64px;
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(900px 560px at 12% -8%, rgba(97, 7, 43, 0.5), transparent 60%),
+    radial-gradient(700px 480px at 100% 0%, rgba(229, 180, 91, 0.08), transparent 55%),
+    #0d0c0b;
+  color: #e5e2df;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.inner { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+.head { text-align: center; margin-bottom: 28px; }
+.kicker {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #e5b45b; font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.title {
+  margin: 0 0 8px; font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4.5vw, 44px); font-weight: 600; color: #e5e2df; letter-spacing: -0.02em;
+}
+.subtitle { margin: 0 auto; color: #b7a9ab; font-size: 15px; max-width: 520px; line-height: 1.6; }
+
+.typeGrid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+  margin-bottom: 22px;
+}
+.typeCard {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 16px; border-radius: 16px; cursor: pointer; text-align: left;
+  background: rgba(18, 17, 16, 0.7); border: 1px solid rgba(229, 180, 91, 0.2);
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.typeCard:hover { transform: translateY(-2px); border-color: rgba(229, 180, 91, 0.45); }
+.typeActive {
+  border-color: rgba(229, 180, 91, 0.7);
+  box-shadow: 0 0 22px rgba(229, 180, 91, 0.15);
+  background: linear-gradient(160deg, rgba(97, 7, 43, 0.35), rgba(18, 17, 16, 0.7));
+}
+.typeIcon {
+  width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+  background: rgba(229, 180, 91, 0.12); color: #e5b45b; margin-bottom: 4px;
+}
+.typeLabel { font-family: 'Playfair Display', Georgia, serif; font-size: 17px; font-weight: 600; color: #f2ede9; }
+.typeBlurb { font-size: 12px; color: #8f8284; line-height: 1.4; }
+
+.questionInput {
+  width: 100%; padding: 14px 18px; margin-bottom: 22px; border-radius: 12px;
+  background: rgba(18, 17, 16, 0.7); border: 1px solid rgba(229, 180, 91, 0.25);
+  color: #f2ede9; font-size: 15px; outline: none; box-sizing: border-box;
+}
+.questionInput:focus { border-color: rgba(229, 180, 91, 0.6); }
+.questionInput::placeholder { color: #6f6466; }
+
+.stage {
+  display: flex; flex-direction: column; align-items: center; gap: 26px;
+  padding: 12px 0 8px;
+}
+
+.tarotCard {
+  width: 200px; height: 340px; position: relative;
+  transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0.15, 0.2, 1);
+  perspective: 1200px;
+}
+.flipped { transform: rotateY(180deg); }
+.shuffling { animation: shuffle 0.6s ease-in-out infinite; }
+@keyframes shuffle {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.cardFace {
+  position: absolute; inset: 0; border-radius: 16px; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border: 1px solid rgba(229, 180, 91, 0.35);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  background: #14100f;
+}
+.cardFace img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cardBack { }
+.cardFront { transform: rotateY(180deg); }
+
+.fortunePlaceholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  color: #e5b45b;
+  background: radial-gradient(circle at 50% 30%, rgba(97, 7, 43, 0.6), #14100f 70%);
+}
+
+.drawBtn {
+  padding: 13px 40px; border-radius: 9999px; border: none; cursor: pointer;
+  font-size: 15px; font-weight: 700; letter-spacing: 0.02em; color: #271900;
+  background: linear-gradient(135deg, #f1bf64, #C7902F);
+  box-shadow: 0 10px 26px rgba(229, 180, 91, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.drawBtn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(229, 180, 91, 0.4); }
+.drawBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.reading {
+  margin-top: 30px; padding: 24px; border-radius: 18px;
+  background: rgba(18, 17, 16, 0.75); border: 1px solid rgba(229, 180, 91, 0.22);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
+  animation: rise 0.5s ease;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.cardTitle { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.cardName { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 600; color: #e5b45b; }
+.cardDir {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #b7a9ab;
+  padding: 3px 10px; border-radius: 9999px; border: 1px solid rgba(229, 180, 91, 0.25);
+}
+.answerBadge {
+  font-size: 13px; font-weight: 700; color: #271900; padding: 4px 14px; border-radius: 9999px;
+  background: linear-gradient(135deg, #f1bf64, #C7902F);
+}
+
+.desc { margin: 0; color: #d9d2cf; font-size: 15px; line-height: 1.7; }
+
+.aspects { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.aspect {
+  padding: 16px; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 180, 91, 0.14);
+}
+.aspectHead {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  font-weight: 600; color: #e5b45b; font-size: 14px;
+}
+.aspectIcon { display: inline-flex; }
+.aspect p { margin: 0; color: #cbbfbc; font-size: 13.5px; line-height: 1.6; }
+
+.pathList { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.pathChip {
+  font-size: 13px; color: #f2ede9; padding: 7px 14px; border-radius: 9999px;
+  background: rgba(97, 7, 43, 0.35); border: 1px solid rgba(229, 180, 91, 0.25);
+}
+
+.fortuneText {
+  margin: 0; text-align: center; font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px; line-height: 1.6; color: #f2ede9; font-style: italic;
+}
+
+.errorCard {
+  margin-top: 24px; padding: 16px 20px; border-radius: 14px; color: #f0b8b8; text-align: center;
+  background: rgba(120, 20, 30, 0.25); border: 1px solid rgba(220, 120, 120, 0.35); font-size: 14px;
+}
+
+@media (max-width: 520px) {
+  .page { padding: 80px 0 48px; }
+  .tarotCard { width: 170px; height: 290px; }
+  .typeGrid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -31,6 +31,7 @@ import RashifalPage from './pages/RashifalPage';
 import RemediesPage from './pages/RemediesPage';
 import ReportsPage from './pages/ReportsPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
+import TarotPage from './pages/TarotPage';
 import TermsAndConditions from './pages/TermsAndConditions';
 import WalletPage from './pages/WalletPage';
 import YearEndBlog from './pages/YearEndBlog';
@@ -59,6 +60,7 @@ function AppContent() {
             <Route path="/BlogPage" element={<BlogPostPage />} />
 
             <Route path="/rashifal" element={<RashifalPage />} />
+            <Route path="/tarot" element={<TarotPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
