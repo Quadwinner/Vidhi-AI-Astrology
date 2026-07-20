@@ -137,13 +137,14 @@
 
 .aura-home .aura-hero-video {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 0; opacity: 0.42; pointer-events: none;
+  object-fit: cover; z-index: 0; opacity: 0.34; pointer-events: none;
 }
 .aura-home .aura-hero-video-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(13, 12, 11, 0.92) 0%, rgba(13, 12, 11, 0.62) 46%, rgba(13, 12, 11, 0.32) 100%),
-    radial-gradient(130% 90% at 50% -12%, rgba(97, 7, 43, 0.45) 0%, transparent 62%);
+    radial-gradient(115% 115% at 60% 45%, transparent 0%, transparent 34%, rgba(13, 12, 11, 0.55) 72%, rgba(13, 12, 11, 0.94) 100%),
+    linear-gradient(90deg, rgba(13, 12, 11, 0.9) 0%, rgba(13, 12, 11, 0.5) 42%, rgba(13, 12, 11, 0.5) 60%, rgba(13, 12, 11, 0.85) 100%),
+    radial-gradient(130% 90% at 50% -12%, rgba(97, 7, 43, 0.4) 0%, transparent 62%);
 }
 @media (max-width: 768px) {
   .aura-home .aura-hero-video { display: none; }
