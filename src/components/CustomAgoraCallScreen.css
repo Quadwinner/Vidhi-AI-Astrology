@@ -1,6 +1,10 @@
 .custom-call-screen {
-  width: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  width: 100vw;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,8 +29,7 @@
   background: transparent;
   border-radius: 0;
   box-shadow: none;
-  padding-top: 72px;
-  /* Adjusted padding for navbar */
+  padding-top: 0;
   box-sizing: border-box;
 }
 
@@ -1033,9 +1036,12 @@
   max-width: min(95vw, 420px);
   border-radius: 16px;
   padding: 20px 16px 16px;
-  background: radial-gradient(120% 120% at 50% 0%, rgba(115, 0, 128, 0.92) 0%, rgba(233, 45, 113, 0.92) 60%, rgba(255, 102, 0, 0.92) 120%);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  color: #fff;
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(97, 7, 43, 0.9) 0%, rgba(20, 19, 18, 0.96) 70%),
+    #0d0c0b;
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  color: #f4ede0;
 }
 
 .end-modal-title {
@@ -1083,7 +1089,7 @@
   border-radius: 10px;
   cursor: pointer;
   color: #fff;
-  background: linear-gradient(135deg, #ff3e9f 0%, #fe450b 100%);
+  background: rgba(239, 68, 68, 0.85);
   font-weight: 500;
 }
 
@@ -1096,8 +1102,7 @@
     width: 100%;
     height: 100vh;
     border-radius: 0;
-    padding-top: 75px;
-    /* Adjusted for mobile navbar height */
+    padding-top: 0;
   }
 
   .custom-call-screen {
@@ -1114,19 +1119,15 @@
   }
 }
 
-/* Smaller mobile devices */
 @media (max-width: 430px) {
   .call-container {
-    padding-top: 65px;
-    /* Adjusted for smaller navbar */
+    padding-top: 0;
   }
 }
 
-/* Extra small devices */
 @media (max-width: 375px) {
   .call-container {
-    padding-top: 60px;
-    /* Adjusted for extra small navbar */
+    padding-top: 0;
   }
 }
 
@@ -1147,9 +1148,12 @@
   max-width: 95vw;
   border-radius: 16px;
   padding: 20px 16px 16px;
-  background: radial-gradient(120% 120% at 50% 0%, rgba(115, 0, 128, 0.92) 0%, rgba(233, 45, 113, 0.92) 60%, rgba(255, 102, 0, 0.92) 120%);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  color: #fff;
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(97, 7, 43, 0.9) 0%, rgba(20, 19, 18, 0.96) 70%),
+    #0d0c0b;
+  border: 1px solid rgba(229, 180, 91, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  color: #f4ede0;
 }
 
 .start-modal-icon {
@@ -1208,8 +1212,9 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  color: #fff;
-  background: linear-gradient(135deg, #ff3e9f 0%, #fe450b 100%);
+  color: #0d0c0b;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f1bf64 0%, #E5B45B 100%);
 }
 
 /* Add this to your CustomCallScreen.css file */
