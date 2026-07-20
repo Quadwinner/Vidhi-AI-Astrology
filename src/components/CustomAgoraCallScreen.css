@@ -14,7 +14,7 @@
     #0d0c0b;
   color: #f4ede0;
   overflow: hidden;
-  padding: 0;
+  padding: 84px 0 0;
 }
 
 .call-container {
@@ -1106,7 +1106,7 @@
   }
 
   .custom-call-screen {
-    padding: 0;
+    padding: calc(env(safe-area-inset-top, 0px) + 88px) 0 0;
   }
 
   .main-content {

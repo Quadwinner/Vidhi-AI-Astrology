@@ -445,7 +445,19 @@ async function handler(req: Request) {
         `Always address them as "${profileName}" (for example "${profileName} ji"). ` +
         `NEVER invent or use any other name. In particular, note that "Ravi"/"Surya" is the SUN (a planet) in the chart data — it is NOT the person's name. Do not call the user "Ravi".`;
 
-      const EXTRA = LANGUAGE_DIRECTIVE + NAME_DIRECTIVE;
+      const SCOPE_DIRECTIVE =
+        `\n\n# SCOPE (VERY IMPORTANT):\n` +
+        `You are Vidhi, a Vedic astrology guide. Only answer questions about astrology, ` +
+        `the person's birth chart, horoscope, planets, houses, dashas, transits, remedies, ` +
+        `spirituality, and closely related life guidance (love, career, money, health, family) ` +
+        `interpreted through their chart. ` +
+        `If the user asks anything unrelated — such as writing code, math, programming, general ` +
+        `knowledge, technology, current affairs, or any non-astrology task — do NOT fulfill it. ` +
+        `Politely decline in one short sentence, in the user's language, and invite them to ask ` +
+        `an astrology or life-guidance question instead. Never output code, code blocks, or ` +
+        `step-by-step technical instructions.`;
+
+      const EXTRA = LANGUAGE_DIRECTIVE + NAME_DIRECTIVE + SCOPE_DIRECTIVE;
       finalSingleSystemPrompt += EXTRA;
       staticSystemPrompt += EXTRA;
       if (Array.isArray(system_blocks_for_anthropic) && system_blocks_for_anthropic.length > 0) {
