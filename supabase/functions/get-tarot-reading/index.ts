@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders, createCorsWrappedHandler } from '../_shared/cors.ts';
+import { checkRateLimit } from '../_shared/ratelimit.ts';
 
 const VEDIC_BASE = 'https://api.vedicastroapi.com/v3-json';
 const DEFAULT_FREE_DRAWS = 50;
@@ -31,6 +32,9 @@ async function handler(req: Request): Promise<Response> {
     const token = authHeader.replace('Bearer ', '');
     const { data: { user }, error: authError } = await admin.auth.getUser(token);
     if (authError || !user) return json({ error: 'Authentication failed' }, 401);
+
+    const rl = await checkRateLimit(admin, user.id, 'tarot', 15, 60);
+    if (!rl.ok) return json({ error: 'rate_limited', message: 'You\u2019re going a bit fast. Please wait a moment and try again.', retry_after: rl.retryAfter }, 429);
 
     const { data: dbUser, error: userError } = await admin
       .from('users')
