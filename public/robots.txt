@@ -1,7 +1,7 @@
-# robots.txt for https://astroaura.ai
+# robots.txt for https://vidhi-ai-astrology.vercel.app
 # Reference: https://www.robotstxt.org/robotstxt.html
 
 User-agent: *
 Allow: /
 
-Sitemap: https://astroaura.ai/sitemap.xml
+Sitemap: https://vidhi-ai-astrology.vercel.app/sitemap.xml
