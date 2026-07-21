@@ -44,7 +44,7 @@ const InitiateCallModal: React.FC<InitiateCallModalProps> = ({
 
         <div className={styles.modalTitle}>
           <h3>Initiate a Call?</h3>
-          <p>Would you like to start a personalized consultation call with our AuraAI to discuss your charts and reports?</p>
+          <p>Would you like to start a personalized consultation call with Vidhi AI to discuss your charts and reports?</p>
         </div>
 
         <div className={styles.pricingInfo}>

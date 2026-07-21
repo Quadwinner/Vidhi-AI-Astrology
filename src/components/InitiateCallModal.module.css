@@ -13,16 +13,17 @@
 }
 
 .modalContent {
-  /* Match the Figma gradient design */
-  background: radial-gradient(120% 120% at 50% 0%, rgba(115, 0, 128, 0.92) 0%, rgba(233, 45, 113, 0.92) 60%, rgba(255, 102, 0, 0.92) 120%);
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(97, 7, 43, 0.92) 0%, rgba(20, 19, 18, 0.96) 70%),
+    #0d0c0b;
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 25px;
   max-width: 343px;
   width: 100%;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(229, 180, 91, 0.25);
 }
 
 .modalIcon {
@@ -35,11 +36,12 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(229, 180, 91, 0.14);
+  border: 1px solid rgba(229, 180, 91, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #E5B45B;
   font-size: 28px;
 }
 
@@ -50,9 +52,10 @@
 
 .modalTitle h3 {
   margin: 0 0 12px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #E5B45B;
 }
 
 .modalTitle p {
@@ -65,9 +68,10 @@
 .pricingInfo {
   padding: 8px 12px;
   margin: 12px auto 20px;
-  max-width: 220px;
+  max-width: 240px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(229, 180, 91, 0.1);
+  border: 1px solid rgba(229, 180, 91, 0.25);
   text-align: center;
 }
 
@@ -82,7 +86,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
+  background: #E5B45B;
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -99,8 +103,8 @@
 
 .pricingRow span {
   font-size: 0.875rem;
-  color: white;
-  font-weight: 600;
+  color: #E5B45B;
+  font-weight: 700;
 }
 
 .pricingNote {
@@ -131,12 +135,13 @@
 }
 
 .cancelButton {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(229, 180, 91, 0.1);
+  border: 1px solid rgba(229, 180, 91, 0.3);
+  color: #E5E2DF;
 }
 
 .cancelButton:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(229, 180, 91, 0.2);
   transform: scale(1.02);
 }
 
@@ -145,14 +150,15 @@
 }
 
 .confirmButton {
-  background: linear-gradient(135deg, #ff3e9f 0%, #fe450b 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(255, 62, 159, 0.3);
+  background: linear-gradient(135deg, #f1bf64 0%, #C7902F 100%);
+  color: #271900;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(229, 180, 91, 0.3);
 }
 
 .confirmButton:hover {
   transform: scale(1.02);
-  box-shadow: 0 6px 16px rgba(255, 62, 159, 0.5);
+  box-shadow: 0 6px 16px rgba(229, 180, 91, 0.5);
 }
 
 .confirmButton:active {
