@@ -43,6 +43,7 @@ import YearEndBlog from './pages/YearEndBlog';
 
 
 import { usePageTracking } from './hooks/usePageTracking';
+import RouteSeo from './seo/RouteSeo';
 
 function AppContent() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function AppContent() {
 
   return (
     <>
+      <RouteSeo />
       <Navbar />
 
       <div className="pageContainer">

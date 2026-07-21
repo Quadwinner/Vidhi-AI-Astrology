@@ -14,7 +14,7 @@ type ReadingType = 'daily' | 'yes-no' | 'love' | 'career' | 'fortune';
 
 interface CardImage { classic?: string; artwork?: string; dark?: string; ghibli?: string; }
 interface TarotResponse {
-  id?: string; name?: string; direction?: string; meaning?: string; description?: string;
+  id?: string; name?: string; direction?: string; meaning?: string; answer?: string; description?: string;
   health?: string; relationship?: string; career?: string; finance?: string;
   careerPaths?: string[]; card_image?: CardImage; card_images_back?: CardImage;
 }
@@ -68,7 +68,9 @@ export default function TarotPage() {
     setLoading(true); setError(null); setInsufficient(false); setResult(null); setFlipped(false);
     try {
       trackEvent('Tarot Draw', { type: selected });
-      const { data, error } = await supabase.functions.invoke('get-tarot-reading', { body: { type: selected } });
+      const { data, error } = await supabase.functions.invoke('get-tarot-reading', {
+        body: { type: selected, question: selected === 'yes-no' ? question.trim() : undefined },
+      });
       const status = (error as any)?.context?.status;
       if (status === 402 || data?.error === 'insufficient_funds') { setInsufficient(true); return; }
       if (error) throw new Error(error.message);
@@ -177,7 +179,11 @@ export default function TarotPage() {
                 <div className={styles.cardTitle}>
                   <span className={styles.cardName}>{cardObj.name}</span>
                   {cardObj.direction && <span className={styles.cardDir}>{cardObj.direction}</span>}
-                  {cardObj.meaning && <span className={styles.answerBadge}>{cardObj.meaning}</span>}
+                  {(result.type === 'yes-no' ? (cardObj.answer || cardObj.meaning) : cardObj.meaning) && (
+                    <span className={styles.answerBadge}>
+                      {result.type === 'yes-no' ? (cardObj.answer || cardObj.meaning) : cardObj.meaning}
+                    </span>
+                  )}
                 </div>
 
                 {result.type === 'daily' ? (

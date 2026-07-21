@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import { useNavigate, useParams } from 'react-router-dom';
 import BlogCTAs from '../components/BlogCTAs';
 import Navbar from '../components/Navbar';
+import Seo from '../seo/Seo';
+import { SITE_URL } from '../seo/seoConfig';
 import { supabase } from '../supabaseClient';
 import './BlogPostPage.css';
 
@@ -91,9 +93,12 @@ const BlogPostPage: React.FC = () => {
     return url;
   };
 
+  const canonical = `${SITE_URL}/blog/${slug ?? ''}`;
+
   if (loading) {
     return (
       <div className="astro-aura-container">
+        <Seo title="Loading… | Vidhi Blog" description="Loading blog post." canonical={canonical} noindex />
         <Navbar />
         <main className="blog-main">
           <div className="status-message">Loading blog post...</div>
@@ -105,6 +110,7 @@ const BlogPostPage: React.FC = () => {
   if (error) {
     return (
       <div className="astro-aura-container">
+        <Seo title="Blog Post Not Found | Vidhi" description="This blog post could not be found." canonical={canonical} noindex />
         <Navbar />
         <main className="blog-main">
             <button className="back-to-blog-btn" onClick={() => navigate("/blog")}>
@@ -119,6 +125,15 @@ const BlogPostPage: React.FC = () => {
 
   return (
     <div className="astro-aura-container">
+      {blogPost && (
+        <Seo
+          title={`${blogPost.title} | Vidhi`}
+          description={blogPost.excerpt || blogPost.title}
+          canonical={canonical}
+          image={blogPost.featured_image_url && blogPost.featured_image_url.startsWith('http') ? blogPost.featured_image_url : undefined}
+          type="article"
+        />
+      )}
       <Navbar />
       <main className="blog-main">
         {blogPost && (

@@ -73,13 +73,29 @@ async function handler(req: Request): Promise<Response> {
     const apiKey = Deno.env.get('VEDICASTRO_API_KEY');
     if (!apiKey) return json({ error: 'VEDICASTRO_API_KEY not set' }, 500);
 
-    const url = `${VEDIC_BASE}${endpoint}?lang=${lang}&api_key=${apiKey}`;
-    const r = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    const params = new URLSearchParams({ lang, api_key: apiKey });
+    const isFreshDraw = type !== 'daily';
+    if (isFreshDraw) {
+      params.set('_ts', `${Date.now()}-${crypto.randomUUID()}`);
+      const question = typeof body?.question === 'string' ? body.question.trim() : '';
+      if (question) params.set('question', question.slice(0, 200));
+    }
+
+    const url = `${VEDIC_BASE}${endpoint}?${params.toString()}`;
+    const r = await fetch(url, {
+      cache: isFreshDraw ? 'no-store' : 'default',
+      signal: AbortSignal.timeout(15000),
+    });
     const j = await r.json().catch(() => null);
 
     if (!j || j.status !== 200 || j.response === undefined) {
       console.error(`[get-tarot-reading] ${type} failed: ${JSON.stringify(j).slice(0, 160)}`);
       return json({ error: 'source_unavailable', message: 'The cards are unavailable right now. Please try again shortly.' }, 200);
+    }
+
+    if (type === 'yes-no') {
+      const resp = j.response ?? {};
+      console.log(`[get-tarot-reading] yes-no name=${resp?.name} direction=${resp?.direction} meaning=${resp?.meaning} answer=${resp?.answer}`);
     }
 
     let newBalance = balance;

@@ -150,10 +150,7 @@
     linear-gradient(90deg, rgba(13, 12, 11, 0.9) 0%, rgba(13, 12, 11, 0.5) 42%, rgba(13, 12, 11, 0.5) 60%, rgba(13, 12, 11, 0.85) 100%),
     radial-gradient(130% 90% at 50% -12%, rgba(97, 7, 43, 0.4) 0%, transparent 62%);
 }
-@media (max-width: 768px) {
-  .aura-home .aura-hero-video { display: none; }
-  .aura-home .aura-hero-video-overlay { display: none; }
-}
+
 
 .aura-home .aura-hero-grid {
   position: relative; z-index: 2;
