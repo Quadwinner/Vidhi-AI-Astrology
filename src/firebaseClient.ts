@@ -3,13 +3,12 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDq4UODoqgepbdqFu47_jtrZOo-JQkNfn0',
-  authDomain: 'astroauraai-b41b5.firebaseapp.com',
-  projectId: 'astroauraai-b41b5',
-  storageBucket: 'astroauraai-b41b5.firebasestorage.app',
-  messagingSenderId: '758396763149',
-  appId: '1:758396763149:web:b728780a88354c1d2a2944',
-  measurementId: 'G-NQS09N6G3R'
+  apiKey: 'AIzaSyCKIjJrvpcI03LFkVHkkPEz1opIEGNjjYM',
+  authDomain: 'astro-500910.firebaseapp.com',
+  projectId: 'astro-500910',
+  storageBucket: 'astro-500910.firebasestorage.app',
+  messagingSenderId: '747140773728',
+  appId: '1:747140773728:web:036763dd454eeb1da49005',
 };
 
 export const app = initializeApp(firebaseConfig);
