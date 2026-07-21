@@ -107,7 +107,7 @@ export const MainSection: FC = () => {
   return (
     <div className="main-section">
       <header className="title-section">
-        <h2>How AstroAura Works</h2>
+        <h2>How Vidhi Works</h2>
         <p>
           Experience the future of astrology with our AI-powered platform that
           combines ancient wisdom with cutting-edge technology to deliver
@@ -271,7 +271,7 @@ export const MainSection: FC = () => {
                 <div className="avatar-circle gradient-pink-purple">
                   <IconQuestionMarkSVG />
                 </div>
-                <strong>AstroAura AI:</strong>
+                <strong>Vidhi AI:</strong>
               </div>
               <div>
                 <p>
@@ -324,7 +324,7 @@ export const MainSection: FC = () => {
       <section className="engagement-section card-glass">
         <h3>Ready to Unlock Your Cosmic Potential?</h3>
         <p className="engagement-line"> 
-          Join millions who trust AstroAura for accurate, personalized
+          Join millions who trust Vidhi for accurate, personalized
           astrological guidance.
         </p>
         <div className="cta-buttons">

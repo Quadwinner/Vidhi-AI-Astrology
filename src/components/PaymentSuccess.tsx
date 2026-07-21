@@ -6,7 +6,7 @@ const PaymentSuccess = () => {
     <div className="payment-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo">🌌 AstroAura</div>
+        <div className="logo">🌌 Vidhi</div>
 
         <div className="status-card">
           <div className="status-icon success">✔</div>
@@ -35,7 +35,7 @@ const PaymentSuccess = () => {
         {/* <FaCheckCircle className="big-check" /> */}
         <h1>Payment Successful! 🎉</h1>
         <p className="subtext">
-          Welcome to AstroAura Premium! Your cosmic journey begins now.
+          Welcome to Vidhi Premium! Your cosmic journey begins now.
         </p>
 
         <div className="premium-card">
@@ -57,7 +57,7 @@ const PaymentSuccess = () => {
           </div>
         </div>
 
-        <button className="chat-btn">✨ Start Chatting with Aura AI</button>
+        <button className="chat-btn">✨ Start Chatting with Vidhi AI</button>
 
         <div className="actions">
           <button className="secondary">📧 Email Receipt</button>

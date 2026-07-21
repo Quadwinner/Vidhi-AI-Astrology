@@ -322,7 +322,7 @@ const AICallScreen: React.FC<AICallScreenProps> = ({ profile, onCallEnded }) => 
           {/* Call Header with Timer */}
           <div className={styles.callHeader}>
             <div className={styles.headerTitle}>
-              <h2>Aura AI</h2>
+              <h2>Vidhi AI</h2>
               <div className={styles.voiceActiveStatus}>
                 <span className={styles.statusDot}></span>
                 <span>Voice Active</span>

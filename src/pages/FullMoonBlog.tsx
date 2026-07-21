@@ -145,8 +145,8 @@ const FullMoonBlog: React.FC = () => {
         <section className="cta-card chat-ai-cta">
             <img src={Bluechat} alt="alt" />
             <div className="chat-content">
-                <h3>Chat with Aura AI About the Full Moon</h3>
-                <p>Ask Aura AI how the full moon will affect your zodiac sign and what rituals are best for you.</p>
+                <h3>Chat with Vidhi AI About the Full Moon</h3>
+                <p>Ask Vidhi AI how the full moon will affect your zodiac sign and what rituals are best for you.</p>
                 <button className="cta-btn secondary-btn" onClick={() => navigate("/chat")}>Start AI Chat Now</button>
             </div>
         </section>
@@ -200,13 +200,13 @@ const FullMoonBlog: React.FC = () => {
                 <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Moon Guidance</h4>
-                    <p>Chat with Aura AI to receive customized full moon rituals and manifestation tips.</p>
+                    <p>Chat with Vidhi AI to receive customized full moon rituals and manifestation tips.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
                  <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Moon Guidance</h4>
-                    <p>Chat with Aura AI to receive customized full moon rituals and manifestation tips.</p>
+                    <p>Chat with Vidhi AI to receive customized full moon rituals and manifestation tips.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
             </div>

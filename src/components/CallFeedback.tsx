@@ -41,7 +41,7 @@ const CallFeedback: React.FC<CallFeedbackProps> = ({
         </button>
 
         <h3 className={styles.title}>
-          How was your experience with Aura AI?
+          How was your experience with Vidhi AI?
         </h3>
         <p className={styles.subtitle}>
           Click on an emoji to rate your experience
@@ -67,7 +67,7 @@ const CallFeedback: React.FC<CallFeedbackProps> = ({
         </h4>
         <textarea
           className={styles.commentsTextarea}
-          placeholder="Share your thoughts about the accuracy, helpfulness, and overall experience with Aura AI..."
+          placeholder="Share your thoughts about the accuracy, helpfulness, and overall experience with Vidhi AI..."
           maxLength={500}
           value={comments}
           onChange={(e) => setComments(e.target.value)}

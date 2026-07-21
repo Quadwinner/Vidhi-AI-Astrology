@@ -152,8 +152,8 @@ const BlogPostPage: React.FC = () => {
         <section className="cta-card chat-ai-cta">
             <img src={Bluechat} alt="alt" />
             <div className="chat-content">
-                <h3>Chat with Aura AI About 2025 Predictions</h3>
-                <p>Ask Aura AI how the new year will affect your sign in love, career, and personal growth.</p>
+                <h3>Chat with Vidhi AI About 2025 Predictions</h3>
+                <p>Ask Vidhi AI how the new year will affect your sign in love, career, and personal growth.</p>
                 <button className="cta-btn secondary-btn" onClick={() => navigate("/chat")}>Start AI Chat Now</button>
             </div>
         </section>
@@ -207,13 +207,13 @@ const BlogPostPage: React.FC = () => {
                 <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Prediction Chat</h4>
-                    <p>Chat with Aura AI to explore what 2025 holds for your sign and get tailored insights.</p>
+                    <p>Chat with Vidhi AI to explore what 2025 holds for your sign and get tailored insights.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
                 <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Prediction Chat</h4>
-                    <p>Chat with Aura AI to explore what 2025 holds for your sign and get tailored insights.</p>
+                    <p>Chat with Vidhi AI to explore what 2025 holds for your sign and get tailored insights.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
             </div>

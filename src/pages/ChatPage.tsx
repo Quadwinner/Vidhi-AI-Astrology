@@ -1507,7 +1507,7 @@ export default function ChatPage() {
           <>
             {!isLoadingProfiles && !selectedProfile && (
               <div className={styles.welcomeView}>
-                <h2>Ask Aura AI</h2>
+                <h2>Ask Vidhi AI</h2>
                 <p>Select a profile to begin your personalized cosmic conversation.</p>
                 {profiles.length === 0 && <Link to="/profiles/new" className={styles.createProfileButton}><IconPlus size={20} /><span>Create Your First Profile</span></Link>}
               </div>

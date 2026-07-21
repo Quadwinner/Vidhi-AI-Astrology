@@ -8,7 +8,7 @@ const AstroConnect: FC = () => {
   return (
     <div className="astro-container">
       <p className="astro-text">
-        Connect With An Aura AI/ AI Astrologer On Call Or Chat For More
+        Connect With An Vidhi AI/ AI Astrologer On Call Or Chat For More
       </p>
       <p className="astro-subtext">Personalised Detailed Predictions.</p>
 

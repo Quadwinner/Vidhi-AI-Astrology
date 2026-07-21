@@ -131,8 +131,8 @@ const FireSignsBlog: React.FC = () => {
         <section className="cta-card chat-ai-cta">
             <img src={Bluechat} alt="Fire Chat" />
             <div className="chat-content">
-                <h3>Chat with Aura AI About Your Fire Sign Energy</h3>
-                <p>Ask Aura AI how your fire traits can enhance your personal growth, manifestation, and leadership abilities.</p>
+                <h3>Chat with Vidhi AI About Your Fire Sign Energy</h3>
+                <p>Ask Vidhi AI how your fire traits can enhance your personal growth, manifestation, and leadership abilities.</p>
                 <button className="cta-btn secondary-btn" onClick={() => navigate("/chat")}>Start AI Chat Now</button>
             </div>
         </section>
@@ -186,13 +186,13 @@ const FireSignsBlog: React.FC = () => {
                 <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Fire Guidance</h4>
-                    <p>Chat with Aura AI for tips on manifesting, leading, and thriving as a fire sign.</p>
+                    <p>Chat with Vidhi AI for tips on manifesting, leading, and thriving as a fire sign.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
                  <div className="action-card">
                     <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt"/></div>
                     <h4>AI Fire Guidance</h4>
-                    <p>Chat with Aura AI for tips on manifesting, leading, and thriving as a fire sign.</p>
+                    <p>Chat with Vidhi AI for tips on manifesting, leading, and thriving as a fire sign.</p>
                     <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
                 </div>
             </div>

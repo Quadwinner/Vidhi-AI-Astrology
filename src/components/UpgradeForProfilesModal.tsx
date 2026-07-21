@@ -107,7 +107,7 @@ const UpgradeForProfilesModal: React.FC<UpgradeForProfilesModalProps> = ({ isOpe
         key: 'rzp_test_RIdOOohLUUFJhr', // Your actual Razorpay key
         amount: amount,
         currency: yearlyPlan.price.currency.toUpperCase(), // Use currency from location-based plan
-        name: 'AuraAI Astrology',
+        name: 'Vidhi Astrology',
         description: 'Yearly Subscription',
         handler: async (response: any) => {
           console.log('💳 Payment successful:', response);

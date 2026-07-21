@@ -208,7 +208,7 @@ export default function CampaignManager() {
               type="text"
               value={templateName}
               onChange={(e) => setTemplateName(e.target.value)}
-              placeholder="e.g., AstroAura_Marketing (no spaces, use underscores)"
+              placeholder="e.g., Vidhi_Marketing (no spaces, use underscores)"
               style={{
                 padding: 10,
                 borderRadius: 6,

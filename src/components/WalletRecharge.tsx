@@ -119,7 +119,7 @@ export default function WalletRecharge() {
           key: data.key_id,
           amount: data.order.amount,
           currency: data.order.currency,
-          name: 'AuraAI Wallet Recharge',
+          name: 'Vidhi Wallet Recharge',
           description: `Add ${formatPrice(selectedPackageAmount)}`,
           order_id: data.order.id,
           handler: function (response: any) {

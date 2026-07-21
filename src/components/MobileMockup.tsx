@@ -22,7 +22,7 @@ export default function MobileMockup() {
         <div className={styles.screen}>
           <img 
             src={auraIntroImg} 
-            alt="AURA AI Intro" 
+            alt="Vidhi AI Intro" 
             className={styles.screenImage}
           />
         </div>

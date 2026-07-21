@@ -313,7 +313,7 @@ export default function SubscriptionDashboard() {
                               key: data.key_id,
                               amount: data.order.amount,
                               currency: data.order.currency,
-                              name: "Aura AI",
+                              name: "Vidhi AI",
                               description: `Top-up ${amount} coins`,
                               order_id: data.order.id,
                               handler: function(response: any) {
@@ -627,7 +627,7 @@ export default function SubscriptionDashboard() {
                                                               key: data.key_id,
                                                               amount: data.order.amount,
                                                               currency: data.order.currency,
-                                                              name: "Aura AI",
+                                                              name: "Vidhi AI",
                                                               description: `Top-up ${amount} coins`,
                                                               order_id: data.order.id,
                                                               handler: function(response: any) {
@@ -959,7 +959,7 @@ export default function SubscriptionDashboard() {
                               key: data.key_id,
                               amount: data.order.amount,
                               currency: data.order.currency,
-                              name: "Aura AI",
+                              name: "Vidhi AI",
                               description: `Top-up ${amount} coins`,
                               order_id: data.order.id,
                               handler: function(response: any) {
@@ -1285,7 +1285,7 @@ export default function SubscriptionDashboard() {
                                                           key: data.key_id,
                                                           amount: data.order.amount,
                                                           currency: data.order.currency,
-                                                          name: "Aura AI",
+                                                          name: "Vidhi AI",
                                                           description: `Top-up ${amount} coins`,
                                                           order_id: data.order.id,
                                                           handler: function(response: any) {

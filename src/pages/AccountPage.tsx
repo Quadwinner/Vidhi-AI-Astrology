@@ -49,7 +49,7 @@ export default function AccountPage() {
           key: data.key_id || 'rzp_test_RIdOOohLUUFJhr',
           amount: data.order.amount,
           currency: data.order.currency,
-          name: 'AuraAI Coin Top-up',
+          name: 'Vidhi Coin Top-up',
           description: `${coinsToBuy} coins`,
           order_id: data.order.id,
           handler: function(response: any) {
@@ -184,7 +184,7 @@ export default function AccountPage() {
           <section style={{ border: '1px solid #333', borderRadius: 8, padding: 16 }}>
             <h3>Notifications</h3>
             <p style={{ fontSize: 14, color: '#ccc', marginBottom: 12 }}>
-              Control which web push notifications you receive from AuraAI.
+              Control which web push notifications you receive from Vidhi.
             </p>
             <NotificationPreferences />
           </section>

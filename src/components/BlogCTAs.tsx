@@ -70,7 +70,7 @@ const BlogCTAs = () => {
           </div>
           <h3 className="cta-title">AI Chat</h3>
           <p className="cta-text">
-            Get instant answers and personalized astrological guidance by chatting with Aura AI.
+            Get instant answers and personalized astrological guidance by chatting with Vidhi AI.
           </p>
           {/* 4. This button now correctly opens the modal for logged-out users */}
           <button
@@ -105,7 +105,7 @@ const BlogCTAs = () => {
           </div>
           <h3 className="cta-title">AI Voice Call</h3>
           <p className="cta-text">
-            Experience a one-on-one voice conversation with Aura AI for in-depth guidance.
+            Experience a one-on-one voice conversation with Vidhi AI for in-depth guidance.
           </p>
           <button
             onClick={() => handleProtectedLinkClick('/chat?startCall=1')}

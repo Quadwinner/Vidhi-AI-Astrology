@@ -171,7 +171,7 @@ export default function ChatMessage({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Aura AI Insight',
+          title: 'Vidhi AI Insight',
           text: displayContent,
         });
       } catch (err) {

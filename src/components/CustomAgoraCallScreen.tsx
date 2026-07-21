@@ -320,7 +320,7 @@ const CustomAgoraCallScreen: React.FC<CustomAgoraCallScreenProps> = ({ profile, 
             <IconChevronLeft size={28} strokeWidth={2} />
           </button>
           <div className="header-title">
-            <h2>Aura AI</h2>
+            <h2>Vidhi AI</h2>
             <div className="voice-active-status">
               <span className="status-dot"></span>
               <span>Voice Active</span>
@@ -338,7 +338,7 @@ const CustomAgoraCallScreen: React.FC<CustomAgoraCallScreenProps> = ({ profile, 
         <div className="main-content">
           <div className="voice-chat-title">
             <h3>Ask Your Question</h3>
-            <p>Your Destiny, Decoded by AURA AI</p>
+            <p>Your Destiny, Decoded by Vidhi AI</p>
           </div>
 
           <div className="mic-button-container">

@@ -144,7 +144,7 @@ const PlanetaryTransitsBlog: React.FC = () => {
         <section className="cta-card chat-ai-cta">
           <img src={Bluechat} alt="alt" />
           <div className="chat-content">
-            <h3>Chat with Aura AI About Planetary Transits</h3>
+            <h3>Chat with Vidhi AI About Planetary Transits</h3>
             <p>Discover how current transits affect your zodiac sign, career, and relationships.</p>
             <button className="cta-btn secondary-btn" onClick={() => navigate("/chat")}>Start AI Chat Now</button>
           </div>
@@ -199,13 +199,13 @@ const PlanetaryTransitsBlog: React.FC = () => {
             <div className="action-card">
               <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt" /></div>
               <h4>AI Transit Chat</h4>
-              <p>Ask Aura AI how specific planetary transits affect your sign.</p>
+              <p>Ask Vidhi AI how specific planetary transits affect your sign.</p>
               <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
             </div>
             <div className="action-card">
               <div className="action-icon-wrapper ai-chat"><img src={consultant} alt="alt" /></div>
               <h4>AI Transit Chat</h4>
-              <p>Ask Aura AI how specific planetary transits affect your sign.</p>
+              <p>Ask Vidhi AI how specific planetary transits affect your sign.</p>
               <button className="cta-btn tertiary-btn" onClick={() => navigate("/chat")}>Start AI Chat - Free</button>
             </div>
           </div>

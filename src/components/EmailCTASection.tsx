@@ -68,7 +68,7 @@ export default function EmailCTASection() {
     <section className={styles.ctaSection}>
       <div className={styles.header}>
         <h2 className={styles.title}>Ready to Transform Your Life?</h2>
-        <p className={styles.subtitle}>Join thousands who have discovered their true potential through AstroAura</p>
+        <p className={styles.subtitle}>Join thousands who have discovered their true potential through Vidhi</p>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.emailForm}>

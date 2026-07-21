@@ -207,7 +207,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
         key: process.env.REACT_APP_RAZORPAY_KEY_ID, 
         amount: amount,
         currency: selectedPlan.price.currency.toUpperCase(), 
-        name: 'AuraAI Astrology',
+        name: 'Vidhi Astrology',
         description: `${planType === 'monthly' ? 'Monthly' : 'Yearly'} Subscription`,
         handler: async (response: any) => {
           console.log('💳 Payment successful:', response);

@@ -309,7 +309,7 @@ export default function HomePage() {
         key: process.env.REACT_APP_RAZORPAY_KEY_ID,
         amount: amount,
         currency: selectedPlan.price.currency.toUpperCase(), // Use currency from location-based plan
-        name: 'AuraAI Astrology',
+        name: 'Vidhi Astrology',
         description: `${planType === 'monthly' ? 'Monthly' : 'Yearly'} Subscription`,
         handler: async (response: any) => {
           console.log('💳 Payment successful:', response);
