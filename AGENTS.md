@@ -96,8 +96,6 @@ treat all keys in it as secrets, referenced by name only.
 
 ## Known Issues / Tech Debt
 
-- `supabase/functions/create-ultravox-call/index.ts` has a hardcoded Ultravox API key instead
-  of reading from `Deno.env`. Flag this if touching that function; don't propagate the pattern.
 - Dasha dates from the VedicAstro API are `DD/MM/YYYY`, not ISO — parse explicitly
   (`date.split('/').map(Number)`, remember JS months are 0-indexed).
 
