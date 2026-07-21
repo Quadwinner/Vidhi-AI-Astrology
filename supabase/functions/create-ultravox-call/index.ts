@@ -212,6 +212,14 @@ Deno.serve(async (req) => {
       `गलत (कभी प्रयोग न करें): "सुन रही हूं", "बताती हूं", "देखी", "कर चुकी हूं", "समझाती हूं"। ` +
       `हर वाक्य में इस नियम का कड़ाई से पालन करें।`;
 
+    // Pin the exact opening line. The model was starting with an awkward
+    // fragment ("नमस्ते... और विधि में आपका स्वागत है") that begins with a stray
+    // "और" (and). Force a clean greeting and forbid the leading "और".
+    systemPrompt += `\n\n# शुरुआत — पहला वाक्य (अत्यंत महत्वपूर्ण):\n` +
+      `कॉल शुरू होते ही सबसे पहला वाक्य बिल्कुल यही बोलें: "नमस्ते! विधि में आपका स्वागत है।" ` +
+      `इसके बाद ही आगे बात करें। ` +
+      `कभी भी वाक्य की शुरुआत "और" से न करें, और "नमस्ते" के तुरंत बाद "और" शब्द का प्रयोग बिल्कुल न करें।`;
+
     // Reuse the same Hindi voice the "shubham" agent used, so audio is identical.
     // Override via the ULTRAVOX_VOICE_ID secret or request `voice` if desired.
     const voiceId = voice || Deno.env.get('ULTRAVOX_VOICE_ID') || '04c88e17-9267-4e4f-9708-40dfe73b79b4';
