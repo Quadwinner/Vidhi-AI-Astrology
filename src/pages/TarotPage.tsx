@@ -47,9 +47,10 @@ export default function TarotPage() {
   const [insufficient, setInsufficient] = useState(false);
   const [result, setResult] = useState<{ type: ReadingType; data: TarotResponse | string } | null>(null);
   const [freeRemaining, setFreeRemaining] = useState<number | null>(null);
+  const [freeLimit, setFreeLimit] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!user?.id || !isPremium) { setFreeRemaining(null); return; }
+    if (!user?.id || !isPremium) { setFreeRemaining(null); setFreeLimit(null); return; }
     let cancelled = false;
     (async () => {
       const [{ data: usr }, { data: setting }] = await Promise.all([
@@ -59,6 +60,7 @@ export default function TarotPage() {
       if (cancelled) return;
       const limit = Number.parseInt(setting?.value ?? '', 10) || 50;
       const used = usr?.tarot_free_draws_used ?? 0;
+      setFreeLimit(limit);
       setFreeRemaining(Math.max(0, limit - used));
     })();
     return () => { cancelled = true; };
@@ -82,7 +84,10 @@ export default function TarotPage() {
       const meta: DrawMeta | undefined = data.meta;
       if (meta) {
         if (typeof meta.wallet_balance === 'number') updateWalletBalance(meta.wallet_balance);
-        if (meta.is_premium) setFreeRemaining(meta.free_draws_remaining);
+        if (meta.is_premium) {
+          if (typeof meta.free_draws_remaining === 'number') setFreeRemaining(meta.free_draws_remaining);
+          if (typeof meta.free_draws_limit === 'number') setFreeLimit(meta.free_draws_limit);
+        }
       }
     } catch {
       setError('The cards are resting right now. Please try again in a moment.');
@@ -110,10 +115,14 @@ export default function TarotPage() {
               freeRemaining !== null && freeRemaining <= 0 ? (
                 <span>You&rsquo;ve used all your free draws. Each draw now costs {priceLabel || '—'}.</span>
               ) : (
-                <span><b>Premium</b> · {freeRemaining !== null ? `${freeRemaining} free draws left` : 'Free draws included'}</span>
+                <span>
+                  <b>Premium</b> · {freeRemaining !== null && freeLimit !== null
+                    ? `${freeRemaining} of ${freeLimit} free draws left`
+                    : 'Free draws included'}
+                </span>
               )
             ) : (
-              <span>Each tarot draw costs <b>{priceLabel || '…'}</b>. Go Premium for 50 free draws.</span>
+              <span>Each tarot draw costs <b>{priceLabel || '…'}</b>. Go Premium for free draws.</span>
             )}
           </div>
         </header>
