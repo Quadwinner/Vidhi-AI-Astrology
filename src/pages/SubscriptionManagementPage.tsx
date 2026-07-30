@@ -9,7 +9,7 @@ import {
   IconUser,
   IconWallet,
 } from '@tabler/icons-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePricing } from '../context/PricingContext';
@@ -23,6 +23,8 @@ type PlanCounters = {
   talk_minutes_used: number;
   cycle_start: string;
   cycle_end: string;
+  questions_per_month: number;
+  ai_call_talk_minutes: number;
 };
 
 const PLAN_META = {
@@ -87,6 +89,21 @@ export default function SubscriptionManagementPage() {
   const isActive = subscriptionStatus === 'active';
   const isCancelled = subscriptionStatus === 'cancelled' || subscriptionStatus === 'canceled';
 
+  const fetchCounters = useCallback(async () => {
+    if (!user?.id) return;
+    const { data, error } = await supabase.rpc('get_current_cycle_counters', { p_user_id: user.id });
+    if (error || !data?.[0]) return;
+    const row = data[0];
+    setCounters({
+      questions_used: row.questions_used ?? 0,
+      talk_minutes_used: row.talk_minutes_used ?? 0,
+      cycle_start: row.cycle_start,
+      cycle_end: row.cycle_end,
+      questions_per_month: row.questions_per_month ?? 0,
+      ai_call_talk_minutes: row.ai_call_talk_minutes ?? 0,
+    });
+  }, [user?.id]);
+
   useEffect(() => {
     if (!user?.id) return;
 
@@ -95,19 +112,22 @@ export default function SubscriptionManagementPage() {
       subscription_status: subscriptionStatus,
     });
 
-    (async () => {
-      const { data } = await supabase
-        .from('user_plan_counters')
-        .select('questions_used, talk_minutes_used, cycle_start, cycle_end')
-        .eq('user_id', user.id)
-        .gte('cycle_end', new Date().toISOString().slice(0, 10))
-        .order('cycle_start', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+    fetchCounters();
 
-      if (data) setCounters(data);
-    })();
-  }, [user?.id, tier, subscriptionStatus]);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') fetchCounters();
+    };
+
+    window.addEventListener('focus', fetchCounters);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('focus', fetchCounters);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [user?.id, tier, subscriptionStatus, fetchCounters]);
+
+  const questionsLimit = counters?.questions_per_month || meta.questionsLimit;
+  const minutesLimit = counters?.ai_call_talk_minutes || meta.minutesLimit;
 
   const statusLabel = useMemo(() => {
     if (isCancelled && isPremium) return 'Cancels soon';
@@ -243,19 +263,23 @@ export default function SubscriptionManagementPage() {
           <div className={styles.usagePanel}>
             <span className={styles.step}>02 — Usage</span>
             <h2 className={styles.panelTitle}>This cycle</h2>
-            <p className={styles.panelSub}>Monthly allowances reset at the end of each billing cycle.</p>
+            <p className={styles.panelSub}>
+              {tier === 'yearly'
+                ? 'Allowances for your current annual billing cycle.'
+                : 'Monthly allowances reset at the end of each billing cycle.'}
+            </p>
 
             {isPremium ? (
               <>
                 <div className={styles.usageBar}>
                   <div className={styles.usageLabel}>
                     <span><IconMessage size={15} style={{ verticalAlign: -3, marginRight: 6 }} />Questions</span>
-                    <span>{counters?.questions_used ?? 0} / {meta.questionsLimit}</span>
+                    <span>{counters?.questions_used ?? 0} / {questionsLimit}</span>
                   </div>
                   <div className={styles.usageTrack}>
                     <div
                       className={styles.usageFill}
-                      style={{ width: `${usagePercent(counters?.questions_used ?? 0, meta.questionsLimit)}%` }}
+                      style={{ width: `${usagePercent(counters?.questions_used ?? 0, questionsLimit)}%` }}
                     />
                   </div>
                 </div>
@@ -263,12 +287,12 @@ export default function SubscriptionManagementPage() {
                 <div className={styles.usageBar}>
                   <div className={styles.usageLabel}>
                     <span><IconPhone size={15} style={{ verticalAlign: -3, marginRight: 6 }} />Call minutes</span>
-                    <span>{counters?.talk_minutes_used ?? 0} / {meta.minutesLimit}</span>
+                    <span>{counters?.talk_minutes_used ?? 0} / {minutesLimit}</span>
                   </div>
                   <div className={styles.usageTrack}>
                     <div
                       className={styles.usageFill}
-                      style={{ width: `${usagePercent(counters?.talk_minutes_used ?? 0, meta.minutesLimit)}%` }}
+                      style={{ width: `${usagePercent(counters?.talk_minutes_used ?? 0, minutesLimit)}%` }}
                     />
                   </div>
                 </div>
