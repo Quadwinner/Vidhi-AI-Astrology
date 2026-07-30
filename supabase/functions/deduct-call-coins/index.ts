@@ -125,7 +125,18 @@ async function handler(req: Request): Promise<Response> {
     console.log('[deduct-call-coins] Current wallet balance:', userData.wallet_balance);
 
     const variantName = userData.pricing_variant || 'control';
-    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'voice_call_minute', 1, variantName);
+    const { shouldChargeWalletForCallMinute } = await import('../_shared/monetize.ts');
+    const billing = await shouldChargeWalletForCallMinute(supabaseAdmin, user.id, duration_seconds);
+
+    let deduction = {
+      success: true,
+      deducted: 0,
+      newBalance: userData.wallet_balance || 0,
+    };
+
+    if (billing.charge) {
+      deduction = await processWalletDeduction(supabaseAdmin, user.id, 'voice_call_minute', 1, variantName);
+    }
 
     if (!deduction.success) {
       console.log('[deduct-call-coins] Insufficient funds, ending call');
@@ -164,7 +175,16 @@ async function handler(req: Request): Promise<Response> {
 
     // Check if user can afford the NEXT minute to give a warning
     // We do a "Dry Run" check logic here
-    const nextMinuteCheck = deduction.newBalance < deduction.deducted;
+    const nextMinuteBilling = await shouldChargeWalletForCallMinute(
+      supabaseAdmin,
+      user.id,
+      duration_seconds + 60
+    );
+    let nextMinuteCheck = false;
+    if (nextMinuteBilling.charge) {
+      const nextCost = await getCallMinuteCost(supabaseAdmin, user.id, variantName);
+      nextMinuteCheck = deduction.newBalance < nextCost;
+    }
 
     return new Response(
       JSON.stringify({
@@ -196,6 +216,29 @@ async function handler(req: Request): Promise<Response> {
  * 2. Looks up the price for the specific service (SKU) in that currency.
  * 3. Deducts the amount if sufficient funds exist.
  */
+async function getCallMinuteCost(
+  supabaseAdmin: any,
+  userId: string,
+  variantName: string,
+): Promise<number> {
+  const { data: user } = await supabaseAdmin
+    .from('users')
+    .select('currency_code')
+    .eq('id', userId)
+    .single();
+
+  const currency = user?.currency_code || 'USD';
+  const { data: priceData } = await supabaseAdmin
+    .from('service_prices')
+    .select('price_amount')
+    .eq('service_key', 'voice_call_minute')
+    .eq('currency_code', currency)
+    .eq('variant_name', variantName)
+    .maybeSingle();
+
+  return priceData?.price_amount || 0;
+}
+
 async function processWalletDeduction(
   supabaseAdmin: any,
   userId: string,

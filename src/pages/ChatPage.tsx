@@ -266,6 +266,7 @@ export default function ChatPage() {
   const {
     user,
     planTier,
+    subscriptionStatus,
     walletBalance,
     updateWalletBalance,
     fetchWalletBalanceFromDB,
@@ -332,12 +333,28 @@ export default function ChatPage() {
   const inputContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [pendingQuestion, setPendingQuestion] = useState<string>('');
+  const [questionsRemaining, setQuestionsRemaining] = useState<number | null>(null);
 
-  // Derived Constants
+  const refreshCycleCounters = useCallback(async () => {
+    if (!user) return;
+    try {
+      const { data, error } = await supabase.rpc('get_current_cycle_counters', { p_user_id: user.id });
+      if (!error && data && data.length > 0) {
+        setQuestionsRemaining(data[0].questions_remaining ?? 0);
+      }
+    } catch {
+    }
+  }, [user]);
+
+  useEffect(() => {
+    refreshCycleCounters();
+  }, [refreshCycleCounters]);
+
   const isPremiumUser = planTier === 'monthly' || planTier === 'yearly';
+  const hasSubscriptionQuestions = isPremiumUser && subscriptionStatus === 'active' && (questionsRemaining ?? 0) > 0;
   const isCallFeatureEnabled = true;
   const hasPriorUserMessages = chatHistory.some(m => m.role === 'user');
-  const isOutOfFunds = hasPriorUserMessages && walletBalance !== null && walletBalance < questionCost;
+  const isOutOfFunds = !hasSubscriptionQuestions && hasPriorUserMessages && walletBalance !== null && walletBalance < questionCost;
 
   const [isCompatibilityEnabled, setIsCompatibilityEnabled] = useState(false);
 
@@ -790,11 +807,13 @@ export default function ChatPage() {
     category?: string,
     subCategory?: string,
     originalQuestion?: string,
-    isFirstFreeQuestion = false
+    isFirstFreeQuestion = false,
+    useSubscriptionAllowance = false
   ) => {
     const previousBalance = walletBalance;
+    const shouldChargeWallet = !isFirstFreeQuestion && !useSubscriptionAllowance;
 
-    if (!isFirstFreeQuestion && walletBalance !== null && questionCost > 0) {
+    if (shouldChargeWallet && walletBalance !== null && questionCost > 0) {
       // Safety: Never show negative balance on UI even if logic slips through
       const newBalance = Math.max(0, walletBalance - questionCost);
       updateWalletBalance(newBalance);
@@ -830,6 +849,7 @@ export default function ChatPage() {
 
       await processStreamedResponse(response, typingIndicatorId);
       await fetchWalletBalanceFromDB();
+      await refreshCycleCounters();
     } catch (err) {
       // Refund on Network Error
       if (previousBalance !== null) updateWalletBalance(previousBalance);
@@ -844,7 +864,8 @@ export default function ChatPage() {
     accessToken: string,
     questionText: string,
     partnerId?: string,
-    isFirstFreeQuestion = false
+    isFirstFreeQuestion = false,
+    useSubscriptionAllowance = false
   ) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/functions/v1/get-compatibility-report`, {
@@ -895,13 +916,15 @@ export default function ChatPage() {
 
       // 3. Update Balance (Visual)
       const previousBalance = walletBalance;
-      if (!isFirstFreeQuestion && walletBalance !== null && questionCost > 0) {
+      const shouldChargeWallet = !isFirstFreeQuestion && !useSubscriptionAllowance;
+      if (shouldChargeWallet && walletBalance !== null && questionCost > 0) {
         updateWalletBalance(walletBalance - questionCost);
       }
 
       // 4. Stream Response
       await processStreamedResponse(response, typingIndicatorId);
       await fetchWalletBalanceFromDB();
+      await refreshCycleCounters();
 
       // 5. Update Follow-up Context
       setConversationContext({
@@ -1152,6 +1175,7 @@ export default function ChatPage() {
     setIsReplying(true);
 
     const isFirstFreeQuestion = !chatHistory.some(m => m.role === 'user');
+    const useSubscriptionAllowance = hasSubscriptionQuestions;
 
     // 1. Optimistic UI Update
     const typingId = `typing_${Date.now()}`;
@@ -1184,9 +1208,9 @@ export default function ChatPage() {
 
       if (!isCompatibilityEnabled) {
         // --- CASE A: FEATURE DISABLED -> DIRECT GENERAL CHAT ---
-        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
+        if (!isFirstFreeQuestion && !useSubscriptionAllowance && isOutOfFunds) { handleLowBalance(); return; }
 
-        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion);
+        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion, useSubscriptionAllowance);
         return; // STOP HERE
       }
 
@@ -1226,8 +1250,8 @@ export default function ChatPage() {
 
       // ROUTE 1: STICKY CONTEXT (Active Partner)
       if (currentPartner && isRelationshipContext) {
-        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
-        await handleCompatibilityCheck(currentPartner.name, typingId, session.access_token, questionText, currentPartner.id, isFirstFreeQuestion);
+        if (!isFirstFreeQuestion && !useSubscriptionAllowance && isOutOfFunds) { handleLowBalance(); return; }
+        await handleCompatibilityCheck(currentPartner.name, typingId, session.access_token, questionText, currentPartner.id, isFirstFreeQuestion, useSubscriptionAllowance);
       }
 
       // ROUTE 2: NEW INQUIRY — only when the user actually references a specific
@@ -1267,9 +1291,9 @@ export default function ChatPage() {
           CRITICAL INSTRUCTION: Do NOT mention that you need partner details. Do NOT ask for birth data. The user will see a form to enter it immediately after this message. Just answer the user's side of the equation.`;
 
         try {
-          await handleGeneralChat(teaserContext, typingId, session.access_token, detectedCategory, detectedSubCategory, questionText, isFirstFreeQuestion);
+          await handleGeneralChat(teaserContext, typingId, session.access_token, detectedCategory, detectedSubCategory, questionText, isFirstFreeQuestion, useSubscriptionAllowance);
         } catch (e) {
-          if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
+          if (!isFirstFreeQuestion && !useSubscriptionAllowance && isOutOfFunds) { handleLowBalance(); return; }
         }
 
         // C. SHOW FORM WIDGET
@@ -1300,8 +1324,8 @@ export default function ChatPage() {
 
       // ROUTE 3: GENERAL CHAT
       else {
-        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
-        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion);
+        if (!isFirstFreeQuestion && !useSubscriptionAllowance && isOutOfFunds) { handleLowBalance(); return; }
+        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion, useSubscriptionAllowance);
       }
 
     } catch (err: any) {

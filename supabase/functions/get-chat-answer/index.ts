@@ -288,10 +288,10 @@ async function handler(req: Request) {
     });
   }
 
-  const { isProfileFirstQuestion } = await import('../_shared/monetize.ts');
-  const firstQuestionFree = await isProfileFirstQuestion(supabaseAdmin, profile_id);
+  const { shouldChargeWalletForChat } = await import('../_shared/monetize.ts');
+  const billing = await shouldChargeWalletForChat(supabaseAdmin, user.id, profile_id);
 
-  if (!firstQuestionFree) {
+  if (billing.charge) {
     const deduction = await processWalletDeduction(
       supabaseAdmin,
       user.id,

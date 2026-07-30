@@ -114,6 +114,104 @@ export async function isProfileFirstQuestion(admin: any, profileId: string): Pro
   return (count ?? 0) === 0;
 }
 
+export interface CycleAllowance {
+  planTier: string;
+  questionsUsed: number;
+  talkMinutesUsed: number;
+  questionsRemaining: number;
+  talkMinutesRemaining: number;
+  questionsPerMonth: number;
+  aiCallTalkMinutes: number;
+}
+
+export function hasActiveSubscription(planTier: string | null | undefined, subscriptionStatus: string | null | undefined): boolean {
+  const tier = (planTier || 'free').toLowerCase();
+  return (tier === 'monthly' || tier === 'yearly') && subscriptionStatus === 'active';
+}
+
+export async function getCycleAllowance(admin: any, userId: string): Promise<CycleAllowance | null> {
+  const { data, error } = await admin.rpc('get_current_cycle_counters', { p_user_id: userId });
+  if (error || !data || data.length === 0) {
+    console.error('[monetize] Failed to fetch cycle counters:', error);
+    return null;
+  }
+
+  const row = data[0];
+  return {
+    planTier: row.plan_tier || 'free',
+    questionsUsed: row.questions_used ?? 0,
+    talkMinutesUsed: row.talk_minutes_used ?? 0,
+    questionsRemaining: row.questions_remaining ?? 0,
+    talkMinutesRemaining: row.talk_minutes_remaining ?? 0,
+    questionsPerMonth: row.questions_per_month ?? 0,
+    aiCallTalkMinutes: row.ai_call_talk_minutes ?? 0,
+  };
+}
+
+export async function shouldChargeWalletForChat(
+  admin: any,
+  userId: string,
+  profileId: string,
+): Promise<{ charge: boolean; reason: string }> {
+  if (await isProfileFirstQuestion(admin, profileId)) {
+    return { charge: false, reason: 'first_question' };
+  }
+
+  const { data: user, error } = await admin
+    .from('users')
+    .select('plan_tier, subscription_status')
+    .eq('id', userId)
+    .single();
+
+  if (error || !user) {
+    return { charge: true, reason: 'user_not_found' };
+  }
+
+  if (!hasActiveSubscription(user.plan_tier, user.subscription_status)) {
+    return { charge: true, reason: 'free_tier' };
+  }
+
+  const allowance = await getCycleAllowance(admin, userId);
+  if (allowance && allowance.questionsRemaining > 0) {
+    return { charge: false, reason: 'subscription_allowance' };
+  }
+
+  return { charge: true, reason: 'allowance_exhausted' };
+}
+
+export async function shouldChargeWalletForCallMinute(
+  admin: any,
+  userId: string,
+  durationSeconds: number,
+): Promise<{ charge: boolean; reason: string }> {
+  const { data: user, error } = await admin
+    .from('users')
+    .select('plan_tier, subscription_status')
+    .eq('id', userId)
+    .single();
+
+  if (error || !user) {
+    return { charge: true, reason: 'user_not_found' };
+  }
+
+  if (!hasActiveSubscription(user.plan_tier, user.subscription_status)) {
+    return { charge: true, reason: 'free_tier' };
+  }
+
+  const allowance = await getCycleAllowance(admin, userId);
+  if (!allowance) {
+    return { charge: true, reason: 'allowance_lookup_failed' };
+  }
+
+  const minutesInCurrentCall = Math.floor(durationSeconds / 60);
+  const effectiveRemaining = allowance.talkMinutesRemaining - minutesInCurrentCall;
+  if (effectiveRemaining > 0) {
+    return { charge: false, reason: 'subscription_allowance' };
+  }
+
+  return { charge: true, reason: 'allowance_exhausted' };
+}
+
 export async function getUserFromAuth(admin: any, req: Request) {
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) return { user: null, error: 'Missing Authorization header' };
