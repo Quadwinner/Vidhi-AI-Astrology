@@ -101,6 +101,19 @@ export async function commitGate(
   };
 }
 
+export async function isProfileFirstQuestion(admin: any, profileId: string): Promise<boolean> {
+  const { count, error } = await admin
+    .from('chat_history')
+    .select('id', { count: 'exact', head: true })
+    .eq('profile_id', profileId)
+    .eq('role', 'user');
+  if (error) {
+    console.error('[monetize] Failed to check first question:', error);
+    return false;
+  }
+  return (count ?? 0) === 0;
+}
+
 export async function getUserFromAuth(admin: any, req: Request) {
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) return { user: null, error: 'Missing Authorization header' };

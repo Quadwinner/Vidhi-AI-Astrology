@@ -131,10 +131,9 @@ const CustomAgoraCallScreen: React.FC<CustomAgoraCallScreenProps> = ({ profile, 
 
                 if (error) throw new Error(error.message);
 
-                // C. SYNC (Correct drift)
-                // The backend returns 'coin_balance' (legacy name, but contains wallet money)
-                if (data.success && data.coin_balance !== undefined) {
-                  updateWalletBalance(data.coin_balance);
+                const balance = data.wallet_balance ?? data.coin_balance;
+                if (data.success && balance !== undefined) {
+                  updateWalletBalance(balance);
                 }
 
                 // D. SILENT REFRESH (Ensure DB sync)

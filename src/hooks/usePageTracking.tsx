@@ -12,7 +12,8 @@ const pageNameMapping: { [key: string]: string } = {
   '/profiles': 'Profile Dashboard',
   '/profiles/new': 'Create Profile',
   '/account': 'Account',
-  '/subscription-management': 'Subscription Management',
+  '/subscription-management': 'Membership Management',
+  '/manage-membership': 'Membership Management',
   '/chat': 'Chat',
 };
 

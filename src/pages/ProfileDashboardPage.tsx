@@ -173,7 +173,7 @@ export default function ProfileDashboardPage() {
               <p className={styles.sidePath}>Vedic path • {tierLabel}</p>
             </div>
           </div>
-          <button className={styles.upgradeBtn} onClick={() => navigate('/quick-recharge')}>
+          <button className={styles.upgradeBtn} onClick={() => navigate(isPremium ? '/subscription-management' : '/quick-recharge')}>
             <IconStars size={18} /><span>{isPremium ? 'Manage membership' : 'Upgrade tier'}</span>
           </button>
         </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLoadScript } from '../hooks/useLoadScript';
 import { supabase } from '../supabaseClient';
+import { activateSubscriptionAfterPayment } from '../utils/activateSubscription';
 import SubscriptionSection from '../components/SubscriptionSection';
 import '../styles/aura-home.css';
 import './QuickRechargePage.css';
@@ -77,25 +78,15 @@ export default function QuickRechargePage() {
         description: `${planType === 'monthly' ? 'Monthly' : 'Yearly'} Subscription`,
         handler: async (response: any) => {
           try {
-            const { data: existingUser } = await supabase.from('users').select('coin_balance').eq('id', user.id).single();
-            const coinsToAdd = selectedPlan.entitlements?.coins_granted_on_subscription || 0;
-            const newCoinBalance = (existingUser?.coin_balance || 0) + coinsToAdd;
-
-            const { error: upsertError } = await supabase.from('users').upsert({
-              id: user.id,
-              email: user.email,
-              plan_tier: planType,
-              subscription_status: 'active',
-              subscription_start_date: new Date().toISOString(),
-              subscription_end_date: new Date(Date.now() + (planType === 'monthly' ? 30 : 365) * 24 * 60 * 60 * 1000).toISOString(),
-              coin_balance: newCoinBalance,
-            }, { onConflict: 'id' });
-
-            if (upsertError) { alert('Payment successful but subscription update failed: ' + upsertError.message); return; }
+            await activateSubscriptionAfterPayment({
+              razorpayPaymentId: response.razorpay_payment_id,
+              priceId,
+              planType,
+            });
             await refreshUserStatus();
             navigate('/payment-success');
           } catch (err: any) {
-            alert('Payment successful but there was an error: ' + err.message);
+            alert('Payment successful but subscription update failed: ' + err.message);
           }
         },
         prefill: { email: user.email, name: user.user_metadata?.full_name || user.email?.split('@')[0] },

@@ -110,7 +110,7 @@ async function handler(req: Request): Promise<Response> {
     // Fetch current coin balance and plan info
     const { data: userData, error: userError } = await supabaseAdmin
       .from('users')
-      .select('coin_balance, plan_tier, subscription_start_date')
+      .select('wallet_balance, pricing_variant, plan_tier, subscription_start_date')
       .eq('id', user.id)
       .single();
 
@@ -122,12 +122,10 @@ async function handler(req: Request): Promise<Response> {
       );
     }
 
-    console.log('[deduct-call-coins] Current balance:', userData.coin_balance);
+    console.log('[deduct-call-coins] Current wallet balance:', userData.wallet_balance);
 
-    // --- NEW WALLET DEDUCTION LOGIC ---
-    
-    // Attempt to deduct for 1 minute of 'voice_call_minute'
-    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'voice_call_minute', 1);
+    const variantName = userData.pricing_variant || 'control';
+    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'voice_call_minute', 1, variantName);
 
     if (!deduction.success) {
       console.log('[deduct-call-coins] Insufficient funds, ending call');
@@ -172,7 +170,8 @@ async function handler(req: Request): Promise<Response> {
       JSON.stringify({
         success: true,
         should_end_call: nextMinuteCheck,
-        coin_balance: deduction.newBalance, // Returns wallet balance in minor units
+        wallet_balance: deduction.newBalance,
+        coin_balance: deduction.newBalance,
         coins_deducted: newTotalDeducted,
         message: 'Deduction successful'
       }),
@@ -198,12 +197,12 @@ async function handler(req: Request): Promise<Response> {
  * 3. Deducts the amount if sufficient funds exist.
  */
 async function processWalletDeduction(
-  supabaseAdmin: any, 
-  userId: string, 
-  serviceKey: string, 
-  quantity: number = 1
+  supabaseAdmin: any,
+  userId: string,
+  serviceKey: string,
+  quantity: number = 1,
+  variantName: string = 'control'
 ) {
-  // 1. Get User's Currency & Balance
   const { data: user, error: userError } = await supabaseAdmin
     .from('users')
     .select('currency_code, wallet_balance')
@@ -211,29 +210,23 @@ async function processWalletDeduction(
     .single();
 
   if (userError || !user) throw new Error(`User fetch failed: ${userError?.message}`);
-  
-  // Default to USD if migration failed
-  const currency = user.currency_code || 'USD'; 
+
+  const currency = user.currency_code || 'USD';
   const currentBalance = user.wallet_balance || 0;
 
-  // 2. Get Price for this Service + Currency.
-  // Tolerant of duplicate rows: take the first match instead of .single()
-  // (which errors when multiple rows exist for the same service/currency).
-  const { data: priceRows, error: priceError } = await supabaseAdmin
+  const { data: priceData, error: priceError } = await supabaseAdmin
     .from('service_prices')
     .select('price_amount')
     .eq('service_key', serviceKey)
     .eq('currency_code', currency)
-    .order('price_amount', { ascending: true })
-    .limit(1);
+    .eq('variant_name', variantName)
+    .single();
 
-  if (priceError || !priceRows || priceRows.length === 0) {
-    // Fallback/Safety: If price is missing, block usage or assume free? 
-    // Blocking is safer for business.
-    throw new Error(`Price configuration missing for ${serviceKey} in ${currency}`);
+  if (priceError || !priceData) {
+    throw new Error(`Price configuration missing for ${serviceKey} in ${currency} (variant ${variantName})`);
   }
 
-  const costPerUnit = priceRows[0].price_amount;
+  const costPerUnit = priceData.price_amount;
   const totalCost = costPerUnit * quantity;
 
   // 3. Balance Check

@@ -1,104 +1,42 @@
 import React, { useMemo, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { usePricing } from '../context/PricingContext';
 import WalletRecharge from '../components/WalletRecharge';
 import NotificationPreferences from '../components/NotificationPreferences';
 
 type TabType = 'subscription' | 'wallet';
 
 export default function AccountPage() {
-  const { user, planTier, subscriptionStatus, currentPeriodEnd, coinBalance } = useAuth();
+  const { user, planTier, subscriptionStatus, currentPeriodEnd, walletBalance } = useAuth();
+  const { formatPrice } = usePricing();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [coinsToBuy, setCoinsToBuy] = useState<number>(10);
   const [activeTab, setActiveTab] = useState<TabType>('wallet');
 
   const isPremium = useMemo(() => planTier === 'monthly' || planTier === 'yearly', [planTier]);
 
   const handleOpenPortal = async () => {
-    setIsLoading(true); setError(null); setSuccess(null);
+    setIsLoading(true);
+    setError(null);
     try {
-      const { data, error } = await supabase.functions.invoke('create-customer-portal-session');
-      if (error) throw new Error(error.message || 'Failed to create portal session');
-      if (data && (data as any).error) throw new Error((data as any).error);
-
-      // Navigate to subscription management page directly
       navigate('/subscription-management');
     } catch (e: any) {
-      setError(e.message || 'Failed to open portal');
-    } finally { setIsLoading(false); }
-  };
-
-  const handleBuyCoins = async () => {
-    setIsLoading(true); setError(null); setSuccess(null);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-topup-session', { body: { coins: coinsToBuy } });
-      if (error) throw new Error(error.message || 'Failed to create top-up session');
-      
-      if (data?.gateway === 'stripe' && data?.url) {
-        window.location.href = data.url;
-        return;
-      }
-      
-      if (data?.gateway === 'razorpay' && data?.order) {
-        // Initialize Razorpay Checkout
-        const options = {
-          key: data.key_id || 'rzp_test_RIdOOohLUUFJhr',
-          amount: data.order.amount,
-          currency: data.order.currency,
-          name: 'Vidhi Coin Top-up',
-          description: `${coinsToBuy} coins`,
-          order_id: data.order.id,
-          handler: function(response: any) {
-            setSuccess(`Payment successful! ${coinsToBuy} coins will be added to your account shortly.`);
-            // Refresh coin balance after successful payment
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
-          },
-          prefill: {
-            email: user?.email,
-          },
-          theme: {
-            color: '#007acc'
-          }
-        };
-        
-        // Load Razorpay script if not already loaded
-        if (!(window as any).Razorpay) {
-          const script = document.createElement('script');
-          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-          script.onload = () => {
-            const razorpay = new (window as any).Razorpay(options);
-            razorpay.open();
-          };
-          document.body.appendChild(script);
-        } else {
-          const razorpay = new (window as any).Razorpay(options);
-          razorpay.open();
-        }
-        return;
-      }
-      
-      throw new Error('Invalid payment gateway response');
-    } catch (e: any) {
-      setError(e.message || 'Failed to initiate top-up');
-    } finally { setIsLoading(false); }
+      setError(e.message || 'Failed to open membership page');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const disabled = isLoading || !user;
 
-  // If user is viewing wallet tab, show the WalletRecharge component
   if (activeTab === 'wallet' && user) {
     return <WalletRecharge />;
   }
 
   return (
     <div style={{ maxWidth: 720, margin: '40px auto', padding: '0 16px' }}>
-      {/* Tab Navigation */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 24, borderBottom: '2px solid #333' }}>
         <button
           onClick={() => setActiveTab('subscription')}
@@ -111,7 +49,6 @@ export default function AccountPage() {
             fontWeight: activeTab === 'subscription' ? 'bold' : 'normal',
             cursor: 'pointer',
             fontSize: '16px',
-            transition: 'all 0.3s ease'
           }}
         >
           Subscription
@@ -127,7 +64,6 @@ export default function AccountPage() {
             fontWeight: activeTab === 'wallet' ? 'bold' : 'normal',
             cursor: 'pointer',
             fontSize: '16px',
-            transition: 'all 0.3s ease'
           }}
         >
           Wallet
@@ -148,37 +84,26 @@ export default function AccountPage() {
             </p>
             {isPremium ? (
               <button onClick={handleOpenPortal} disabled={disabled} style={{ padding: '8px 12px' }}>
-                Manage Subscription
+                Manage membership
               </button>
             ) : (
-              <button onClick={() => { window.location.href = '/#pricing'; }} disabled={disabled} style={{ padding: '8px 12px' }}>
-                Start Subscription
+              <button onClick={() => navigate('/quick-recharge')} disabled={disabled} style={{ padding: '8px 12px' }}>
+                Upgrade membership
               </button>
             )}
           </section>
 
-          {/* ------ COIN RECHARGE SECTION, UPDATED FOR FIGMA-STYLE ------ */}
-          <section className="account-coin-section">
-            <h3 className="recharge-title">Wallet</h3>
-            <div className="coin-balance-display">
-              <span className="coin-card-icon" style={{ width: 28, height: 28 }}></span>
-              <span className="coin-balance-text">Current Balance: {coinBalance ?? 0} coins</span>
-            </div>
-            <div className="coin-card-list">
-              {[10, 15, 50, 100].map(amount => (
-                <button
-                  key={amount}
-                  onClick={() => setCoinsToBuy(amount)}
-                  className={`coin-card${coinsToBuy === amount ? ' selected' : ''}`}
-                  disabled={disabled}
-                >
-                  <div className="coin-card-amount">{amount}</div>
-                  <span className="coin-card-icon" />
-                  <span className="coin-card-label">coins</span>
-                </button>
-              ))}
-            </div>
-            <button className="buy-coins-btn" onClick={handleBuyCoins} disabled={disabled}>Checkout – {coinsToBuy} coins</button>
+          <section style={{ border: '1px solid #333', borderRadius: 8, padding: 16 }}>
+            <h3>Wallet</h3>
+            <p style={{ marginBottom: 12 }}>
+              Balance: <strong>{walletBalance != null ? formatPrice(walletBalance) : '...'}</strong>
+            </p>
+            <p style={{ fontSize: 14, color: '#ccc', marginBottom: 12 }}>
+              All chat, calls, and reports are charged from your wallet balance.
+            </p>
+            <button onClick={() => setActiveTab('wallet')} disabled={disabled} style={{ padding: '8px 12px' }}>
+              Recharge wallet
+            </button>
           </section>
 
           <section style={{ border: '1px solid #333', borderRadius: 8, padding: 16 }}>
@@ -190,11 +115,8 @@ export default function AccountPage() {
           </section>
 
           {error && <p style={{ color: '#FF6B6B' }}>{error}</p>}
-          {success && <p style={{ color: '#66FF99' }}>{success}</p>}
         </div>
       )}
     </div>
   );
 }
-
-

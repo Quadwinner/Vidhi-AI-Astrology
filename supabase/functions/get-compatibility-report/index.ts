@@ -130,9 +130,14 @@ async function handler(req: Request) {
     }
 
     // --- 2. WALLET DEDUCTION ---
-    const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'chat_message', 1, monetization_variant || 'control');
-    if (!deduction.success) {
+    const { isProfileFirstQuestion } = await import('../_shared/monetize.ts');
+    const firstQuestionFree = await isProfileFirstQuestion(supabaseAdmin, profile_id);
+
+    if (!firstQuestionFree) {
+      const deduction = await processWalletDeduction(supabaseAdmin, user.id, 'chat_message', 1, monetization_variant || 'control');
+      if (!deduction.success) {
         return new Response(JSON.stringify({ error: "Insufficient funds" }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
     }
 
     // --- 3. FETCH USER & PARTNER CHARTS ---

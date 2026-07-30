@@ -59,6 +59,9 @@ verify_jwt = false
 [functions.create-topup-session]
 verify_jwt = false
 
+[functions.activate-subscription]
+verify_jwt = true
+
 [functions.admin-operations]
 verify_jwt = false
 

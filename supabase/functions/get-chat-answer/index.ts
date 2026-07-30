@@ -238,61 +238,90 @@ async function calculateAndStoreCost(
 
 // --- MAIN HANDLER FUNCTION ---
 async function handler(req: Request) {
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  let requestBody: Record<string, unknown>;
+  try {
+    requestBody = await req.json();
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const profile_id = requestBody.profile_id as string | undefined;
+  const question_text = requestBody.question_text as string | undefined;
+  const original_question = requestBody.original_question as string | undefined;
+  const client_date = requestBody.client_date as string | undefined;
+  const monetization_variant = requestBody.monetization_variant as string | undefined;
+  const category = requestBody.category as string | undefined;
+  const sub_category = requestBody.sub_category as string | undefined;
+
+  if (!profile_id || !question_text || !client_date) {
+    return new Response(JSON.stringify({ error: 'Missing critical parameters' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: 'Missing Authorization header' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    Deno.env.get('SUPABASE_ANON_KEY')!,
+    { global: { headers: { Authorization: authHeader } } }
+  );
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return new Response(JSON.stringify({ error: 'Authentication failed' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const { isProfileFirstQuestion } = await import('../_shared/monetize.ts');
+  const firstQuestionFree = await isProfileFirstQuestion(supabaseAdmin, profile_id);
+
+  if (!firstQuestionFree) {
+    const deduction = await processWalletDeduction(
+      supabaseAdmin,
+      user.id,
+      'chat_message',
+      1,
+      monetization_variant || 'control'
+    );
+
+    if (!deduction.success) {
+      return new Response(JSON.stringify({
+        error: 'Insufficient funds',
+        balance: deduction.balance,
+        required: deduction.required,
+        currency: deduction.currency,
+      }), {
+        status: 402,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
+  const user_id = user.id;
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
   (async () => {
-    let user_id: string | undefined;
-    let profile_id: string | undefined;
-
     try {
-      // --- 1. AUTHENTICATION & INITIAL SETUP ---
-      const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-      const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-      const requestBody = await req.json();
-      profile_id = requestBody.profile_id;
-      
-      const { 
-        question_text, 
-        original_question,
-        client_date, 
-        monetization_variant, 
-        category,          
-        sub_category       
-      } = requestBody;
-
-      if (!profile_id || !question_text || !client_date) {
-        throw new Error("Missing critical parameters: profile_id, question_text, or client_date.");
-      }
-
-      const authHeader = req.headers.get('Authorization')!;
-      const supabase = createClient(SUPABASE_URL, Deno.env.get('SUPABASE_ANON_KEY')!, { global: { headers: { Authorization: authHeader } } });
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Authentication failed: User not found");
-      user_id = user.id;
-
-       // --- 2. WALLET DEDUCTION ---
-       const deduction = await processWalletDeduction(
-          supabaseAdmin, 
-          user.id, 
-          'chat_message', 
-          1, 
-          monetization_variant || 'control'
-      );
-
-      if (!deduction.success) {
-        const displayBal = (deduction.balance / 100).toFixed(2);
-        const displayCost = (deduction.required / 100).toFixed(2);
-        const msg = `Insufficient funds. Balance: ${displayBal} ${deduction.currency || ''}. Required: ${displayCost}. Please recharge your wallet.`;
-        writer.write(encoder.encode(msg));
-        return; 
-      }
-
-      // --- 3. EFFICIENT DATA FETCHING ---
+      // --- EFFICIENT DATA FETCHING ---
       const [profileRes, astroDataRes, chatHistoryRes, rulebookRes] = await Promise.allSettled([
         supabaseAdmin.from('user_profiles').select(`name, preferred_language, user_birth_details(gender, date_of_birth)`).eq('id', profile_id).single(),
         supabaseAdmin.from('profile_astro_data').select('processed_tables_path, vimshottari_dasha, yogas_llm').eq('profile_id', profile_id).single(),

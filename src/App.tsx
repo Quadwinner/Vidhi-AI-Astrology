@@ -84,6 +84,7 @@ function AppContent() {
               <Route path="/account" element={<AccountPage />} />
               <Route path="/wallet" element={<WalletPage />} />
               <Route path="/subscription-management" element={<SubscriptionManagementPage />} />
+              <Route path="/manage-membership" element={<SubscriptionManagementPage />} />
               <Route path="/debug" element={<DebugPage />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/payment-success" element={<PaymentSuccessPage />} />

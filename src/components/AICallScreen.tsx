@@ -29,7 +29,7 @@ const AICallScreen: React.FC<AICallScreenProps> = ({ profile, onCallEnded }) => 
 
   const callCoinCostSetting = useCallCoinCost();
   const [callCoinCost, setCallCoinCost] = useState<number>(callCoinCostSetting);
-  const { updateCoinBalance } = useAuth();
+  const { updateWalletBalance } = useAuth();
 
   useEffect(() => {
     setCallCoinCost(callCoinCostSetting);
@@ -144,13 +144,13 @@ const AICallScreen: React.FC<AICallScreenProps> = ({ profile, onCallEnded }) => 
                   return;
                 }
 
-                if (deductData.success && deductData.coin_balance !== undefined) {
-                  console.log(`[AICallScreen] Calling updateCoinBalance with: ${deductData.coin_balance}`);
-                  updateCoinBalance(deductData.coin_balance);
+                const balance = deductData.wallet_balance ?? deductData.coin_balance;
+                if (deductData.success && balance !== undefined) {
+                  updateWalletBalance(balance);
                 }
 
                 if (deductData?.should_end_call) {
-                  setError('Insufficient coins. Call ended.');
+                  setError('Insufficient wallet balance. Call ended.');
                   setCallState('error');
                   handleEndCall();
                 }
@@ -216,8 +216,8 @@ const AICallScreen: React.FC<AICallScreenProps> = ({ profile, onCallEnded }) => 
 
           // Handle different types of errors with specific messages
           let displayMessage = '';
-          if (errorMessage.includes('Insufficient coins') || errorMessage.includes('at least') || errorMessage.includes('coin')) {
-            displayMessage = `Insufficient Coins! You need at least ${callCoinCost} coins to start a call.`;
+          if (errorMessage.includes('Insufficient wallet') || errorMessage.includes('Insufficient coins') || errorMessage.includes('at least') || errorMessage.includes('coin')) {
+            displayMessage = `Insufficient wallet balance! You need at least ${callCoinCost} to start a call.`;
           } else if (errorMessage.includes('Authentication failed') || errorMessage.includes('Missing Authorization')) {
             displayMessage = 'Authentication Error! Please log in again and try starting the call.';
           } else if (errorMessage.includes('Profile not found')) {
@@ -245,7 +245,7 @@ const AICallScreen: React.FC<AICallScreenProps> = ({ profile, onCallEnded }) => 
       if (coinDeductionIntervalRef.current) { clearInterval(coinDeductionIntervalRef.current); coinDeductionIntervalRef.current = null; }
       if (durationIntervalRef.current) { clearInterval(durationIntervalRef.current); durationIntervalRef.current = null; }
     };
-  }, [profile.id, onCallEnded, updateCoinBalance]);
+  }, [profile.id, onCallEnded, updateWalletBalance]);
 
   // --- Event Handlers (Unchanged) ---
   const handleEndCall = useCallback(async () => {

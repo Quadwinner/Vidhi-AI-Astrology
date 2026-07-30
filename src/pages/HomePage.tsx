@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLoadScript } from '../hooks/useLoadScript';
 import { useNotificationPermission } from '../hooks/useNotificationPermission';
 import { supabase } from '../supabaseClient';
+import { activateSubscriptionAfterPayment } from '../utils/activateSubscription';
 
 import '../styles/aura-home.css';
 import AuthModal from '../components/AuthModal';
@@ -315,76 +316,16 @@ export default function HomePage() {
           console.log('💳 Payment successful:', response);
 
           try {
-
-            // Use UPSERT for reliable insert-or-update
-            // --- AFTER THE FIX (CORRECT) ---
-
-            // Get current user state first
-            const { data: existingUser, error: fetchError } = await supabase
-              .from('users')
-              .select('coin_balance') // Only need coin_balance
-              .eq('id', user.id)
-              .single();
-
-            if (fetchError && fetchError.code !== 'PGRST116') { // Ignore "no rows found" error for new users
-              throw fetchError;
-            }
-
-            // --- CORRECT COIN CALCULATION LOGIC ---
-            // 1. Get the number of coins to add from the selected plan's entitlements.
-            const coinsToAdd = selectedPlan.entitlements?.coins_granted_on_subscription || 0;
-
-            // 2. Get the user's current coin balance (defaults to 0 if they don't exist yet).
-            const currentCoins = existingUser?.coin_balance || 0;
-
-            // 3. Calculate the new total.
-            const newCoinBalance = currentCoins + coinsToAdd;
-
-            // Use UPSERT for reliable insert-or-update
-            const { data: result, error: upsertError } = await supabase
-              .from('users')
-              .upsert({
-                id: user.id,
-                email: user.email,
-                plan_tier: planType,
-                subscription_status: 'active',
-                subscription_start_date: new Date().toISOString(),
-                subscription_end_date: new Date(Date.now() + (planType === 'monthly' ? 30 : 365) * 24 * 60 * 60 * 1000).toISOString(),
-                coin_balance: newCoinBalance // Use the new calculated balance
-              }, {
-                onConflict: 'id'
-              })
-              .select();
-            if (upsertError) {
-              console.error('❌ Upsert error:', upsertError);
-              alert('Payment successful but subscription update failed: ' + upsertError.message);
-              return;
-            }
-
-            console.log('✅ Subscription updated via upsert:', result);
-
-            // Verify the update
-            const { data: verifyUser, error: verifyError } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', user.id)
-              .single();
-
-            console.log('✅ Verified user state:', verifyUser);
-
-            if (verifyUser?.subscription_status === 'active') {
-              console.log('🎉 Subscription confirmed active!');
-              // Refresh AuthContext before navigating
-              await refreshUserStatus();
-              navigate('/payment-success');
-            } else {
-              console.error('⚠️ Subscription status not active:', verifyUser?.subscription_status);
-              alert('Payment successful but subscription status is: ' + verifyUser?.subscription_status);
-            }
-
+            await activateSubscriptionAfterPayment({
+              razorpayPaymentId: response.razorpay_payment_id,
+              priceId,
+              planType,
+            });
+            await refreshUserStatus();
+            navigate('/payment-success');
           } catch (error) {
             console.error('❌ Payment handler error:', error);
-            alert('Payment successful but there was an error: ' + (error as Error).message);
+            alert('Payment successful but subscription update failed: ' + (error as Error).message);
           }
         },
         prefill: {

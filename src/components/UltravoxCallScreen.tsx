@@ -146,7 +146,8 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
                   body: { call_log_id: callLogId, duration_seconds: 0, coins_deducted: 0 }
                 });
                 if (error) throw new Error(error.message);
-                if (data?.success && data.coin_balance !== undefined) updateWalletBalance(data.coin_balance);
+                const balance = data?.wallet_balance ?? data?.coin_balance;
+                if (data?.success && balance !== undefined) updateWalletBalance(balance);
                 if (data?.should_end_call) confirmEndCall();
               } catch (err: any) {
                 console.error('[UltravoxCallScreen] coin deduction error:', err);

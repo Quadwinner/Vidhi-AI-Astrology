@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLoadScript } from '../hooks/useLoadScript';
 import { supabase } from '../supabaseClient';
+import { activateSubscriptionAfterPayment } from '../utils/activateSubscription';
 import { trackEvent } from '../utils/analytics';
 
 import { usePricing } from '../context/PricingContext';
@@ -230,64 +231,17 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           });
 
           try {
-            const { data: existingUser, error: fetchError } = await supabase
-              .from('users')
-              .select('coin_balance')
-              .select('*')
-              .eq('id', user.id)
-              .single();
-
-            console.log('📊 Current user data:', existingUser);
-            console.log('📊 Fetch error:', fetchError);
-
-            const coinsToAdd = selectedPlan.entitlements?.coins_granted_on_subscription || 0;
-            const currentCoins = existingUser?.coin_balance || 0;
-            const newCoinBalance = currentCoins + coinsToAdd;
-
-            const { data: result, error: upsertError } = await supabase
-              .from('users')
-              .upsert({
-                id: user.id,
-                email: user.email,
-                plan_tier: planType,
-                subscription_status: 'active',
-                subscription_start_date: new Date().toISOString(),
-                subscription_end_date: new Date(Date.now() + (planType === 'monthly' ? 30 : 365) * 24 * 60 * 60 * 1000).toISOString(),
-                coin_balance: newCoinBalance
-              }, {
-                onConflict: 'id'
-              })
-              .select();
-
-            if (upsertError) {
-              console.error('❌ Upsert error:', upsertError);
-              alert('Payment successful but subscription update failed: ' + upsertError.message);
-              return;
-            }
-
-            console.log('✅ Subscription updated via upsert:', result);
-
-            const { data: verifyUser, error: verifyError } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', user.id)
-              .single();
-
-            console.log('✅ Verified user state:', verifyUser);
-
-            if (verifyUser?.subscription_status === 'active') {
-              console.log('🎉 Subscription confirmed active!');
-              await refreshUserStatus();
-              onClose();
-              navigate('/payment-success');
-            } else {
-              console.error('⚠️ Subscription status not active:', verifyUser?.subscription_status);
-              alert('Payment successful but subscription status is: ' + verifyUser?.subscription_status);
-            }
-
+            await activateSubscriptionAfterPayment({
+              razorpayPaymentId: response.razorpay_payment_id,
+              priceId,
+              planType,
+            });
+            await refreshUserStatus();
+            onClose();
+            navigate('/payment-success');
           } catch (error) {
             console.error('❌ Payment handler error:', error);
-            alert('Payment successful but there was an error: ' + (error as Error).message);
+            alert('Payment successful but subscription update failed: ' + (error as Error).message);
           }
         },
         prefill: {

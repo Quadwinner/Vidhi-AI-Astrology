@@ -77,7 +77,11 @@ const SubscriptionSection = React.forwardRef<HTMLElement, SubscriptionSectionPro
                 razorpay_order_id: response.razorpay_order_id, user_id: user?.id, source: 'Subscription Section', variant
               });
               setConfirmingPackage(null);
-              setTimeout(async () => { await refreshUserStatus(); setIsPurchasing(null); }, 1500);
+              await refreshUserStatus();
+              setTimeout(async () => {
+                await refreshUserStatus();
+                setIsPurchasing(null);
+              }, 3000);
             },
             modal: { ondismiss: function () { trackEvent('payment_modal_dismissed', { package_id: pkg.id }); setIsPurchasing(null); } },
             theme: { color: '#E5B45B' }

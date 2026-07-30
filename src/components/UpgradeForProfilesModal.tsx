@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
+import { activateSubscriptionAfterPayment } from '../utils/activateSubscription';
 import { useLoadScript } from '../hooks/useLoadScript';
 import Modal from './Modal';
 import { PlanWithPrice } from './SubscriptionModal'; 
@@ -20,7 +21,7 @@ interface UpgradeForProfilesModalProps {
 
 const UpgradeForProfilesModal: React.FC<UpgradeForProfilesModalProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const { user, signInWithGoogle } = useAuth();
+  const { user, signInWithGoogle, refreshUserStatus } = useAuth();
   const isRazorpayLoaded = useLoadScript('https://checkout.razorpay.com/v1/checkout.js');
 
   const [yearlyPlan, setYearlyPlan] = useState<PlanWithPrice | null>(null);
@@ -113,63 +114,17 @@ const UpgradeForProfilesModal: React.FC<UpgradeForProfilesModalProps> = ({ isOpe
           console.log('💳 Payment successful:', response);
           
           try {
-            // Get current user state first
-            const { data: existingUser, error: fetchError } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', user.id)
-              .single();
-              
-            console.log('📊 Current user data:', existingUser);
-            console.log('📊 Fetch error:', fetchError);
-            
-            // Use UPSERT for reliable insert-or-update
-            const { data: result, error: upsertError } = await supabase
-              .from('users')
-              .upsert({
-                id: user.id,
-                email: user.email,
-                plan_tier: planType,
-                subscription_status: 'active',
-                subscription_start_date: new Date().toISOString(),
-                subscription_end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-                coin_balance: existingUser?.coin_balance || 5
-              }, { 
-                onConflict: 'id' 
-              })
-              .select();
-                
-            if (upsertError) {
-              console.error('❌ Upsert error:', upsertError);
-              alert('Payment successful but subscription update failed: ' + upsertError.message);
-              return;
-            }
-            
-            console.log('✅ Subscription updated via upsert:', result);
-            
-            // Verify the update
-            const { data: verifyUser, error: verifyError } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', user.id)
-              .single();
-              
-            console.log('✅ Verified user state:', verifyUser);
-            
-            if (verifyUser?.subscription_status === 'active') {
-              console.log('🎉 Subscription confirmed active!');
-              // Refresh AuthContext before navigating
-              await refreshUserStatus();
-              onClose();
-              navigate('/payment-success');
-            } else {
-              console.error('⚠️ Subscription status not active:', verifyUser?.subscription_status);
-              alert('Payment successful but subscription status is: ' + verifyUser?.subscription_status);
-            }
-            
+            await activateSubscriptionAfterPayment({
+              razorpayPaymentId: response.razorpay_payment_id,
+              priceId: yearlyPlan.price.id,
+              planType: 'yearly',
+            });
+            await refreshUserStatus();
+            onClose();
+            navigate('/payment-success');
           } catch (error) {
             console.error('❌ Payment handler error:', error);
-            alert('Payment successful but there was an error: ' + (error as Error).message);
+            alert('Payment successful but subscription update failed: ' + (error as Error).message);
           }
         },
         prefill: { 

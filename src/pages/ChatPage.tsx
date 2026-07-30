@@ -268,6 +268,7 @@ export default function ChatPage() {
     planTier,
     walletBalance,
     updateWalletBalance,
+    fetchWalletBalanceFromDB,
     userProfiles,
     canAddProfile
   } = useAuth();
@@ -335,7 +336,8 @@ export default function ChatPage() {
   // Derived Constants
   const isPremiumUser = planTier === 'monthly' || planTier === 'yearly';
   const isCallFeatureEnabled = true;
-  const isOutOfFunds = walletBalance !== null && walletBalance < questionCost;
+  const hasPriorUserMessages = chatHistory.some(m => m.role === 'user');
+  const isOutOfFunds = hasPriorUserMessages && walletBalance !== null && walletBalance < questionCost;
 
   const [isCompatibilityEnabled, setIsCompatibilityEnabled] = useState(false);
 
@@ -787,13 +789,12 @@ export default function ChatPage() {
     accessToken: string,
     category?: string,
     subCategory?: string,
-    originalQuestion?: string
+    originalQuestion?: string,
+    isFirstFreeQuestion = false
   ) => {
-    // 1. OPTIMISTIC DEDUCTION (With Safety Clamp)
-    // We store the original balance to revert in case of error
     const previousBalance = walletBalance;
 
-    if (walletBalance !== null && questionCost > 0) {
+    if (!isFirstFreeQuestion && walletBalance !== null && questionCost > 0) {
       // Safety: Never show negative balance on UI even if logic slips through
       const newBalance = Math.max(0, walletBalance - questionCost);
       updateWalletBalance(newBalance);
@@ -828,6 +829,7 @@ export default function ChatPage() {
       }
 
       await processStreamedResponse(response, typingIndicatorId);
+      await fetchWalletBalanceFromDB();
     } catch (err) {
       // Refund on Network Error
       if (previousBalance !== null) updateWalletBalance(previousBalance);
@@ -841,7 +843,8 @@ export default function ChatPage() {
     typingIndicatorId: string,
     accessToken: string,
     questionText: string,
-    partnerId?: string
+    partnerId?: string,
+    isFirstFreeQuestion = false
   ) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/functions/v1/get-compatibility-report`, {
@@ -868,8 +871,6 @@ export default function ChatPage() {
         setIsReplying(false);
         return;
       }
-
-      // 2. Handle Interactivity/Clarification
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
@@ -894,12 +895,13 @@ export default function ChatPage() {
 
       // 3. Update Balance (Visual)
       const previousBalance = walletBalance;
-      if (walletBalance !== null && questionCost > 0) {
+      if (!isFirstFreeQuestion && walletBalance !== null && questionCost > 0) {
         updateWalletBalance(walletBalance - questionCost);
       }
 
       // 4. Stream Response
       await processStreamedResponse(response, typingIndicatorId);
+      await fetchWalletBalanceFromDB();
 
       // 5. Update Follow-up Context
       setConversationContext({
@@ -1149,6 +1151,8 @@ export default function ChatPage() {
 
     setIsReplying(true);
 
+    const isFirstFreeQuestion = !chatHistory.some(m => m.role === 'user');
+
     // 1. Optimistic UI Update
     const typingId = `typing_${Date.now()}`;
     setChatHistory(prev => [...prev, { role: 'user', content: questionText }, { id: typingId, role: 'assistant', content: 'Vidhi is typing...' }]);
@@ -1180,10 +1184,9 @@ export default function ChatPage() {
 
       if (!isCompatibilityEnabled) {
         // --- CASE A: FEATURE DISABLED -> DIRECT GENERAL CHAT ---
-        if (isOutOfFunds) { handleLowBalance(); return; }
+        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
 
-        // Pass category and sub_category for CleverTap tracking
-        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory);
+        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion);
         return; // STOP HERE
       }
 
@@ -1223,8 +1226,8 @@ export default function ChatPage() {
 
       // ROUTE 1: STICKY CONTEXT (Active Partner)
       if (currentPartner && isRelationshipContext) {
-        if (isOutOfFunds) { handleLowBalance(); return; }
-        await handleCompatibilityCheck(currentPartner.name, typingId, session.access_token, questionText, currentPartner.id);
+        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
+        await handleCompatibilityCheck(currentPartner.name, typingId, session.access_token, questionText, currentPartner.id, isFirstFreeQuestion);
       }
 
       // ROUTE 2: NEW INQUIRY — only when the user actually references a specific
@@ -1264,10 +1267,9 @@ export default function ChatPage() {
           CRITICAL INSTRUCTION: Do NOT mention that you need partner details. Do NOT ask for birth data. The user will see a form to enter it immediately after this message. Just answer the user's side of the equation.`;
 
         try {
-          await handleGeneralChat(teaserContext, typingId, session.access_token, detectedCategory, detectedSubCategory, questionText);
+          await handleGeneralChat(teaserContext, typingId, session.access_token, detectedCategory, detectedSubCategory, questionText, isFirstFreeQuestion);
         } catch (e) {
-          // If General Chat fails (e.g. balance), stop logic
-          if (isOutOfFunds) { handleLowBalance(); return; }
+          if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
         }
 
         // C. SHOW FORM WIDGET
@@ -1298,8 +1300,8 @@ export default function ChatPage() {
 
       // ROUTE 3: GENERAL CHAT
       else {
-        if (isOutOfFunds) { handleLowBalance(); return; }
-        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory);
+        if (!isFirstFreeQuestion && isOutOfFunds) { handleLowBalance(); return; }
+        await handleGeneralChat(questionText, typingId, session.access_token, detectedCategory, detectedSubCategory, undefined, isFirstFreeQuestion);
       }
 
     } catch (err: any) {
