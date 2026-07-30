@@ -46,9 +46,10 @@ declare global {
 interface SubscriptionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
 }
 
-const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }) => {
+const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, title = 'Upgrade Your Plan' }) => {
   const navigate = useNavigate();
   const {
     user,
@@ -330,7 +331,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} title="Upgrade Your Plan">
+      <Modal isOpen={isOpen} onClose={onClose} title={title}>
         <div className='modalpopup'>
           <SubscriptionSection
             plans={plans}

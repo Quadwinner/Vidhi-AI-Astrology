@@ -128,13 +128,29 @@ Deno.serve(async (req) => {
     else if (detectedCountry === 'GB') targetCurrency = 'GBP';
     else if (detectedCountry === 'AE') targetCurrency = 'AED';
 
-    // C. --- PROMOTION: welcome credit ---
-    // During the promotion phase every new user starts with 300 coins.
-    // Balances are stored in minor units where 1 coin = 100 units (so the UI,
-    // which divides by 100, shows "300"). 300 coins => 30000 minor units.
-    const PROMO_WELCOME_COINS = 300;
-    const startingBalance = PROMO_WELCOME_COINS * 100;
-    console.log(`[init-user-wallet] Promo welcome credit: ${PROMO_WELCOME_COINS} coins (${startingBalance} units) for ${targetCurrency}.`);
+    // C. Welcome credit for brand-new wallets (admin: Price & Settings → welcome_bonus)
+    const { data: welcomeRow } = await supabaseAdmin
+      .from('service_prices')
+      .select('price_amount')
+      .eq('service_key', 'welcome_bonus')
+      .eq('currency_code', targetCurrency)
+      .eq('variant_name', variant_name)
+      .maybeSingle();
+
+    let startingBalance = welcomeRow?.price_amount ?? 0;
+
+    if (!welcomeRow) {
+      const { data: fallbackRow } = await supabaseAdmin
+        .from('service_prices')
+        .select('price_amount')
+        .eq('service_key', 'welcome_bonus')
+        .eq('currency_code', targetCurrency)
+        .eq('variant_name', 'control')
+        .maybeSingle();
+      startingBalance = fallbackRow?.price_amount ?? 0;
+    }
+
+    console.log(`[init-user-wallet] Welcome credit: ${startingBalance} minor units for ${targetCurrency} (${variant_name}).`);
 
     // D. Upsert User in DB (creates the row if the trigger hasn't yet)
     const { error: updateError } = await supabaseAdmin

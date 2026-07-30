@@ -108,14 +108,31 @@ export default function ChatInput({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isLoading && !isRecording) {
+    if (!isLoading && !isRecording && !isOutOfCoins) {
       handleLocalSendMessage();
     }
   };
 
-  // --- FIX APPLIED HERE ---
-  // The entire `if (isOutOfCoins)` block that returned the banner has been REMOVED.
-  // The component now proceeds directly to rendering the form.
+  if (isOutOfCoins) {
+    return (
+      <div className={styles.upgradeBannerContainer}>
+        <div className={styles.upgradeBannerContent}>
+          <span className={styles.upgradeBannerIcon}>💳</span>
+          <div className={styles.upgradeBannerText}>
+            <h4>Wallet balance required</h4>
+            <p>
+              {isPremiumUser
+                ? 'Your plan allowance is used up. Recharge to keep chatting.'
+                : 'Recharge your wallet to ask more questions.'}
+            </p>
+          </div>
+          <button type="button" className={styles.upgradeBannerButton} onClick={onUpgrade}>
+            Recharge wallet
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const getPlaceholderText = () => {
     if (isRecording) return sttMode === 'realtime' ? "Listening..." : "Recording audio...";

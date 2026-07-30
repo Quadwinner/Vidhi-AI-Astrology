@@ -28,6 +28,7 @@ interface ServicePrice {
 
 // Usage services shown in the pricing editor (backed by service_prices table).
 const USAGE_SERVICES: { key: string; label: string; unit: string }[] = [
+  { key: 'welcome_bonus', label: 'Welcome wallet credit', unit: 'credited once on signup' },
   { key: 'chat_message', label: 'Chat', unit: 'per message' },
   { key: 'voice_call_minute', label: 'Voice Call', unit: 'per minute' },
   { key: 'remedy', label: 'Remedies', unit: 'per request' },

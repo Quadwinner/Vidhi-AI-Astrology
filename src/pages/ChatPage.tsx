@@ -64,7 +64,7 @@ const WELCOME_MESSAGES = {
 };
 
 const LOW_BALANCE_MSG =
-  "Great question To unlock your personalized answer, Aura Wallet balance is needed. Recharge and continue";
+  "Your wallet balance is too low for this question. Recharge your wallet to continue chatting with Vidhi.";
 
 export interface ChatMessage {
   id?: string;
@@ -351,10 +351,17 @@ export default function ChatPage() {
   }, [refreshCycleCounters]);
 
   const isPremiumUser = planTier === 'monthly' || planTier === 'yearly';
-  const hasSubscriptionQuestions = isPremiumUser && subscriptionStatus === 'active' && (questionsRemaining ?? 0) > 0;
+  const isActivePremium = isPremiumUser && subscriptionStatus === 'active';
+  const hasSubscriptionQuestions = isActivePremium && (questionsRemaining ?? 0) > 0;
   const isCallFeatureEnabled = true;
   const hasPriorUserMessages = chatHistory.some(m => m.role === 'user');
-  const isOutOfFunds = !hasSubscriptionQuestions && hasPriorUserMessages && walletBalance !== null && walletBalance < questionCost;
+  const isFirstFreeQuestionAvailable = !hasPriorUserMessages;
+  const requiresWallet = !hasSubscriptionQuestions;
+  const isWalletInsufficient =
+    walletBalance === null ||
+    (questionCost > 0 ? walletBalance < questionCost : walletBalance <= 0);
+  const isOutOfFunds =
+    requiresWallet && !isFirstFreeQuestionAvailable && isWalletInsufficient;
 
   const [isCompatibilityEnabled, setIsCompatibilityEnabled] = useState(false);
 
@@ -537,6 +544,11 @@ export default function ChatPage() {
       }
     }
     return content;
+  };
+
+  const handleOpenRecharge = () => {
+    setShowInitiateCallModal(false);
+    navigate('/wallet');
   };
 
   const handleOpenSubscriptionModal = () => {
@@ -840,7 +852,6 @@ export default function ChatPage() {
       // If backend says "Insufficient Funds", we refund the optimistic deduction
       if (response.status === 402) {
         if (previousBalance !== null) updateWalletBalance(previousBalance);
-        setSubscriptionModalOpen(true);
         setChatHistory(prev => prev.map(msg =>
           msg.id === typingIndicatorId ? { ...msg, content: LOW_BALANCE_MSG } : msg
         ));
@@ -885,7 +896,6 @@ export default function ChatPage() {
 
       // 1. Handle Payment Required (Server Side Check)
       if (response.status === 402) {
-        setSubscriptionModalOpen(true);
         setChatHistory(prev => prev.map(msg =>
           msg.id === typingIndicatorId ? { ...msg, content: LOW_BALANCE_MSG } : msg
         ));
@@ -1149,10 +1159,16 @@ export default function ChatPage() {
 
   // --- UPDATED: HANDLE SEND MESSAGE (General Teaser + Safety + Category Tracking) ---
   const handleSendMessage = async (questionText: string, source: 'User Input' | 'Suggested Question' = 'User Input') => {
-    // Validate before tracking to avoid polluting analytics with invalid events
     if (!questionText.trim() || !selectedProfile || isReplying) return;
 
-    // Detect question category (only for valid messages)
+    const isFirstFreeQuestion = !chatHistory.some(m => m.role === 'user');
+    const useSubscriptionAllowance = hasSubscriptionQuestions;
+    const needsWallet = !isFirstFreeQuestion && !useSubscriptionAllowance;
+
+    if (needsWallet && (walletBalance === null || walletBalance < questionCost)) {
+      return;
+    }
+
     const questionCategory = categorizeQuestion(questionText);
 
     trackEvent('Chat Message Sent', {
@@ -1174,9 +1190,6 @@ export default function ChatPage() {
 
     setIsReplying(true);
 
-    const isFirstFreeQuestion = !chatHistory.some(m => m.role === 'user');
-    const useSubscriptionAllowance = hasSubscriptionQuestions;
-
     // 1. Optimistic UI Update
     const typingId = `typing_${Date.now()}`;
     setChatHistory(prev => [...prev, { role: 'user', content: questionText }, { id: typingId, role: 'assistant', content: 'Vidhi is typing...' }]);
@@ -1192,7 +1205,6 @@ export default function ChatPage() {
           id: `assistant_${Date.now()}`, role: 'assistant', content: LOW_BALANCE_MSG, feedback: null
         } : msg));
         setIsReplying(false);
-        setSubscriptionModalOpen(true);
       };
 
       // ---------------------------------------------------------
@@ -1337,6 +1349,7 @@ export default function ChatPage() {
   };
 
   const handleSuggestedQuestionClick = (question: string) => {
+    if (isOutOfFunds) return;
     trackEvent('AI Generated Question Click', { question_text: question, profile_id: selectedProfile?.id });
     handleSendMessage(question);
   };
@@ -1416,7 +1429,7 @@ export default function ChatPage() {
         onClose={() => setShowInitiateCallModal(false)}
         onConfirm={() => { setShowInitiateCallModal(false); startCallInternal(); }}
         walletBalance={walletBalance}
-        onBuyCoinsClick={handleOpenSubscriptionModal}
+        onBuyCoinsClick={handleOpenRecharge}
       />
 
       {!isMobile && (
@@ -1595,7 +1608,7 @@ export default function ChatPage() {
                   </div>
 
                   <div className={styles.inputContainer} ref={inputContainerRef}>
-                    {questions && Object.keys(questions).length > 0 && (
+                    {questions && !isOutOfFunds && Object.keys(questions).length > 0 && (
                       <div className={styles.categoriesDock}>
                         <CategoryCard categories={Object.entries(questions).map(([category, qs]) => ({ name: category, questions: Array.isArray(qs) ? qs : [] }))} onQuestionSelect={handleSuggestedQuestionClick} onVisibilityChange={setAreQuestionsVisible} />
                       </div>
@@ -1604,7 +1617,7 @@ export default function ChatPage() {
                       isLoading={isReplying || isVariantLoading}
                       onSendMessage={(message) => handleSendMessage(message)}
                       isOutOfCoins={isOutOfFunds}
-                      onUpgrade={() => setSubscriptionModalOpen(true)}
+                      onUpgrade={handleOpenRecharge}
                       isPremiumUser={isPremiumUser}
                       onStartCall={!isMobile ? handleStartCall : undefined}
                       isCallFeatureEnabled={!isMobile ? isCallFeatureEnabled : undefined}

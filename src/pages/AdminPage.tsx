@@ -162,7 +162,7 @@ export default function AdminPage() {
                 transition: 'all 0.3s ease'
               }}
             >
-              Plan Limits
+              Plan Allowances
             </button>
             <button
               onClick={() => setActiveTab('campaigns')}
