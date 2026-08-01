@@ -199,6 +199,7 @@
 .aura-home .aura-bento {
   display: grid; grid-template-columns: 1fr; gap: 24px;
 }
+.aura-home .aura-bento > * { min-width: 0; }
 @media (min-width: 768px) { .aura-home .aura-bento { grid-template-columns: repeat(6, 1fr); } }
 .aura-home .aura-feat-c2 { grid-column: span 1; }
 .aura-home .aura-feat-c3 { grid-column: span 1; }
@@ -212,17 +213,43 @@
 /* Compact 2-column feature grid on mobile so the section isn't a long scroll */
 @media (max-width: 767px) {
   .aura-home .aura-bento { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .aura-home .aura-feat { padding: 16px 14px; border-radius: 16px; }
+  .aura-home .aura-feat { padding: 16px 14px; border-radius: 16px; gap: 12px; min-width: 0; }
   .aura-home .aura-feat-featured { grid-column: 1 / -1; }
   .aura-home .aura-feat-featured .aura-chatmock { display: none; }
-  .aura-home .aura-feat-badge { width: 40px; height: 40px; margin-bottom: 2px; }
+  .aura-home .aura-feat-badge { width: 40px; height: 40px; margin-bottom: 2px; flex-shrink: 0; }
   .aura-home .aura-feat-badge .material-symbols-outlined { font-size: 22px; }
-  .aura-home .aura-feat h4 { font-size: 15px; margin-bottom: 6px; }
-  .aura-home .aura-feat p {
-    font-size: 12.5px; line-height: 1.45;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  .aura-home .aura-feat > div,
+  .aura-home .aura-feat .aura-feat-body { min-width: 0; width: 100%; }
+  .aura-home .aura-feat h4 {
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .aura-home .aura-explore { font-size: 12px; opacity: 1; margin-top: 10px; }
+  .aura-home .aura-feat p {
+    font-size: 12px;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+  .aura-home .aura-explore {
+    font-size: 11px;
+    opacity: 1;
+    margin-top: 8px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.3;
+  }
+  .aura-home .aura-explore .material-symbols-outlined { font-size: 14px; flex-shrink: 0; }
 }
 
 .aura-home .aura-feat {
@@ -232,7 +259,8 @@
   border: 1px solid rgba(229, 180, 91, 0.1);
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.4s ease, box-shadow 0.4s ease;
   display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
-  text-align: left; cursor: pointer; color: inherit; width: 100%;
+  text-align: left; cursor: pointer; color: inherit; width: 100%; min-width: 0;
+  box-sizing: border-box;
 }
 /* faint constellation line-art */
 .aura-home .aura-feat::before {
@@ -254,11 +282,18 @@
   box-shadow: 0 0 15px rgba(229, 180, 91, 0.12);
 }
 .aura-home .aura-feat-badge .material-symbols-outlined { color: var(--aura-gold); font-size: 30px; }
-.aura-home .aura-feat h4 { font-family: var(--aura-serif); font-size: 20px; font-weight: 600; color: var(--aura-gold); margin: 0 0 10px; }
-.aura-home .aura-feat p { color: var(--aura-text-dim); font-size: 15px; line-height: 1.6; margin: 0; }
+.aura-home .aura-feat h4 {
+  font-family: var(--aura-serif); font-size: 20px; font-weight: 600; color: var(--aura-gold);
+  margin: 0 0 10px; overflow-wrap: anywhere; word-break: break-word; line-height: 1.25;
+}
+.aura-home .aura-feat p {
+  color: var(--aura-text-dim); font-size: 15px; line-height: 1.6; margin: 0;
+  overflow-wrap: anywhere;
+}
 .aura-home .aura-explore {
   display: inline-flex; align-items: center; gap: 6px; color: var(--aura-gold);
   font-size: 14px; font-weight: 600; opacity: 0.55; transition: opacity 0.35s ease, transform 0.35s ease;
+  max-width: 100%; min-width: 0;
 }
 .aura-home .aura-feat:hover .aura-explore { opacity: 1; transform: translateX(4px); }
 .aura-home .aura-explore .material-symbols-outlined { font-size: 16px; }
