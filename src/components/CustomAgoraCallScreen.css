@@ -14,14 +14,15 @@
     #0d0c0b;
   color: #f4ede0;
   overflow: hidden;
-  padding: 84px 0 0;
+  padding: env(safe-area-inset-top, 0px) 0 0;
+  box-sizing: border-box;
 }
 
 .call-container {
   width: 100%;
   max-width: 393px;
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1095,18 +1096,24 @@
 
 
 
+@media (max-width: 1200px) {
+  .custom-call-screen {
+    padding: env(safe-area-inset-top, 0px) 0 0;
+  }
+}
+
 /* Mobile: Full width */
 @media (max-width: 768px) {
   .call-container {
     max-width: 100%;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     border-radius: 0;
     padding-top: 0;
   }
 
   .custom-call-screen {
-    padding: calc(env(safe-area-inset-top, 0px) + 88px) 0 0;
+    padding: env(safe-area-inset-top, 0px) 0 0;
   }
 
   .main-content {
