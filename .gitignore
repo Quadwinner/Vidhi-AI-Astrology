@@ -35,3 +35,4 @@ yarn-error.log*
 .claude.md 
 .vercel
 .env*
+graphify-out/
