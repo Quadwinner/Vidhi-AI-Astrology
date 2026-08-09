@@ -3,9 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders } from '../_shared/cors.ts';
 
 interface TopupRequestBody {
-  amount: number;        // Amount to PAY (Minor units, e.g., 9000 = ₹90.00)
-  credit_amount?: number;// Amount to CREDIT (Minor units, e.g., 12000 = ₹120.00)
-  currency: string;      // 'INR', 'USD'
+  package_id?: string;
 }
 
 function jsonResponse(body: unknown, status = 200) {
@@ -64,16 +62,45 @@ serve(async (req) => {
       return jsonResponse({ error: 'Invalid JSON body' }, 400);
     }
 
-    // Amount to Charge the User
-    const amountToPay = Number(body.amount);
-    
-    // Amount to Add to Wallet (Fallback to pay amount if no bonus specified)
-    const amountToCredit = body.credit_amount ? Number(body.credit_amount) : amountToPay;
-    
-    const currency = body.currency || 'USD';
+    const packageId = body?.package_id?.trim();
+    if (!packageId) {
+      return jsonResponse({ error: 'A wallet package is required' }, 400);
+    }
 
-    if (!Number.isFinite(amountToPay) || amountToPay <= 0) {
-      return jsonResponse({ error: 'Invalid amount' }, 400);
+    const { data: userProfile, error: userProfileError } = await supabase
+      .from('users')
+      .select('currency_code, pricing_variant')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (userProfileError || !userProfile?.currency_code) {
+      return jsonResponse({ error: 'Wallet currency is not configured' }, 400);
+    }
+
+    const currency = userProfile.currency_code.toUpperCase();
+    const variant = userProfile.pricing_variant || 'control';
+    const { data: walletPackage, error: packageError } = await supabase
+      .from('wallet_packages')
+      .select('id, amount, price, currency_code, variant_name')
+      .eq('id', packageId)
+      .eq('currency_code', currency)
+      .eq('variant_name', variant)
+      .eq('is_active', true)
+      .maybeSingle();
+
+    if (packageError || !walletPackage) {
+      return jsonResponse({ error: 'Wallet package is unavailable' }, 400);
+    }
+
+    const amountToPay = Number(walletPackage.price);
+    const amountToCredit = Number(walletPackage.amount);
+    if (
+      !Number.isSafeInteger(amountToPay) ||
+      !Number.isSafeInteger(amountToCredit) ||
+      amountToPay <= 0 ||
+      amountToCredit <= 0
+    ) {
+      return jsonResponse({ error: 'Wallet package is invalid' }, 400);
     }
 
     // 3. Setup Gateway Config

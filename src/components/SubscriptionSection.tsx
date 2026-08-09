@@ -62,7 +62,7 @@ const SubscriptionSection = React.forwardRef<HTMLElement, SubscriptionSectionPro
         setIsPurchasing(String(pkg.id));
 
         const { data, error } = await supabase.functions.invoke('create-topup-session', {
-          body: { amount: finalAmountToPay, credit_amount: finalCreditAmount, currency: currencyToLog, package_id: pkg.id }
+          body: { package_id: pkg.id }
         });
         if (error) throw new Error(error.message || 'Failed to create checkout session');
 

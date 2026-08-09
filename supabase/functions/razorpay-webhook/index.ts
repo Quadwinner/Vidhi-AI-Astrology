@@ -36,6 +36,25 @@ async function trackCleverTapEvent(identity: string, evtName: string, evtData: R
     console.error('[razorpay-webhook] CleverTap tracking error:', error);
   }
 }
+async function verifyRazorpaySignature(signature: string, body: string, secret: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const digest = await crypto.subtle.sign('HMAC', key, encoder.encode(body));
+  const computedHex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+  if (computedHex.length !== signature.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < computedHex.length; i++) {
+    mismatch |= computedHex.charCodeAt(i) ^ signature.charCodeAt(i);
+  }
+  return mismatch === 0;
+}
 
 async function createPaymentRecord(supabase: any, details: {
   userId: string;
@@ -68,16 +87,61 @@ async function createPaymentRecord(supabase: any, details: {
   }
 }
 
+// Idempotency guard: Razorpay retries webhooks on non-200 or transient errors.
+// Without this, a retry mid-crediting could double-credit wallet_balance and
+// create duplicate payment records. We treat an existing 'succeeded' record for
+// the same gateway_payment_id as proof the event was already processed.
+async function isPaymentAlreadyProcessed(supabase: any, gatewayPaymentId: string | null | undefined): Promise<boolean> {
+  if (!gatewayPaymentId) return false;
+  const { data, error } = await supabase
+    .from('payments')
+    .select('id')
+    .eq('gateway_payment_id', gatewayPaymentId)
+    .eq('status', 'succeeded')
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    // On lookup error, fail SAFE by allowing re-processing rather than silently
+    // swallowing a real payment — createPaymentRecord is still idempotent-ish on
+    // its own (a duplicate insert just adds a second row), but the balance update
+    // is not. Log so it's visible.
+    console.error(`[idempotency] lookup error for ${gatewayPaymentId}:`, error);
+    return false;
+  }
+  return !!data;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: corsHeaders });
 
   try {
     console.log('=== Razorpay Webhook Started ===');
+
+    const webhookSecret = Deno.env.get('RAZORPAY_WEBHOOK_SECRET');
+    const signature = req.headers.get('x-razorpay-signature');
+    const rawBody = await req.text();
+
+    if (!webhookSecret) {
+      console.error('Webhook Error: RAZORPAY_WEBHOOK_SECRET is not configured.');
+      return new Response(JSON.stringify({ error: 'Webhook not configured' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+    if (!signature) {
+      console.error('Webhook Error: Missing x-razorpay-signature header.');
+      return new Response(JSON.stringify({ error: 'Missing signature' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    const isValid = await verifyRazorpaySignature(signature, rawBody, webhookSecret);
+    if (!isValid) {
+      console.error('Webhook Error: Signature verification failed.');
+      return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+    console.log('Razorpay signature verified successfully.');
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const payload = await req.json();
+    const payload = JSON.parse(rawBody);
     console.log(`Event: ${payload.event}`);
 
     switch(payload.event){
@@ -339,6 +403,11 @@ async function handlePaymentCaptured(supabase: any, payload: any) {
     const topupCoinsRaw = notes.topup_coins;
 
     if (topupAmountRaw || topupCoinsRaw) {
+        // Idempotency: skip if this payment was already credited (webhook retry).
+        if (await isPaymentAlreadyProcessed(supabase, payment.id)) {
+          console.log(`[idempotency] Topup payment ${payment.id} already processed. Skipping.`);
+          return;
+        }
         const { data: freshUser } = await supabase.from('users').select('wallet_balance, coin_balance').eq('id', user.id).single();
         let newWallet = Number(freshUser?.wallet_balance) || 0;
         let newCoins = Number(freshUser?.coin_balance) || 0;
@@ -422,6 +491,13 @@ async function handlePaymentFailed(supabase: any, payload: any) {
 
 // --- HELPER: CENTRALIZED UPDATE LOGIC (CORRECTED VERSION) ---
 async function updateWalletAndCoins(supabase: any, user: any, planId: string, subscriptionId: string, payment: any | null = null) {
+    // Idempotency: subscription events also retry. If we already credited this
+    // payment, skip the entire wallet/coin/subscription update to avoid double-credit.
+    if (payment?.id && await isPaymentAlreadyProcessed(supabase, payment.id)) {
+      console.log(`[idempotency] Subscription payment ${payment.id} already processed. Skipping updateWalletAndCoins.`);
+      return;
+    }
+
     // 1. Fetch Price Details
     const { data: priceData } = await supabase
       .from('prices')

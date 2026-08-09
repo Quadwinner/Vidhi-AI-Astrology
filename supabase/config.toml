@@ -57,7 +57,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.create-topup-session]
-verify_jwt = false
+verify_jwt = true
 
 [functions.activate-subscription]
 verify_jwt = true

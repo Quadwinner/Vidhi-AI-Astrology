@@ -82,7 +82,7 @@ const UltravoxCallScreen: React.FC<UltravoxCallScreenProps> = ({ profile, onCall
           body: { profile_id: profile.id }
         });
         const createCallPromise = supabase.functions.invoke('create-ultravox-call', {
-          body: { profile_id: profile.id, agentId: process.env.REACT_APP_ULTRAVOX_AGENT_ID }
+          body: { profile_id: profile.id }
         });
 
         // Probe mic permission WHILE the two edge calls are in flight (overlap

@@ -11,7 +11,7 @@ export default function WalletRecharge() {
   const { packages, formatPrice, isLoading: isPricingLoading, prices } = usePricing(); // <--- NEW
   const navigate = useNavigate();
 
-  const [selectedPackageAmount, setSelectedPackageAmount] = useState<number | null>(null);
+  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,10 +24,10 @@ export default function WalletRecharge() {
 
   // Default to first package if available
   useEffect(() => {
-    if (packages.length > 0 && selectedPackageAmount === null) {
-      setSelectedPackageAmount(packages[0].amount);
+    if (packages.length > 0 && selectedPackageId === null) {
+      setSelectedPackageId(packages[0].id);
     }
-  }, [packages, selectedPackageAmount]);
+  }, [packages, selectedPackageId]);
 
   // Fetch subscription plans logic (Keep existing logic, just cleanup)
   useEffect(() => {
@@ -84,31 +84,16 @@ export default function WalletRecharge() {
 
   // --- NEW CHECKOUT LOGIC ---
   const handleCheckout = async () => {
-    if (!selectedPackageAmount) return;
+    if (!selectedPackageId) return;
     setIsLoading(true);
     setError(null);
 
     try {
-      // Find the selected package to get exact price details
-      // Note: In your DB, 'amount' is what user gets, 'price' is what they pay. 
-      // Usually they are the same (1000 paise = ₹10), but allows for discounts.
-      const pkg = packages.find(p => p.amount === selectedPackageAmount);
-
-      // Fallback: If custom amount logic is needed later, handle here.
-      // For now, strict package selection from DB.
-      const amountToPay = pkg ? pkg.price : selectedPackageAmount;
-
-      console.log('Initiating Checkout:', {
-        amountToPay,
-        currencyFromAuth: currency,
-        finalCurrency: currency || 'USD'
-      });
+      const pkg = packages.find(p => p.id === selectedPackageId);
+      if (!pkg) throw new Error('Selected package is unavailable');
 
       const { data, error } = await supabase.functions.invoke('create-topup-session', {
-        body: {
-          amount: amountToPay, // Minor units
-          currency: currency || 'USD'
-        }
+        body: { package_id: pkg.id }
       });
 
       if (error) throw new Error(error.message || 'Failed to create checkout session');
@@ -120,7 +105,7 @@ export default function WalletRecharge() {
           amount: data.order.amount,
           currency: data.order.currency,
           name: 'Vidhi Wallet Recharge',
-          description: `Add ${formatPrice(selectedPackageAmount)}`,
+          description: `Add ${formatPrice(pkg.amount)}`,
           order_id: data.order.id,
           handler: function (response: any) {
             // Optimistic UI update or reload
