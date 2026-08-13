@@ -48,7 +48,7 @@ export default function Footer() {
       title: 'Support',
       links: [
         { text: 'FAQ', path: '/#faq', protected: false },
-        { text: 'Contact Us', path: 'mailto:contact@auraai.ai', protected: false },
+        { text: 'Contact Us', path: 'mailto:contact@stratnova.ai', protected: false },
         { text: 'Terms of Service', path: '/terms-and-conditions', protected: false },
         { text: 'Privacy Policy', path: '/privacy-policy', protected: false },
       ],
@@ -127,7 +127,7 @@ export default function Footer() {
             <span className={styles.dot} aria-hidden="true">•</span>
             <Link to="/terms-and-conditions">Terms of Service</Link>
             <span className={styles.dot} aria-hidden="true">•</span>
-            <a href="mailto:contact@auraai.ai" className={styles.emailLink}>contact@auraai.ai</a>
+            <a href="mailto:contact@stratnova.ai" className={styles.emailLink}>contact@stratnova.ai</a>
           </div>
         </div>
       </div>

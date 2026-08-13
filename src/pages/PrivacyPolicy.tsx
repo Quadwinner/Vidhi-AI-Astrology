@@ -59,7 +59,7 @@ export default function PrivacyPolicy() {
 
       <h2>Grievance Redressal</h2>
       <p>Grievances in relation to this policy can be sent to our support team.</p>
-      <p>Grievance letters can be mailed at contact@auraai.ai.</p>
+      <p>Grievance letters can be mailed at contact@stratnova.ai.</p>
 
       <p>BY AGREEING TO THE TERMS OF THIS POLICY, YOU AGREE TO OUR PROCESSING OF YOUR PERSONAL INFORMATION FOR THE PURPOSES GIVEN HEREIN.</p>
     </div>

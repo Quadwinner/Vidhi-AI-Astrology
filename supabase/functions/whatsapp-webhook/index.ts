@@ -309,7 +309,7 @@ async function handleMessage(supabase: any, session: WhatsAppSession, messageBod
 
 Our team will contact you within 24 hours.
 
-Email: contact@astroaura.ai
+Email: contact@stratnova.ai
 
 Reply *MENU* to return`
     }
@@ -345,7 +345,7 @@ Reply *MENU* to return`
 
 Our team will contact you within 24 hours.
 
-Email: contact@astroaura.ai
+Email: contact@stratnova.ai
 
 Reply *MENU* to return`
       } else if (normalizedMessage === '4' || normalizedMessage === 'recharge') {

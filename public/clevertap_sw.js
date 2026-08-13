@@ -1,4 +1,4 @@
-// CleverTap Service Worker for AuraAI
+// CleverTap Service Worker for Vidhi
 // Version: 1.0.0
 // Last updated: 2025-01-15
 
