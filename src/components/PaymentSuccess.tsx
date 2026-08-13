@@ -65,7 +65,7 @@ const PaymentSuccess = () => {
         </div>
 
         <p className="support">
-          Need help? Contact our support team at <span>support@astroaura.ai</span>
+          Need help? Contact our support team at <span>support@auraai.ai</span>
         </p>
       </main>
     </div>

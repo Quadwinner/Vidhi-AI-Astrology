@@ -21,7 +21,7 @@ const PlanetaryTransitsBlog: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="astro-aura-container">
+    <div className="blog-container">
       {/* Header */}
       <Navbar />
 

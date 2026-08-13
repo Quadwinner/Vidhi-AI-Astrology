@@ -97,7 +97,7 @@ const BlogPostPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="astro-aura-container">
+      <div className="blog-container">
         <Seo title="Loading… | Vidhi Blog" description="Loading blog post." canonical={canonical} noindex />
         <Navbar />
         <main className="blog-main">
@@ -109,7 +109,7 @@ const BlogPostPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="astro-aura-container">
+      <div className="blog-container">
         <Seo title="Blog Post Not Found | Vidhi" description="This blog post could not be found." canonical={canonical} noindex />
         <Navbar />
         <main className="blog-main">
@@ -124,7 +124,7 @@ const BlogPostPage: React.FC = () => {
   }
 
   return (
-    <div className="astro-aura-container">
+    <div className="blog-container">
       {blogPost && (
         <Seo
           title={`${blogPost.title} | Vidhi`}
