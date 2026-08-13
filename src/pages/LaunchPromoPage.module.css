@@ -289,6 +289,9 @@
 }
 
 .claimed {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin: 24px 0 0;
   padding: 15px 17px;
   border-radius: 13px;
@@ -298,10 +301,10 @@
   line-height: 1.5;
 }
 
-.claimedLink {
-  color: #fff;
+.claimedTitle {
+  font-size: 1rem;
   font-weight: 700;
-  text-decoration: underline;
+  color: #6ee7b7;
 }
 
 .footer {

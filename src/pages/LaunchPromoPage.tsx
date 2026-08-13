@@ -103,13 +103,14 @@ export default function LaunchPromoPage() {
               <li className={styles.step}>
                 <span className={styles.stepNum}>2</span>
                 <span>
-                  Add your birth date, time and place so we can compute your chart.
+                  Your ₹100 credit is reserved against your account straight away.
                 </span>
               </li>
               <li className={styles.step}>
                 <span className={styles.stepNum}>3</span>
                 <span>
-                  Your launch credit lands in your wallet. Start asking straight away.
+                  We open access this week — you'll get an email, then add your birth
+                  details and start asking.
                 </span>
               </li>
             </ol>
@@ -155,11 +156,12 @@ export default function LaunchPromoPage() {
 
             {user ? (
               <div className={styles.claimed}>
-                You're signed in — your credit is on your wallet.{' '}
-                <Link to="/profiles" className={styles.claimedLink}>
-                  Add your birth details
-                </Link>{' '}
-                to start your first reading.
+                <strong className={styles.claimedTitle}>You're on the list ✓</strong>
+                <span>
+                  Your seat is reserved and your ₹100 credit is locked to this
+                  account. We're opening access this week — we'll email you the
+                  moment your chart is ready.
+                </span>
               </div>
             ) : (
               <>
