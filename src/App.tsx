@@ -22,6 +22,7 @@ import DebugPage from './pages/DebugPage';
 import FireSignsBlog from './pages/FireSignsBlog';
 import FullMoonBlog from './pages/FullMoonBlog';
 import HomePage from './pages/HomePage';
+import LaunchPromoPage from './pages/LaunchPromoPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import PlanetaryTransitsBlog from './pages/PlanetaryTransitsBlog';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -47,7 +48,8 @@ import RouteSeo from './seo/RouteSeo';
 
 function AppContent() {
   const location = useLocation();
-  const showFooter = location.pathname !== "/chat" && location.pathname !== "/wallet" && location.pathname !== "/profiles" && location.pathname !== "/remedies";
+  const isStandalonePage = location.pathname === "/launch";
+  const showFooter = !isStandalonePage && location.pathname !== "/chat" && location.pathname !== "/wallet" && location.pathname !== "/profiles" && location.pathname !== "/remedies";
   const isChatPage = location.pathname === "/chat";
 
   usePageTracking();
@@ -55,12 +57,13 @@ function AppContent() {
   return (
     <>
       <RouteSeo />
-      <Navbar />
+      {!isStandalonePage && <Navbar />}
 
       <div className="pageContainer">
         <div style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/launch" element={<LaunchPromoPage />} />
             <Route path="/how-it-works" element={<MainSection />} />
             <Route path="/blog" element={<ArticlesSection />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />

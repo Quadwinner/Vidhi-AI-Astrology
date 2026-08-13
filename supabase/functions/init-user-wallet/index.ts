@@ -152,6 +152,19 @@ Deno.serve(async (req) => {
 
     console.log(`[init-user-wallet] Welcome credit: ${startingBalance} minor units for ${targetCurrency} (${variant_name}).`);
 
+    const { data: promoAmount, error: promoError } = await supabaseAdmin.rpc('claim_launch_promo', {
+      p_user_id: user.id,
+      p_currency: targetCurrency,
+      p_variant: variant_name,
+    });
+
+    if (promoError) {
+      console.error(`[init-user-wallet] launch promo claim failed: ${promoError.message}`);
+    } else if (typeof promoAmount === 'number' && promoAmount > 0) {
+      startingBalance = promoAmount;
+      console.log(`[init-user-wallet] Launch promo seat claimed: ${promoAmount} minor units.`);
+    }
+
     // D. Upsert User in DB (creates the row if the trigger hasn't yet)
     const { error: updateError } = await supabaseAdmin
       .from('users')

@@ -332,6 +332,19 @@ serve(async (req) => {
         }
       }
 
+      const { data: promoAmount, error: promoError } = await supabaseAdmin.rpc('claim_launch_promo', {
+        p_user_id: supabaseUserId,
+        p_currency: detectedCurrency,
+        p_variant: variant_name,
+      });
+
+      if (promoError) {
+        console.error(`[MSG91 Verify] launch promo claim failed: ${promoError.message}`);
+      } else if (typeof promoAmount === 'number' && promoAmount > 0) {
+        startBalance = promoAmount;
+        console.log(`[MSG91 Verify] Launch promo seat claimed: ${promoAmount} minor units.`);
+      }
+
       // 3. Set Initial Values
       upsertUserData.wallet_balance = startBalance;
       upsertUserData.coin_balance = 0; // Legacy coins are 0

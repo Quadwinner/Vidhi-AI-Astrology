@@ -177,7 +177,9 @@ async function buildSystemPrompt(supabaseAdmin: any, profile_id: string): Promis
     systemPrompt = systemPrompt.split(`{{${key}}}`).join(value);
   }
 
-  return { systemPrompt, gender, context };
+  const hasChartData = d1PlanetsJson !== '{}' || housesJson !== '{}';
+
+  return { systemPrompt, gender, context, hasChartData };
 }
 
 Deno.serve(async (req) => {
@@ -199,7 +201,11 @@ Deno.serve(async (req) => {
     const { profile_id, voice } = await req.json();
     if (!profile_id) throw new Error('Missing profile_id');
 
-    let { systemPrompt } = await buildSystemPrompt(supabaseAdmin, profile_id);
+    let { systemPrompt, hasChartData } = await buildSystemPrompt(supabaseAdmin, profile_id);
+
+    if (!hasChartData) {
+      throw new Error('Your birth chart is still being prepared. Please open this profile once to generate it, then start the call again.');
+    }
 
     // The selected voice is MALE, so the astrologer must speak about itself using
     // masculine Hindi verb forms. Without this, the LLM often drifts into feminine
