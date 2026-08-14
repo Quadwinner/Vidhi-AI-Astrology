@@ -254,8 +254,9 @@ async function handler(req: Request) {
            throw new Error("Insufficient coins"); 
         }
 
-        if (deduction.deducted > 0) {
-          pendingRefund = { supabaseAdmin, userId: user.id, amount: deduction.deducted };
+        const deductedAmount = deduction.deducted ?? 0;
+        if (deductedAmount > 0) {
+          pendingRefund = { supabaseAdmin, userId: user.id, amount: deductedAmount };
         }
 
         console.log(`[Report] Unlocked ${report_type}. Cost: ${deduction.deducted} ${deduction.currency}`);
@@ -1113,7 +1114,8 @@ async function processWalletDeduction(
   supabaseAdmin: any, 
   userId: string, 
   serviceKey: string, 
-  quantity: number = 1
+  quantity: number = 1,
+  variantName: string = 'control'
 ) {
   // 1. Get User's Currency & Balance
   const { data: user, error: userError } = await supabaseAdmin
@@ -1129,20 +1131,28 @@ async function processWalletDeduction(
   const currentBalance = user.wallet_balance || 0;
 
   // 2. Get Price for this Service + Currency
-  const { data: priceData, error: priceError } = await supabaseAdmin
+  // A/B pricing means one service_key + currency has several rows (control plus
+  // pricing-variant-*). Without a variant filter this matched many rows and the
+  // lookup failed outright, which blocked every report. Prefer the requested
+  // variant, fall back to control, then to any row for that currency.
+  const { data: priceRows, error: priceError } = await supabaseAdmin
     .from('service_prices')
-    .select('price_amount')
+    .select('price_amount, variant_name')
     .eq('service_key', serviceKey)
-    .eq('currency_code', currency)
-    .single();
+    .eq('currency_code', currency);
 
-  if (priceError || !priceData) {
+  if (priceError || !priceRows || priceRows.length === 0) {
     // Fallback/Safety: If price is missing, block usage or assume free? 
     // Blocking is safer for business.
     throw new Error(`Price configuration missing for ${serviceKey} in ${currency}`);
   }
 
-  const costPerUnit = priceData.price_amount;
+  const priceRow =
+    priceRows.find((r: any) => r.variant_name === variantName) ??
+    priceRows.find((r: any) => r.variant_name === 'control') ??
+    priceRows[0];
+
+  const costPerUnit = priceRow.price_amount;
   const totalCost = costPerUnit * quantity;
 
   // 3. Balance Check
