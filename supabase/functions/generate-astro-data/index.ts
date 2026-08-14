@@ -519,7 +519,7 @@ async function generateAiInsights(
     const completion = await openai.chat.completions.create({
       model: modelName.slice(4),
       temperature: 0.2,
-      max_tokens: 12000,
+      max_tokens: 10000,
       frequency_penalty: 0.3,
       response_format: { type: 'json_object' },
       messages: [
