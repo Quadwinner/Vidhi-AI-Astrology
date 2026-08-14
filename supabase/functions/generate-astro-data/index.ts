@@ -508,7 +508,13 @@ async function generateAiInsights(
     const STRICT_JSON_RULE =
       'CRITICAL: Respond with a single valid minified JSON object and nothing else. ' +
       'No markdown fences, no commentary. Escape every newline inside string values as \\n ' +
-      'and escape every double quote inside string values as \\".';
+      'and escape every double quote inside string values as \\". ' +
+      // Long reports were exceeding the edge worker time limit before the model
+      // finished, which surfaced to the client as a non-2xx. Cap the prose so
+      // generation completes inside the request window.
+      'LENGTH LIMIT: Keep every text value under 90 words and the entire JSON ' +
+      'response under 1100 words total. Be specific and concise rather than ' +
+      'repetitive. Never repeat a sentence you have already written.';
 
     // Single attempt only. Retrying a second 8000-token generation pushed the
     // function past the edge worker time limit (non-2xx), so the strict rule is
@@ -519,8 +525,8 @@ async function generateAiInsights(
     const completion = await openai.chat.completions.create({
       model: modelName.slice(4),
       temperature: 0.2,
-      max_tokens: 10000,
-      frequency_penalty: 0.3,
+      max_tokens: 4000,
+      frequency_penalty: 0.4,
       response_format: { type: 'json_object' },
       messages: [
         { role: "system", content: `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
