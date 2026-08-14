@@ -528,12 +528,18 @@ async function generateAiInsights(
     // These reports run past 25k characters, so a small cap truncates the JSON
     // mid-string (finish_reason 'length'). frequency_penalty counters the
     // repetition loops smaller models fall into on long structured output.
+    const nimModel = modelName.slice(4);
+
     const completion = await openai.chat.completions.create({
-      model: modelName.slice(4),
+      model: nimModel,
       temperature: 0.2,
       max_tokens: 8000,
       frequency_penalty: 0.2,
       response_format: { type: 'json_object' },
+      // gpt-oss is reasoning-capable and defaults to heavy internal reasoning,
+      // which is what made reports slow on the previous provider too. 'low'
+      // keeps quality while finishing inside the request window.
+      ...(nimModel.includes('gpt-oss') ? { reasoning_effort: 'low' } : {}),
       messages: [
         { role: "system", content: `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
         { role: "user", content: finalUserPrompt },
