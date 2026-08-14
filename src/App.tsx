@@ -1,6 +1,6 @@
 // src/App.tsx
 import { Toaster } from 'react-hot-toast';
-import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer';
 import GoogleTranslateWidget from './components/GoogleTranslateWidget';
@@ -46,9 +46,11 @@ import YearEndBlog from './pages/YearEndBlog';
 import { usePageTracking } from './hooks/usePageTracking';
 import RouteSeo from './seo/RouteSeo';
 
+const LAUNCH_ONLY = process.env.REACT_APP_LAUNCH_ONLY !== 'false';
+
 function AppContent() {
   const location = useLocation();
-  const isStandalonePage = location.pathname === "/launch";
+  const isStandalonePage = LAUNCH_ONLY || location.pathname === "/launch";
   const showFooter = !isStandalonePage && location.pathname !== "/chat" && location.pathname !== "/wallet" && location.pathname !== "/profiles" && location.pathname !== "/remedies";
   const isChatPage = location.pathname === "/chat";
 
@@ -61,6 +63,24 @@ function AppContent() {
 
       <div className="pageContainer">
         <div style={{ flex: 1 }}>
+          {LAUNCH_ONLY ? (
+            <Routes>
+              <Route path="/" element={<LaunchPromoPage />} />
+              <Route path="/launch" element={<LaunchPromoPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+              <Route element={<ProtectedRoute requireAdmin={true} />}>
+                <Route path="/admin" element={<AdminPage />} />
+              </Route>
+
+              <Route element={<ProtectedRoute />}>
+                <Route path="/admin-check" element={<AdminCheckPage />} />
+              </Route>
+
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          ) : (
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/launch" element={<LaunchPromoPage />} />
@@ -111,6 +131,7 @@ function AppContent() {
 
             <Route path="*" element={<h1>404: Page Not Found</h1>} />
           </Routes>
+          )}
         </div>
 
         {/* Footer */}
