@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AuraAI - Celestial Auth</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#271900",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#f1bf64",
+                        "on-tertiary-fixed-variant": "#414756",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#ffd284",
+                        "surface-container-highest": "#363533",
+                        "surface-container-high": "#2b2a28",
+                        "primary-fixed-dim": "#ffb1c2",
+                        "outline": "#a38b8f",
+                        "on-primary-container": "#e67291",
+                        "inverse-on-surface": "#31302f",
+                        "secondary-container": "#7d5800",
+                        "tertiary-fixed": "#dde2f6",
+                        "primary-fixed": "#ffd9e0",
+                        "inverse-primary": "#9f3b59",
+                        "secondary-fixed": "#ffdea9",
+                        "surface-bright": "#3a3937",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#151b29",
+                        "on-surface-variant": "#dbc0c4",
+                        "surface-dim": "#141312",
+                        "tertiary-fixed-dim": "#c1c6d9",
+                        "outline-variant": "#554245",
+                        "on-tertiary": "#2a303f",
+                        "on-primary-fixed-variant": "#812342",
+                        "tertiary-container": "#292f3e",
+                        "on-tertiary-container": "#9196a9",
+                        "on-primary": "#62082c",
+                        "inverse-surface": "#e5e2df",
+                        "tertiary": "#c1c6d9",
+                        "surface-variant": "#363533",
+                        "surface-tint": "#ffb1c2",
+                        "surface-container-lowest": "#0e0e0d",
+                        "on-secondary-fixed-variant": "#5e4100",
+                        "on-secondary": "#422c00",
+                        "surface-container": "#201f1e",
+                        "on-background": "#e5e2df",
+                        "background": "#141312",
+                        "on-primary-fixed": "#3f0018",
+                        "on-surface": "#e5e2df",
+                        "surface-container-low": "#1c1b1a",
+                        "primary-container": "#61072b",
+                        "secondary": "#f1bf64",
+                        "surface": "#141312",
+                        "primary": "#ffb1c2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "label-md": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(28, 27, 26, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(241, 191, 100, 0.15);
+            box-shadow: 0 24px 48px -12px rgba(97, 7, 43, 0.2);
+        }
+        .glow-overlay {
+            box-shadow: 0 0 120px rgba(241, 191, 100, 0.05) inset;
+        }
+        
+        .input-dark {
+            background-color: #121826;
+            border-color: rgba(241, 191, 100, 0.2);
+            color: #e5e2df;
+        }
+        .input-dark:focus {
+            border-color: #f1bf64;
+            box-shadow: 0 0 0 1px #f1bf64;
+        }
+        .tab-btn {
+            position: relative;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #f1bf64;
+            border-radius: 2px 2px 0 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<!-- Ambient Background Texture -->
+<div class="absolute inset-0 z-0 pointer-events-none" data-alt="A deep cosmic backdrop with subtle, swirling nebula dust in dark maroon and charcoal hues, sprinkled with tiny, barely-there gold stars. The mood is luxurious, mystical, and expansive, using high-end digital art techniques to create a smooth, noise-free celestial canvas perfect for a premium AI astrology app." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDKlx6_3rNIv4xP29N0bHYq2psNS7eJX2l7FYN31ze76ma6iJogJ23XuCUflJOrJn8vUFSz_3nqF97U6_etfaXcIoZ6iRFMbZGNm2XVWOCCJkLZOU0s42m1gFBjFvunDPTFwwhbU6hwolAilYO7tKECDn40LtQU_4kKUBAKFzCxVYESiZm8VCVmFVhGstulwS5JpMovcSIJcD7O4NnHDWhx9SvaTqSa0SHULhjJPvThfj1j8mjcShDoWiPxRjfaKgekD6U_mX4AUSRt')"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface/40 to-surface/90 z-0"></div>
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-container/20 rounded-full blur-[100px] z-0 mix-blend-screen"></div>
+<!-- Modal Container -->
+<main class="w-full max-w-[420px] relative z-10">
+<div class="glass-panel rounded-[24px] overflow-hidden flex flex-col glow-overlay">
+<!-- Header Area -->
+<div class="pt-8 px-6 pb-2 text-center relative">
+<!-- Subtle decorative element -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-secondary/30 to-transparent"></div>
+<h1 class="font-headline-md text-headline-md text-secondary mb-2 tracking-wide">AuraAI</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Unlock your celestial potential.</p>
+</div>
+<!-- Tab Navigation -->
+<div class="flex border-b border-outline-variant/30 mt-6 px-6">
+<button class="tab-btn active flex-1 pb-3 text-center font-label-md text-label-md text-secondary transition-colors" id="tab-signin" onclick="switchTab('signin')">
+                    Sign In
+                </button>
+<button class="tab-btn flex-1 pb-3 text-center font-label-md text-label-md text-on-surface-variant hover:text-secondary/70 transition-colors" id="tab-signup" onclick="switchTab('signup')">
+                    Sign Up
+                </button>
+</div>
+<!-- Forms Container -->
+<div class="p-6">
+<!-- Sign In Form -->
+<form class="flex flex-col gap-5 block" id="form-signin">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signin-email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">mail</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signin-email" placeholder="cosmos@example.com" type="email"/>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signin-password">Password</label>
+<a class="font-label-sm text-label-sm text-secondary hover:text-secondary-fixed-dim transition-colors" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">lock</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signin-password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<button class="w-full mt-2 bg-secondary text-on-secondary-fixed font-label-md text-label-md py-3.5 rounded-lg hover:bg-secondary-fixed transition-all shadow-[0_0_15px_rgba(241,191,100,0.3)] hover:shadow-[0_0_25px_rgba(241,191,100,0.5)] active:scale-[0.98] flex justify-center items-center gap-2 group" type="button">
+                        Enter Sanctuary
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-outline-variant/30"></div>
+<span class="flex-shrink-0 mx-4 font-label-sm text-label-sm text-on-surface-variant/50 uppercase tracking-widest">or</span>
+<div class="flex-grow border-t border-outline-variant/30"></div>
+</div>
+<button class="w-full bg-surface-container/50 border border-outline-variant/30 text-on-surface font-label-md text-label-md py-3 rounded-lg hover:bg-surface-variant/50 transition-colors flex justify-center items-center gap-3" type="button">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+                        Continue with Google
+                    </button>
+</form>
+<!-- Sign Up Form (Initially Hidden) -->
+<form class="flex flex-col gap-4 hidden" id="form-signup">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signup-name">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">person</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signup-name" placeholder="Your Name" type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signup-email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">mail</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signup-email" placeholder="cosmos@example.com" type="email"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signup-password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">lock</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signup-password" placeholder="Create a strong password" type="password"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant block" for="signup-confirm">Confirm Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">lock_reset</span>
+<input class="input-dark w-full rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md focus:ring-0 transition-shadow" id="signup-confirm" placeholder="Repeat password" type="password"/>
+</div>
+</div>
+<button class="w-full mt-3 bg-secondary text-on-secondary-fixed font-label-md text-label-md py-3.5 rounded-lg hover:bg-secondary-fixed transition-all shadow-[0_0_15px_rgba(241,191,100,0.3)] hover:shadow-[0_0_25px_rgba(241,191,100,0.5)] active:scale-[0.98] flex justify-center items-center gap-2 group" type="button">
+                        Begin Journey
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">auto_awesome</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant/70 mt-2">
+                        By joining, you agree to our <a class="text-secondary hover:underline" href="#">Terms</a> &amp; <a class="text-secondary hover:underline" href="#">Privacy</a>.
+                    </p>
+</form>
+</div>
+<!-- Bottom Accent -->
+<div class="h-1.5 w-full bg-gradient-to-r from-primary-container via-secondary to-primary-container opacity-80"></div>
+</div>
+</main>
+<script>
+        function switchTab(tab) {
+            const signinBtn = document.getElementById('tab-signin');
+            const signupBtn = document.getElementById('tab-signup');
+            const signinForm = document.getElementById('form-signin');
+            const signupForm = document.getElementById('form-signup');
+            
+            // Inactive state classes
+            const inactiveClasses = ['text-on-surface-variant', 'hover:text-secondary/70'];
+            
+            if (tab === 'signin') {
+                // Update Buttons
+                signinBtn.classList.add('active', 'text-secondary');
+                signinBtn.classList.remove(...inactiveClasses);
+                
+                signupBtn.classList.remove('active', 'text-secondary');
+                signupBtn.classList.add(...inactiveClasses);
+                
+                // Update Forms
+                signinForm.classList.remove('hidden');
+                signinForm.classList.add('block');
+                signupForm.classList.add('hidden');
+                signupForm.classList.remove('block');
+                
+            } else {
+                // Update Buttons
+                signupBtn.classList.add('active', 'text-secondary');
+                signupBtn.classList.remove(...inactiveClasses);
+                
+                signinBtn.classList.remove('active', 'text-secondary');
+                signinBtn.classList.add(...inactiveClasses);
+                
+                // Update Forms
+                signupForm.classList.remove('hidden');
+                signupForm.classList.add('block');
+                signinForm.classList.add('hidden');
+                signinForm.classList.remove('block');
+            }
+        }
+    </script>
+</body></html>
