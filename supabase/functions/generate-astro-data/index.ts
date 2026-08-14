@@ -337,12 +337,18 @@ async function handler(req: Request) {
           }
         }
 
-        const dataString = JSON.stringify(dataForPlaceholder || 'Not available', null, 2);
+        // Minified, not pretty-printed. Indentation on eleven chart tables
+        // (including divisional charts) added tens of thousands of characters of
+        // pure whitespace to the prompt, and that prefill cost was pushing report
+        // generation past the edge worker time limit.
+        const dataString = JSON.stringify(dataForPlaceholder || 'Not available');
         finalUserPrompt = finalUserPrompt.replace(placeholder, dataString);
       }
 
       // Clean up any unused placeholders to avoid confusing the AI
       finalUserPrompt = finalUserPrompt.replace(/{{[A-Z0-9_]+_DATA}}/g, 'Data for this section was not requested or is not available.');
+
+      console.log(`[Report] ${report_type} prompt size: ${finalUserPrompt.length} chars (~${Math.round(finalUserPrompt.length / 4)} tokens), model ${modelName}`);
 
       // We no longer need the generic payload object for the AI function
       const aiInsights = await generateAiInsights(null, systemPrompt, userPromptTemplate, modelName, secretName, apiProvider, finalUserPrompt);
