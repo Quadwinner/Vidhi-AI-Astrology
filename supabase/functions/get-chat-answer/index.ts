@@ -703,7 +703,7 @@ async function handler(req: Request) {
           await writer.write(encoder.encode("Vidhi is experiencing heavy cosmic traffic. Please try again in 10 seconds."));
           return;
         }
-        throw new Error(`LLM API error: ${response.status}`);
+        throw new Error(`LLM API error: ${response.status} - ${errorBody.slice(0, 300)}`);
       }
       
       // --- 6. STREAM PARSING ---
