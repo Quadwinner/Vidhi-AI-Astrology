@@ -44,6 +44,11 @@ interface BirthDetails {
 
 async function handler(req: Request) {
 
+  // Coins are taken before the report is generated. If anything after the
+  // deduction fails, this holds what must be given back so the user is never
+  // charged for a report they did not receive.
+  let pendingRefund: { supabaseAdmin: any; userId: string; amount: number } | null = null;
+
   const functionStartTime = Date.now();
   console.log(`[PERF_LOG] Function execution started.`);
 
@@ -248,7 +253,11 @@ async function handler(req: Request) {
            // Throw the specific error string required by Frontend to open the Wallet Modal
            throw new Error("Insufficient coins"); 
         }
-        
+
+        if (deduction.deducted > 0) {
+          pendingRefund = { supabaseAdmin, userId: user.id, amount: deduction.deducted };
+        }
+
         console.log(`[Report] Unlocked ${report_type}. Cost: ${deduction.deducted} ${deduction.currency}`);
       }
       
@@ -330,8 +339,25 @@ async function handler(req: Request) {
 
       // We no longer need the generic payload object for the AI function
       const aiInsights = await generateAiInsights(null, systemPrompt, userPromptTemplate, modelName, secretName, apiProvider, finalUserPrompt);
+
+      // The frontend renders the report as JSON. Saving an unparseable report
+      // would charge the user for something that can never be displayed, so
+      // fail here instead and let the refund in the catch block run.
+      const reportText = (aiInsights.analyst_report || '').trim();
+      const jsonStart = reportText.indexOf('{');
+      const jsonEnd = reportText.lastIndexOf('}');
+      if (jsonStart === -1 || jsonEnd <= jsonStart) {
+        throw new Error(`Model '${modelName}' returned a non-JSON report.`);
+      }
+      const candidateJson = reportText.slice(jsonStart, jsonEnd + 1);
+      try {
+        JSON.parse(candidateJson);
+      } catch {
+        throw new Error(`Model '${modelName}' returned malformed JSON for the report.`);
+      }
+
       // --- Database Update & Response ---
-      const updatePayload = { [config.targetColumn]: aiInsights.analyst_report, last_generated_at: new Date().toISOString() };
+      const updatePayload = { [config.targetColumn]: candidateJson, last_generated_at: new Date().toISOString() };
       const { data: updatedAstroData, error: updateError } = await supabaseAdmin.from('profile_astro_data').update(updatePayload).eq('profile_id', profile_id).select().single();
       if (updateError) throw new Error(`Failed to cache AI insights: ${updateError.message}`);
 
@@ -339,6 +365,8 @@ async function handler(req: Request) {
       const { data: rawDataBlob, error: rawDownloadError } = await supabaseAdmin.storage.from('astro-data').download(existingData.chart_data_path);
       if (rawDownloadError) throw new Error(`Failed to re-download raw data: ${rawDownloadError.message}`);
       const chartDataForReturn = JSON.parse(await rawDataBlob.text());
+
+      pendingRefund = null;
 
       return new Response(JSON.stringify({
         chart_data: chartDataForReturn,
@@ -350,6 +378,17 @@ async function handler(req: Request) {
     throw new Error(`Invalid scope provided: ${scope}`);
   } catch (err) {
     console.error(`[CRITICAL ERROR] Function execution failed: ${err.message}`);
+
+    if (pendingRefund) {
+      try {
+        await refundWallet(pendingRefund.supabaseAdmin, pendingRefund.userId, pendingRefund.amount);
+        console.log(`[Report] Refunded ${pendingRefund.amount} to ${pendingRefund.userId} after failure.`);
+      } catch (refundErr) {
+        console.error(`[Report] REFUND FAILED for ${pendingRefund.userId} amount ${pendingRefund.amount}: ${refundErr}`);
+      }
+      pendingRefund = null;
+    }
+
     const functionEndTime = Date.now();
     console.log(`[PERF_LOG] Total function execution time (on error): ${functionEndTime - functionStartTime}ms`);
     throw err;
@@ -1121,4 +1160,23 @@ async function processWalletDeduction(
   if (updateError) throw new Error(`Deduction failed: ${updateError.message}`);
 
   return { success: true, deducted: totalCost, newBalance, currency };
+}
+
+async function refundWallet(supabaseAdmin: any, userId: string, amount: number) {
+  if (!amount || amount <= 0) return;
+
+  const { data: user, error: userError } = await supabaseAdmin
+    .from('users')
+    .select('wallet_balance')
+    .eq('id', userId)
+    .single();
+
+  if (userError || !user) throw new Error(`Refund user fetch failed: ${userError?.message}`);
+
+  const { error: updateError } = await supabaseAdmin
+    .from('users')
+    .update({ wallet_balance: (user.wallet_balance || 0) + amount })
+    .eq('id', userId);
+
+  if (updateError) throw new Error(`Refund failed: ${updateError.message}`);
 }
