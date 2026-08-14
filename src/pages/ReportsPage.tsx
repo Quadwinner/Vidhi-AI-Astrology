@@ -308,7 +308,7 @@ export default function ReportsPage() {
     setLoadingReportKey(reportType);
     setError(null);
     try {
-      const { data, error: invokeError } = await supabase.functions.invoke('test-generate-astro-data', {
+      const { data, error: invokeError } = await supabase.functions.invoke('generate-astro-data', {
         body: {
           profile_id: selectedProfile.id,
           scope: 'ai',
@@ -317,6 +317,12 @@ export default function ReportsPage() {
         }
       });
       if (invokeError) throw invokeError;
+
+      // The edge function returns failures as HTTP 200 with an { error } body,
+      // so invokeError stays null and the failure has to be checked here or it
+      // silently looks like a report that never arrives.
+      if (data?.error) throw new Error(data.error);
+
       // 2. INSTANT UI UPDATE (Optimistic)
       // 'coinCost' is passed from the modal, which calculated it correctly based on prices
       if (walletBalance !== null && coinCost > 0) {

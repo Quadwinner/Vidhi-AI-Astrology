@@ -60,7 +60,7 @@ async function handler(req: Request) {
 
     if (!user) throw new Error("Authentication failed: User not found.");
 
-    const { profile_id, scope, report_type, skip_transits } = await req.json();
+    const { profile_id, scope, report_type, skip_transits, monetization_variant } = await req.json();
     if (!profile_id || !scope) throw new Error("Invalid request: Missing profile_id or scope.");
 
     if (scope === 'charts') {
@@ -247,7 +247,13 @@ async function handler(req: Request) {
       } else {
         // Otherwise (Free User OR Non-Premium Report), we attempt deduction.
         // Note: If serviceKey is 'report_basic', the price in DB is 0, so deduction proceeds but takes 0 money.
-        const deduction = await processWalletDeduction(supabaseAdmin, user.id, serviceKey);
+        const deduction = await processWalletDeduction(
+          supabaseAdmin,
+          user.id,
+          serviceKey,
+          1,
+          monetization_variant || 'control'
+        );
 
         if (!deduction.success) {
            // Throw the specific error string required by Frontend to open the Wallet Modal
@@ -344,16 +350,8 @@ async function handler(req: Request) {
       // The frontend renders the report as JSON. Saving an unparseable report
       // would charge the user for something that can never be displayed, so
       // fail here instead and let the refund in the catch block run.
-      const reportText = (aiInsights.analyst_report || '').trim();
-      const jsonStart = reportText.indexOf('{');
-      const jsonEnd = reportText.lastIndexOf('}');
-      if (jsonStart === -1 || jsonEnd <= jsonStart) {
-        throw new Error(`Model '${modelName}' returned a non-JSON report.`);
-      }
-      const candidateJson = reportText.slice(jsonStart, jsonEnd + 1);
-      try {
-        JSON.parse(candidateJson);
-      } catch {
+      const candidateJson = extractJsonObject(aiInsights.analyst_report || '');
+      if (!candidateJson) {
         throw new Error(`Model '${modelName}' returned malformed JSON for the report.`);
       }
 
@@ -502,15 +500,39 @@ async function generateAiInsights(
   const isNim = modelName.startsWith('nim/');
   if (isNim) {
     const openai = new OpenAI({ apiKey, baseURL: 'https://integrate.api.nvidia.com/v1' });
-    const completion = await openai.chat.completions.create({
-      model: modelName.slice(4),
-      temperature: 0.2,
-      max_tokens: 8000,
-      response_format: { type: 'json_object' },
-      messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }],
-    } as any);
-    analyst_report = completion.choices[0].message.content?.trim() || null;
-    return { analyst_report: analyst_report || "The AI analyst did not return a valid report." };
+
+    // Smaller instruct models frequently break strict JSON on a schema this
+    // large (unescaped newlines/quotes, trailing prose). Validate here and give
+    // the model one corrective attempt before failing, so a single bad
+    // generation doesn't cost the user their coins.
+    const STRICT_JSON_RULE =
+      'CRITICAL: Respond with a single valid minified JSON object and nothing else. ' +
+      'No markdown fences, no commentary. Escape every newline inside string values as \\n ' +
+      'and escape every double quote inside string values as \\".';
+
+    let lastRaw = '';
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const messages: any[] = [
+        { role: "system", content: attempt === 0 ? systemPrompt : `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
+        { role: "user", content: finalUserPrompt },
+      ];
+
+      const completion = await openai.chat.completions.create({
+        model: modelName.slice(4),
+        temperature: attempt === 0 ? 0.2 : 0,
+        max_tokens: 8000,
+        response_format: { type: 'json_object' },
+        messages,
+      } as any);
+
+      lastRaw = (completion.choices[0].message.content || '').trim();
+      const cleaned = extractJsonObject(lastRaw);
+      if (cleaned) return { analyst_report: cleaned };
+
+      console.warn(`[NIM] Attempt ${attempt + 1} returned unparseable JSON (${lastRaw.length} chars).`);
+    }
+
+    throw new Error(`Model '${modelName}' returned malformed JSON for the report after 2 attempts.`);
   }
 
   const isFireworks = modelName.startsWith('accounts/fireworks/');
@@ -1170,6 +1192,36 @@ async function processWalletDeduction(
   if (updateError) throw new Error(`Deduction failed: ${updateError.message}`);
 
   return { success: true, deducted: totalCost, newBalance, currency };
+}
+
+function extractJsonObject(raw: string): string | null {
+  if (!raw) return null;
+
+  let text = raw.trim();
+
+  // Strip markdown fences some models wrap around JSON.
+  const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence && fence[1]) text = fence[1].trim();
+
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end <= start) return null;
+
+  const candidate = text.slice(start, end + 1);
+
+  try {
+    JSON.parse(candidate);
+    return candidate;
+  } catch {
+    // Retry after removing trailing commas, a very common model slip.
+    const noTrailingCommas = candidate.replace(/,\s*([}\]])/g, '$1');
+    try {
+      JSON.parse(noTrailingCommas);
+      return noTrailingCommas;
+    } catch {
+      return null;
+    }
+  }
 }
 
 async function refundWallet(supabaseAdmin: any, userId: string, amount: number) {

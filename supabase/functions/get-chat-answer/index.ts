@@ -1,4 +1,4 @@
-// supabase/functions/test-get-chat-answer/index.ts
+// supabase/functions/get-chat-answer/index.ts
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders, createCorsWrappedHandler } from '../_shared/cors.ts';
