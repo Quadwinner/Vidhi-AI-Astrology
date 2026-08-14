@@ -44,11 +44,6 @@ interface BirthDetails {
 
 async function handler(req: Request) {
 
-  // Coins are taken before the report is generated. If anything after the
-  // deduction fails, this holds what must be given back so the user is never
-  // charged for a report they did not receive.
-  let pendingRefund: { supabaseAdmin: any; userId: string; amount: number } | null = null;
-
   const functionStartTime = Date.now();
   console.log(`[PERF_LOG] Function execution started.`);
 
@@ -240,32 +235,26 @@ async function handler(req: Request) {
 
       const isPremium = userSubStatus?.subscription_status === 'active';
 
-      // 3. Execute Deduction Logic
+      // 3. Verify funds now, but charge only after the report is saved.
+      // Deducting up front lost users money whenever generation ran past the
+      // edge worker time limit: the worker is killed outright, so neither the
+      // error handler nor the refund ever runs.
+      let chargeAfterSuccess: { serviceKey: string; variantName: string } | null = null;
+
       // Rule: If it's a paid report ('report_premium') AND the user is Premium, it is FREE.
       if (serviceKey === 'report_premium' && isPremium) {
         console.log(`[Report] Premium User Access: Skipping deduction for ${report_type}`);
       } else {
-        // Otherwise (Free User OR Non-Premium Report), we attempt deduction.
-        // Note: If serviceKey is 'report_basic', the price in DB is 0, so deduction proceeds but takes 0 money.
-        const deduction = await processWalletDeduction(
-          supabaseAdmin,
-          user.id,
-          serviceKey,
-          1,
-          monetization_variant || 'control'
-        );
+        const variantName = monetization_variant || 'control';
+        const funds = await checkWalletFunds(supabaseAdmin, user.id, serviceKey, 1, variantName);
 
-        if (!deduction.success) {
+        if (!funds.sufficient) {
            // Throw the specific error string required by Frontend to open the Wallet Modal
            throw new Error("Insufficient coins"); 
         }
 
-        const deductedAmount = deduction.deducted ?? 0;
-        if (deductedAmount > 0) {
-          pendingRefund = { supabaseAdmin, userId: user.id, amount: deductedAmount };
-        }
-
-        console.log(`[Report] Unlocked ${report_type}. Cost: ${deduction.deducted} ${deduction.currency}`);
+        chargeAfterSuccess = { serviceKey, variantName };
+        console.log(`[Report] Funds verified for ${report_type}. Cost pending: ${funds.totalCost} ${funds.currency}`);
       }
       
       const { data: existingData, error: fetchError } = await supabaseAdmin.from('profile_astro_data').select('*').eq('profile_id', profile_id).single();
@@ -371,7 +360,17 @@ async function handler(req: Request) {
       if (rawDownloadError) throw new Error(`Failed to re-download raw data: ${rawDownloadError.message}`);
       const chartDataForReturn = JSON.parse(await rawDataBlob.text());
 
-      pendingRefund = null;
+      // The report exists now, so it is safe to charge.
+      if (chargeAfterSuccess) {
+        const deduction = await processWalletDeduction(
+          supabaseAdmin,
+          user.id,
+          chargeAfterSuccess.serviceKey,
+          1,
+          chargeAfterSuccess.variantName
+        );
+        console.log(`[Report] Charged ${report_type}: ${deduction.deducted} ${deduction.currency}`);
+      }
 
       return new Response(JSON.stringify({
         chart_data: chartDataForReturn,
@@ -383,16 +382,6 @@ async function handler(req: Request) {
     throw new Error(`Invalid scope provided: ${scope}`);
   } catch (err) {
     console.error(`[CRITICAL ERROR] Function execution failed: ${err.message}`);
-
-    if (pendingRefund) {
-      try {
-        await refundWallet(pendingRefund.supabaseAdmin, pendingRefund.userId, pendingRefund.amount);
-        console.log(`[Report] Refunded ${pendingRefund.amount} to ${pendingRefund.userId} after failure.`);
-      } catch (refundErr) {
-        console.error(`[Report] REFUND FAILED for ${pendingRefund.userId} amount ${pendingRefund.amount}: ${refundErr}`);
-      }
-      pendingRefund = null;
-    }
 
     const functionEndTime = Date.now();
     console.log(`[PERF_LOG] Total function execution time (on error): ${functionEndTime - functionStartTime}ms`);
@@ -518,9 +507,10 @@ async function generateAiInsights(
       // Long reports were exceeding the edge worker time limit before the model
       // finished, which surfaced to the client as a non-2xx. Cap the prose so
       // generation completes inside the request window.
-      'LENGTH LIMIT: Keep every text value under 90 words and the entire JSON ' +
-      'response under 1100 words total. Be specific and concise rather than ' +
-      'repetitive. Never repeat a sentence you have already written.';
+      'LENGTH LIMIT: Keep every text value under 60 words and the entire JSON ' +
+      'response under 700 words total. Be specific and concise rather than ' +
+      'repetitive. Never repeat a sentence you have already written. ' +
+      'Do not pad. Shorter is better.';
 
     // Single attempt only. Retrying a second 8000-token generation pushed the
     // function past the edge worker time limit (non-2xx), so the strict rule is
@@ -533,7 +523,7 @@ async function generateAiInsights(
     const completion = await openai.chat.completions.create({
       model: nimModel,
       temperature: 0.2,
-      max_tokens: 8000,
+      max_tokens: 2500,
       frequency_penalty: 0.2,
       response_format: { type: 'json_object' },
       // gpt-oss is reasoning-capable and defaults to heavy internal reasoning,
@@ -1219,6 +1209,44 @@ async function processWalletDeduction(
   if (updateError) throw new Error(`Deduction failed: ${updateError.message}`);
 
   return { success: true, deducted: totalCost, newBalance, currency };
+}
+
+async function checkWalletFunds(
+  supabaseAdmin: any,
+  userId: string,
+  serviceKey: string,
+  quantity: number = 1,
+  variantName: string = 'control'
+) {
+  const { data: user, error: userError } = await supabaseAdmin
+    .from('users')
+    .select('currency_code, wallet_balance')
+    .eq('id', userId)
+    .single();
+
+  if (userError || !user) throw new Error(`User fetch failed: ${userError?.message}`);
+
+  const currency = user.currency_code || 'USD';
+  const currentBalance = user.wallet_balance || 0;
+
+  const { data: priceRows, error: priceError } = await supabaseAdmin
+    .from('service_prices')
+    .select('price_amount, variant_name')
+    .eq('service_key', serviceKey)
+    .eq('currency_code', currency);
+
+  if (priceError || !priceRows || priceRows.length === 0) {
+    throw new Error(`Price configuration missing for ${serviceKey} in ${currency}`);
+  }
+
+  const priceRow =
+    priceRows.find((r: any) => r.variant_name === variantName) ??
+    priceRows.find((r: any) => r.variant_name === 'control') ??
+    priceRows[0];
+
+  const totalCost = priceRow.price_amount * quantity;
+
+  return { sufficient: currentBalance >= totalCost, totalCost, balance: currentBalance, currency };
 }
 
 function extractJsonObject(raw: string): string | null {
