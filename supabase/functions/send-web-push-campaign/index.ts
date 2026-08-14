@@ -96,8 +96,8 @@ serve(async (req) => {
         platform_specific: {
           web: {
             require_interaction: false,
-            image: iconUrl || "https://astroaura.ai/logo192.png",
-            icon: iconUrl || "https://astroaura.ai/logo192.png",
+            image: iconUrl || "https://vidhi-ai-astrology.vercel.app/logo192.png",
+            icon: iconUrl || "https://vidhi-ai-astrology.vercel.app/logo192.png",
             on_click: clickUrl || "/chat"
           }
         }

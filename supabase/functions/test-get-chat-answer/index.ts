@@ -368,7 +368,7 @@ async function handler(req: Request) {
 
       // ... [Keep Error Handling unchanged] ...
        if (response.status === 529 || response.status === 502 || response.status === 503) {
-        const overloadMessage = "AuraAI is experiencing heavy cosmic traffic right now (server overload). Please try again in 30 seconds.";
+        const overloadMessage = "Vidhi AI is experiencing heavy cosmic traffic right now (server overload). Please try again in 30 seconds.";
         await writer.write(encoder.encode(overloadMessage));
         writer.close();
         return;

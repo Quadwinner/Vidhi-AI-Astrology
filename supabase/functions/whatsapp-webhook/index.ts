@@ -403,7 +403,7 @@ Please tell me your *full name*:`
 async function handleGreeting(supabase: any, session: WhatsAppSession, message: string): Promise<string | null> {
   // Send greeting with buttons
   const sent = await sendTwilioMessageWithButtons(session.phone_number,
-    `👋 Welcome to AstroAura!\n\nHow can I help you?`,
+    `👋 Welcome to Vidhi AI!\n\nHow can I help you?`,
     ['Create free birth chart + 1 Q&A', 'Check subscription or get help']
   )
   if (sent) {
@@ -420,7 +420,7 @@ async function handleSupportMenu(supabase: any, session: WhatsAppSession): Promi
   
   // Send support menu with buttons (now includes recharge option)
   const sent = await sendTwilioMessageWithButtons(session.phone_number,
-    `🛟 *AstroAura Support*\n\nHow can I help you today?`,
+    `🛟 *Vidhi AI Support*\n\nHow can I help you today?`,
     ['Check my subscription status', 'Payment issue/failed transaction', 'Talk to human support', 'Recharge wallet']
   )
   if (sent) {
@@ -654,7 +654,7 @@ OR
   if (error || !user) {
     return `❌ No account found with this ${isEmail ? 'email' : 'phone number'}.
 
-Please check and try again, or sign up at https://astroaura.ai/`
+Please check and try again, or sign up at https://vidhi-ai-astrology.vercel.app/`
   }
   
   const userData = {
@@ -750,7 +750,7 @@ Reply *MENU* to go back`
       amount,
       reason: 'payment_link_generation_failed'
     })
-    return `❌ Sorry, unable to generate payment link. Please try again later or visit https://astroaura.ai/
+    return `❌ Sorry, unable to generate payment link. Please try again later or visit https://vidhi-ai-astrology.vercel.app/
 
 Reply *MENU* to go back`
   }
@@ -807,7 +807,7 @@ async function generateRechargePaymentLink(
       body: JSON.stringify({
         amount: amountInPaise,
         currency: 'INR',
-        description: `AstroAura Wallet Recharge - ₹${amount}`,
+        description: `Vidhi AI Wallet Recharge - ₹${amount}`,
         customer: {
           contact: phoneNumber
         },
@@ -1246,7 +1246,7 @@ async function handleQuestionInput(supabase: any, session: WhatsAppSession, ques
     }
 
     // Send waiting message immediately
-    const waitingMessage = '🔮 AstroAura is analyzing your chart... Please wait a moment! ⏳'
+    const waitingMessage = '🔮 Vidhi AI is analyzing your chart... Please wait a moment! ⏳'
     await sendTwilioMessage(session.phone_number, waitingMessage)
     await logMessage(supabase, session.id, 'bot', waitingMessage)
     await trackCleverTapEvent(session.phone_number, 'WhatsApp Message Sent', {
@@ -1288,7 +1288,7 @@ async function handleQuestionInput(supabase: any, session: WhatsAppSession, ques
 Based on your birth chart, I can see interesting planetary alignments that influence your personality and life path. 
 
 ✨ *Want more detailed readings?* 
-Visit our website: https://astroaura.ai/`
+Visit our website: https://vidhi-ai-astrology.vercel.app/`
     }
 
     console.log('[handleQuestionInput] Prompt fetched, provider:', promptData.api_provider)
@@ -1353,9 +1353,9 @@ ${cleanedAnswer}`
     console.error('[handleQuestionInput] Error stack:', error instanceof Error ? error.stack : error)
     const message = (error instanceof Error ? error.message : String(error)).toLowerCase()
     if (message.includes('overload') || message.includes('insufficient_quota')) {
-      return `⚠️ अभी सर्वर पर बहुत अधिक ट्रैफिक है, इसलिए मैं जवाब नहीं दे पा रहा हूँ। कृपया 30 सेकंड बाद दोबारा प्रयास करें या विस्तृत रीडिंग के लिए https://astroaura.ai/ पर जाएँ।`
+      return `⚠️ अभी सर्वर पर बहुत अधिक ट्रैफिक है, इसलिए मैं जवाब नहीं दे पा रहा हूँ। कृपया 30 सेकंड बाद दोबारा प्रयास करें या विस्तृत रीडिंग के लिए https://vidhi-ai-astrology.vercel.app/ पर जाएँ।`
     }
-    return `❌ Sorry, I ran into a technical issue while generating your answer. Please try again in a moment or visit https://astroaura.ai/ for a full reading.`
+    return `❌ Sorry, I ran into a technical issue while generating your answer. Please try again in a moment or visit https://vidhi-ai-astrology.vercel.app/ for a full reading.`
   }
 }
 
@@ -1443,9 +1443,9 @@ function formatWhatsAppAnswer(rawAnswer: string): string {
 }
 
 function appendPromoLink(message: string): string {
-  const promoBlock = `\n\n✨ *Want more detailed readings?*\nVisit our website: https://astroaura.ai/`
+  const promoBlock = `\n\n✨ *Want more detailed readings?*\nVisit our website: https://vidhi-ai-astrology.vercel.app/`
   const trimmed = message.trim()
-  if (trimmed.includes('https://astroaura.ai')) {
+  if (trimmed.includes('https://vidhi-ai-astrology.vercel.app')) {
     return trimmed
   }
   return `${trimmed}${promoBlock}`
@@ -1760,7 +1760,7 @@ async function sendAuraTemplate(to: string, contentVariables?: Record<string, st
     
     // Send image with a small caption to ensure it's sent properly
     // WhatsApp requires either a body or mediaUrl, but having both is fine
-    const imageSent = await sendTwilioMessage(to, '🌟 Welcome to AstroAura!', imageUrl)
+    const imageSent = await sendTwilioMessage(to, '🌟 Welcome to Vidhi AI!', imageUrl)
     
     if (imageSent) {
       console.log(`[sendAuraTemplate] ✓ Image sent successfully, waiting before template...`)

@@ -29,13 +29,13 @@ self.addEventListener('push', function(event) {
         const textData = event.data.text();
         console.log('[CleverTap SW] Push data (text):', textData);
         data = {
-          title: 'AstraAura',
+          title: 'Vidhi AI',
           body: textData
         };
       }
     }
 
-    const title = data.title || 'AstraAura Notification';
+    const title = data.title || 'Vidhi AI Notification';
     const options = {
       body: data.body || data.message || 'You have a new notification',
       icon: data.icon || '/logo192.png',
@@ -53,7 +53,7 @@ self.addEventListener('push', function(event) {
 
     // Show a fallback notification even if parsing failed
     event.waitUntil(
-      self.registration.showNotification('AstraAura', {
+      self.registration.showNotification('Vidhi AI', {
         body: 'You have a new notification',
         icon: '/logo192.png',
         badge: '/logo192.png'

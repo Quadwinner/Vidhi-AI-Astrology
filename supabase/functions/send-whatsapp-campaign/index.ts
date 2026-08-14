@@ -432,7 +432,7 @@ serve(async (req) => {
           // Add template params for AstroAuraAi_Love template
           if (finalCampaignName === 'AstroAuraAi_Love') {
             const firstName = recipient.name?.split(' ')[0] || 'user'
-            const originalLink = 'https://astroaura.ai/chat'
+            const originalLink = 'https://vidhi-ai-astrology.vercel.app/chat'
             
             // Generate tracking URL for the link
             const trackingUrl = generateTrackingUrl(

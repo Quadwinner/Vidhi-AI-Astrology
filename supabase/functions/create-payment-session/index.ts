@@ -212,7 +212,7 @@ async function handleRazorpayPayment(supabase: any, user: any, price: any, userE
         period: price.interval_unit === 'year' ? 'yearly' : 'monthly',
         interval: 1,
         item: {
-          name: `AuraAI ${price.interval_unit === 'year' ? 'Yearly' : 'Monthly'} Plan`,
+          name: `Vidhi AI ${price.interval_unit === 'year' ? 'Yearly' : 'Monthly'} Plan`,
           amount: price.amount,
           currency: price.currency.toUpperCase()
         }

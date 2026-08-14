@@ -98,20 +98,20 @@ serve(async (req) => {
     const getPlanDetails = (currency: string) => {
       const plans = {
         inr: {
-          monthly: { amount: 29900, period: 'monthly', interval: 1, name: 'AuraAI Monthly Plan' }, // ₹299
-          yearly: { amount: 299000, period: 'yearly', interval: 1, name: 'AuraAI Yearly Plan' }   // ₹2,990
+          monthly: { amount: 29900, period: 'monthly', interval: 1, name: 'Vidhi AI Monthly Plan' }, // ₹299
+          yearly: { amount: 299000, period: 'yearly', interval: 1, name: 'Vidhi AI Yearly Plan' }   // ₹2,990
         },
         usd: {
-          monthly: { amount: 999, period: 'monthly', interval: 1, name: 'AuraAI Monthly Plan' },    // $9.99
-          yearly: { amount: 9999, period: 'yearly', interval: 1, name: 'AuraAI Yearly Plan' }     // $99.99
+          monthly: { amount: 999, period: 'monthly', interval: 1, name: 'Vidhi AI Monthly Plan' },    // $9.99
+          yearly: { amount: 9999, period: 'yearly', interval: 1, name: 'Vidhi AI Yearly Plan' }     // $99.99
         },
         gbp: {
-          monthly: { amount: 799, period: 'monthly', interval: 1, name: 'AuraAI Monthly Plan' },  // £7.99
-          yearly: { amount: 7999, period: 'yearly', interval: 1, name: 'AuraAI Yearly Plan' }    // £79.99
+          monthly: { amount: 799, period: 'monthly', interval: 1, name: 'Vidhi AI Monthly Plan' },  // £7.99
+          yearly: { amount: 7999, period: 'yearly', interval: 1, name: 'Vidhi AI Yearly Plan' }    // £79.99
         },
         aed: {
-          monthly: { amount: 3699, period: 'monthly', interval: 1, name: 'AuraAI Monthly Plan' },  // AED 36.99
-          yearly: { amount: 36999, period: 'yearly', interval: 1, name: 'AuraAI Yearly Plan' }    // AED 369.99
+          monthly: { amount: 3699, period: 'monthly', interval: 1, name: 'Vidhi AI Monthly Plan' },  // AED 36.99
+          yearly: { amount: 36999, period: 'yearly', interval: 1, name: 'Vidhi AI Yearly Plan' }    // AED 369.99
         }
       };
       
