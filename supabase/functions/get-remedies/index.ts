@@ -127,16 +127,23 @@ RULES:
       ? String(problem_text).trim()
       : `Give me Vedic remedies for: ${problem_area || 'my overall life'}.`;
 
-    const isFireworks = modelName.toLowerCase().startsWith('accounts/fireworks/');
-    const apiUrl = isFireworks ? 'https://api.fireworks.ai/inference/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
+    const isNim = modelName.toLowerCase().startsWith('nim/');
+    const isFireworks = !isNim && modelName.toLowerCase().startsWith('accounts/fireworks/');
+    const resolvedModelName = isNim ? modelName.slice(4) : modelName;
+    const apiUrl = isNim
+      ? 'https://integrate.api.nvidia.com/v1/chat/completions'
+      : isFireworks
+        ? 'https://api.fireworks.ai/inference/v1/chat/completions'
+        : 'https://openrouter.ai/api/v1/chat/completions';
 
     const res = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify({
-        model: modelName,
+        model: resolvedModelName,
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        temperature: 0.5, max_tokens: 2600, reasoning_effort: 'low',
+        temperature: 0.5, max_tokens: 2600,
+        ...(isNim ? {} : { reasoning_effort: 'low' }),
         response_format: { type: 'json_object' },
       }),
     });

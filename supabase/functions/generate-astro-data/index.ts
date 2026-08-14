@@ -459,6 +459,20 @@ async function generateAiInsights(
   // endpoint. The report prompts are configured with api_provider 'openrouter' but
   // point at Fireworks models + FIREWORKS_API_KEY, so route by model prefix. This
   // is what actually powers reports (there is no OpenAI/Anthropic key configured).
+  const isNim = modelName.startsWith('nim/');
+  if (isNim) {
+    const openai = new OpenAI({ apiKey, baseURL: 'https://integrate.api.nvidia.com/v1' });
+    const completion = await openai.chat.completions.create({
+      model: modelName.slice(4),
+      temperature: 0.2,
+      max_tokens: 8000,
+      response_format: { type: 'json_object' },
+      messages: [{ role: "system", content: systemPrompt }, { role: "user", content: finalUserPrompt }],
+    } as any);
+    analyst_report = completion.choices[0].message.content?.trim() || null;
+    return { analyst_report: analyst_report || "The AI analyst did not return a valid report." };
+  }
+
   const isFireworks = modelName.startsWith('accounts/fireworks/');
   if (isFireworks) {
     const openai = new OpenAI({ apiKey, baseURL: 'https://api.fireworks.ai/inference/v1' });

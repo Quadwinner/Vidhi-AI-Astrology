@@ -68,18 +68,21 @@ async function handler(req: Request) {
       // The categorizer's model was a Fireworks model but the code used the
       // Anthropic SDK, which always 500'd and blocked the chat. Call the correct
       // endpoint, cap tokens, and keep reasoning low so it stays fast.
-      const base = modelLower.startsWith('accounts/fireworks/')
-        ? 'https://api.fireworks.ai/inference/v1/chat/completions'
-        : 'https://openrouter.ai/api/v1/chat/completions';
+      const isNim = modelLower.startsWith('nim/');
+      const base = isNim
+        ? 'https://integrate.api.nvidia.com/v1/chat/completions'
+        : modelLower.startsWith('accounts/fireworks/')
+          ? 'https://api.fireworks.ai/inference/v1/chat/completions'
+          : 'https://openrouter.ai/api/v1/chat/completions';
       const res = await fetch(base, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: promptData.model_name,
+          model: isNim ? promptData.model_name.slice(4) : promptData.model_name,
           messages: [{ role: 'user', content: finalPrompt }],
           temperature: 0,
           max_tokens: 300,
-          reasoning_effort: 'low',
+          ...(isNim ? {} : { reasoning_effort: 'low' }),
         }),
       });
       if (!res.ok) {

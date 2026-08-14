@@ -250,7 +250,9 @@ async function handler(req: Request) {
             const apiKey = Deno.env.get(promptData.secret_name);
             if (!apiKey) throw new Error(`API key secret '${promptData.secret_name}' is not set.`);
             const modelLower = (promptData.model_name || '').toLowerCase();
-            const isAnthropic = modelLower.startsWith('claude');
+            const isNim = modelLower.startsWith('nim/');
+            const isAnthropic = !isNim && modelLower.startsWith('claude');
+            const resolvedModelName = isNim ? promptData.model_name.slice(4) : promptData.model_name;
             const userMessage = question_text || `Analyze compatibility for ${userProfileData.name} and ${partnerProfile.partner_name}.`;
 
             let apiUrl: string;
@@ -261,14 +263,17 @@ async function handler(req: Request) {
                 headers = { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" };
                 reqBody = { model: promptData.model_name, system: finalPrompt, messages: [{ role: 'user', content: userMessage }], stream: true, max_tokens: 4096 };
             } else {
-                apiUrl = modelLower.startsWith('accounts/fireworks/')
-                    ? "https://api.fireworks.ai/inference/v1/chat/completions"
-                    : "https://openrouter.ai/api/v1/chat/completions";
+                apiUrl = isNim
+                    ? "https://integrate.api.nvidia.com/v1/chat/completions"
+                    : modelLower.startsWith('accounts/fireworks/')
+                        ? "https://api.fireworks.ai/inference/v1/chat/completions"
+                        : "https://openrouter.ai/api/v1/chat/completions";
                 headers = { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` };
                 reqBody = {
-                    model: promptData.model_name,
+                    model: resolvedModelName,
                     messages: [{ role: 'system', content: finalPrompt }, { role: 'user', content: userMessage }],
-                    stream: true, stream_options: { include_usage: true }, max_tokens: 2048, reasoning_effort: 'low',
+                    stream: true, stream_options: { include_usage: true }, max_tokens: 2048,
+                    ...(isNim ? {} : { reasoning_effort: 'low' }),
                 };
             }
 

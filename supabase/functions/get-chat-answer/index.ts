@@ -394,12 +394,19 @@ async function handler(req: Request) {
 
       // --- 1. DETERMINE PROVIDER ---
       const modelLower = promptData.model_name.toLowerCase();
-      const isFireworks = modelLower.startsWith('accounts/fireworks/');
-      const isOpenAI = !isFireworks && (modelLower.startsWith('gpt') || modelLower.startsWith('o1'));
-      const isGemini = !isFireworks && modelLower.startsWith('gemini');
-      const isAnthropic = !isFireworks && !isOpenAI && !isGemini;
+      const isNim = modelLower.startsWith('nim/');
+      const isFireworks = !isNim && modelLower.startsWith('accounts/fireworks/');
+      const isOpenAI = !isNim && !isFireworks && (modelLower.startsWith('gpt') || modelLower.startsWith('o1'));
+      const isGemini = !isNim && !isFireworks && modelLower.startsWith('gemini');
+      const isAnthropic = !isNim && !isFireworks && !isOpenAI && !isGemini;
+      // NIM model names carry a 'nim/' routing prefix (e.g. nim/meta/llama-3.3-70b-instruct)
+      // which must be stripped before the request.
+      const resolvedModelName = isNim ? promptData.model_name.slice(4) : promptData.model_name;
+      // Both Fireworks and NIM run reasoning-capable models that may emit an
+      // optional [ANSWER] marker ahead of the user-visible answer.
+      const usesAnswerMarker = isFireworks || isNim;
 
-      console.log(`[Model Provider] Selected: ${isFireworks ? 'Fireworks' : isGemini ? 'Gemini' : isOpenAI ? 'OpenAI' : 'Anthropic'} (${promptData.model_name})`);
+      console.log(`[Model Provider] Selected: ${isNim ? 'NVIDIA NIM' : isFireworks ? 'Fireworks' : isGemini ? 'Gemini' : isOpenAI ? 'OpenAI' : 'Anthropic'} (${resolvedModelName})`);
 
       // --- 2. PREPARE PROMPT TEXT ---
       let promptTextContent = promptData.prompt_text;
@@ -564,6 +571,31 @@ async function handler(req: Request) {
            };
         }
 
+      } else if (isNim) {
+        // === NVIDIA NIM (OpenAI-compatible) ===
+        apiUrl = "https://integrate.api.nvidia.com/v1/chat/completions";
+        headers = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+          "Accept": "text/event-stream"
+        };
+        body = {
+          model: resolvedModelName,
+          messages: [
+            { role: "system", content: finalSingleSystemPrompt },
+            ...transformMessagesForStandard(cleanHistory),
+            { role: "user", content: question_text }
+          ],
+          stream: true,
+          stream_options: { include_usage: true },
+          temperature: 0.6,
+          top_p: 0.95,
+          // NIM reasoning models stream their thinking in a separate
+          // 'reasoning_content' field, so max_tokens only has to cover the
+          // visible answer.
+          max_tokens: 2600
+        };
+
       } else if (isFireworks) {
         // === FIREWORKS (OpenAI-compatible) ===
         apiUrl = "https://api.fireworks.ai/inference/v1/chat/completions";
@@ -713,7 +745,7 @@ async function handler(req: Request) {
                    }
                 }
 
-              } else if (isOpenAI || isFireworks) {
+              } else if (isOpenAI || isFireworks || isNim) {
                  const content = parsed.choices?.[0]?.delta?.content || '';
                  if (content) {
                    // Stream tokens as they arrive (ChatGPT-style). Only briefly
@@ -721,7 +753,7 @@ async function handler(req: Request) {
                    // "[ANSWER]" marker we need to strip. Once we've cleared the
                    // first few tokens (or found the marker), we stream directly so
                    // the user never waits for the whole response.
-                   if (isFireworks && !answerStarted) {
+                   if (usesAnswerMarker && !answerStarted) {
                      rawBuffer += content;
                      const answerIdx = rawBuffer.indexOf('[ANSWER]');
                      if (answerIdx !== -1) {
@@ -789,8 +821,8 @@ async function handler(req: Request) {
         }
       }
 
-      // If Fireworks model never output [ANSWER], send the raw buffer as-is
-      if (isFireworks && !answerStarted && rawBuffer.length > 0) {
+      // If the model never output [ANSWER], send the raw buffer as-is
+      if (usesAnswerMarker && !answerStarted && rawBuffer.length > 0) {
         fullResponseContent = rawBuffer;
         writer.write(encoder.encode(rawBuffer));
       }
