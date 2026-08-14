@@ -590,10 +590,11 @@ async function handler(req: Request) {
           stream_options: { include_usage: true },
           temperature: 0.6,
           top_p: 0.95,
-          // NIM reasoning models stream their thinking in a separate
-          // 'reasoning_content' field, so max_tokens only has to cover the
-          // visible answer.
-          max_tokens: 2600
+          // On NIM, a reasoning model's thinking tokens also count toward
+          // max_tokens, so a tight budget can be consumed entirely by reasoning
+          // and return an empty answer. Keep headroom and prefer non-reasoning
+          // instruct models for chat.
+          max_tokens: 4096
         };
 
       } else if (isFireworks) {
