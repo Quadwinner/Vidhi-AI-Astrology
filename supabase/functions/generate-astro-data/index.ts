@@ -513,10 +513,14 @@ async function generateAiInsights(
     // Single attempt only. Retrying a second 8000-token generation pushed the
     // function past the edge worker time limit (non-2xx), so the strict rule is
     // applied up front instead of as a second pass.
+    // These reports run past 25k characters, so a small cap truncates the JSON
+    // mid-string (finish_reason 'length'). frequency_penalty counters the
+    // repetition loops smaller models fall into on long structured output.
     const completion = await openai.chat.completions.create({
       model: modelName.slice(4),
       temperature: 0.2,
-      max_tokens: 6000,
+      max_tokens: 12000,
+      frequency_penalty: 0.3,
       response_format: { type: 'json_object' },
       messages: [
         { role: "system", content: `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
@@ -524,11 +528,17 @@ async function generateAiInsights(
       ],
     } as any);
 
-    const raw = (completion.choices[0].message.content || '').trim();
+    const choice = completion.choices[0];
+    const raw = (choice?.message?.content || '').trim();
     const cleaned = extractJsonObject(raw);
     if (!cleaned) {
-      console.warn(`[NIM] Unparseable JSON from '${modelName}' (${raw.length} chars).`);
-      throw new Error(`Model '${modelName}' returned malformed JSON for the report.`);
+      // Surface the model's actual output so the failure can be diagnosed from
+      // the client instead of guessing at it.
+      const head = raw.slice(0, 200).replace(/\s+/g, ' ');
+      const tail = raw.length > 200 ? raw.slice(-120).replace(/\s+/g, ' ') : '';
+      const detail = `len=${raw.length} finish=${choice?.finish_reason} head="${head}" tail="${tail}"`;
+      console.warn(`[NIM] Unparseable JSON from '${modelName}': ${detail}`);
+      throw new Error(`Model '${modelName}' returned malformed JSON. ${detail}`);
     }
 
     return { analyst_report: cleaned };
