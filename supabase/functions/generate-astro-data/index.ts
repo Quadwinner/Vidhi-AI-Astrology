@@ -525,8 +525,8 @@ async function generateAiInsights(
     const completion = await openai.chat.completions.create({
       model: modelName.slice(4),
       temperature: 0.2,
-      max_tokens: 4000,
-      frequency_penalty: 0.4,
+      max_tokens: 8000,
+      frequency_penalty: 0.2,
       response_format: { type: 'json_object' },
       messages: [
         { role: "system", content: `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
