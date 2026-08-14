@@ -510,29 +510,28 @@ async function generateAiInsights(
       'No markdown fences, no commentary. Escape every newline inside string values as \\n ' +
       'and escape every double quote inside string values as \\".';
 
-    let lastRaw = '';
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const messages: any[] = [
-        { role: "system", content: attempt === 0 ? systemPrompt : `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
+    // Single attempt only. Retrying a second 8000-token generation pushed the
+    // function past the edge worker time limit (non-2xx), so the strict rule is
+    // applied up front instead of as a second pass.
+    const completion = await openai.chat.completions.create({
+      model: modelName.slice(4),
+      temperature: 0.2,
+      max_tokens: 6000,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: "system", content: `${systemPrompt}\n\n${STRICT_JSON_RULE}` },
         { role: "user", content: finalUserPrompt },
-      ];
+      ],
+    } as any);
 
-      const completion = await openai.chat.completions.create({
-        model: modelName.slice(4),
-        temperature: attempt === 0 ? 0.2 : 0,
-        max_tokens: 8000,
-        response_format: { type: 'json_object' },
-        messages,
-      } as any);
-
-      lastRaw = (completion.choices[0].message.content || '').trim();
-      const cleaned = extractJsonObject(lastRaw);
-      if (cleaned) return { analyst_report: cleaned };
-
-      console.warn(`[NIM] Attempt ${attempt + 1} returned unparseable JSON (${lastRaw.length} chars).`);
+    const raw = (completion.choices[0].message.content || '').trim();
+    const cleaned = extractJsonObject(raw);
+    if (!cleaned) {
+      console.warn(`[NIM] Unparseable JSON from '${modelName}' (${raw.length} chars).`);
+      throw new Error(`Model '${modelName}' returned malformed JSON for the report.`);
     }
 
-    throw new Error(`Model '${modelName}' returned malformed JSON for the report after 2 attempts.`);
+    return { analyst_report: cleaned };
   }
 
   const isFireworks = modelName.startsWith('accounts/fireworks/');
