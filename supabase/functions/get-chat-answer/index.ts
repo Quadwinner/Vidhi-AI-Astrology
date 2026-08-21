@@ -325,7 +325,11 @@ async function handler(req: Request) {
       const [profileRes, astroDataRes, chatHistoryRes, rulebookRes] = await Promise.allSettled([
         supabaseAdmin.from('user_profiles').select(`name, preferred_language, user_birth_details(gender, date_of_birth)`).eq('id', profile_id).single(),
         supabaseAdmin.from('profile_astro_data').select('processed_tables_path, vimshottari_dasha, yogas_llm').eq('profile_id', profile_id).single(),
-        supabaseAdmin.from('chat_history').select('role, message_content').eq('profile_id', profile_id).order('created_at', { ascending: true }).limit(10),
+        // Newest first, then reversed below. Ordering ascending with a limit
+        // returned the ten OLDEST messages of the conversation, so once a chat
+        // passed ten messages the model never saw the recent turns and could not
+        // follow the discussion.
+        supabaseAdmin.from('chat_history').select('role, message_content, created_at').eq('profile_id', profile_id).order('created_at', { ascending: false }).limit(12),
         supabaseAdmin.storage.from('rulebook').download('compressed_astro_rules.json')
       ]);
 
@@ -505,10 +509,15 @@ async function handler(req: Request) {
       if (!apiKey) throw new Error(`API key secret named '${promptData.secret_name}' is not set.`);
 
       // --- 3. PREPARE HISTORY ---
-      const rawHistory = chatHistoryRes.status === 'fulfilled' ? chatHistoryRes.value.data : [];
-      const cleanHistory = rawHistory
+      const rawHistory = chatHistoryRes.status === 'fulfilled' ? (chatHistoryRes.value.data || []) : [];
+      // Fetched newest-first, so flip back to chronological order before sending
+      // it to the model.
+      const cleanHistory = [...rawHistory]
+        .reverse()
         .map((msg: any) => ({ role: msg.role, content: msg.message_content }))
         .filter((msg: any) => msg.content && typeof msg.content === 'string' && msg.content.trim().length > 0);
+
+      console.log(`[Chat] History turns sent to model: ${cleanHistory.length}`);
 
       // --- 4. API REQUEST CONFIGURATION ---
       let apiUrl = "";
