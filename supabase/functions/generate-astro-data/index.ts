@@ -507,10 +507,11 @@ async function generateAiInsights(
       // Long reports were exceeding the edge worker time limit before the model
       // finished, which surfaced to the client as a non-2xx. Cap the prose so
       // generation completes inside the request window.
-      'LENGTH LIMIT: Keep every text value under 60 words and the entire JSON ' +
-      'response under 700 words total. Be specific and concise rather than ' +
-      'repetitive. Never repeat a sentence you have already written. ' +
-      'Do not pad. Shorter is better.';
+      'DEPTH AND LENGTH: Write 90 to 120 words for each substantive text value, ' +
+      'grounded in the specific chart data given (planets, houses, dashas, ' +
+      'yogas) and naming them. Keep the entire JSON response under 1500 words ' +
+      'total. Be specific rather than repetitive, and never repeat a sentence ' +
+      'you have already written.';
 
     // Single attempt only. Retrying a second 8000-token generation pushed the
     // function past the edge worker time limit (non-2xx), so the strict rule is
@@ -523,7 +524,7 @@ async function generateAiInsights(
     const completion = await openai.chat.completions.create({
       model: nimModel,
       temperature: 0.2,
-      max_tokens: 2500,
+      max_tokens: 5000,
       frequency_penalty: 0.2,
       response_format: { type: 'json_object' },
       // gpt-oss is reasoning-capable and defaults to heavy internal reasoning,

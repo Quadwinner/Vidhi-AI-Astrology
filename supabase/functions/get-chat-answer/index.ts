@@ -588,16 +588,24 @@ async function handler(req: Request) {
           "Authorization": `Bearer ${apiKey}`,
           "Accept": "text/event-stream"
         };
+        // Smaller instruct models answer far more briefly than the previous
+        // provider's model did, so ask explicitly for a substantive reply.
+        const NIM_DETAIL_RULE =
+          'DEPTH: Give a complete, substantive answer of 8 to 14 sentences. ' +
+          'Ground every claim in the specific chart data provided (planets, houses, ' +
+          'dashas, transits) and name them. Cover the situation, the timing, and what ' +
+          'to do about it. Never reply with only one or two sentences.';
+
         body = {
           model: resolvedModelName,
           messages: [
-            { role: "system", content: finalSingleSystemPrompt },
+            { role: "system", content: `${finalSingleSystemPrompt}\n\n${NIM_DETAIL_RULE}` },
             ...transformMessagesForStandard(cleanHistory),
             { role: "user", content: question_text }
           ],
           stream: true,
           stream_options: { include_usage: true },
-          temperature: 0.6,
+          temperature: 0.7,
           top_p: 0.95,
           // On NIM, a reasoning model's thinking tokens also count toward
           // max_tokens, so a tight budget can be consumed entirely by reasoning
