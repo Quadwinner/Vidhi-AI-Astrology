@@ -46,7 +46,7 @@ import YearEndBlog from './pages/YearEndBlog';
 import { usePageTracking } from './hooks/usePageTracking';
 import RouteSeo from './seo/RouteSeo';
 
-const LAUNCH_ONLY = process.env.REACT_APP_LAUNCH_ONLY === 'true';
+const LAUNCH_ONLY = process.env.REACT_APP_LAUNCH_ONLY !== 'false';
 
 function AppContent() {
   const location = useLocation();
